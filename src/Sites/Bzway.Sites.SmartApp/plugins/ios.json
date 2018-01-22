@@ -1,0 +1,41 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.abs51.smart"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.abs51.smart"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.abs51.smart"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.abs51.smart"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.abs51.smart"
+        },
+        "cordova-plugin-qrscanner": {
+            "PACKAGE_NAME": "com.abs51.smart"
+        },
+        "jpush-phonegap-plugin": {
+            "APP_KEY": "6f3889374f756eee448e68e1",
+            "PACKAGE_NAME": "com.abs51.smart"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-swift-support": {
+            "PACKAGE_NAME": "com.abs51.smart"
+        },
+        "cordova-plugin-jcore": {
+            "PACKAGE_NAME": "com.abs51.smart"
+        }
+    }
+}

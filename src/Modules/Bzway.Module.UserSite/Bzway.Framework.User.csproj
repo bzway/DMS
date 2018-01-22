@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Bzway.Common.Script\Bzway.Common.Script.csproj" />
+    <ProjectReference Include="..\..\Common\Bzway.Common.Share\Bzway.Common.Share.csproj" />
+    <ProjectReference Include="..\..\Common\Bzway.Common.Utility\Bzway.Common.Utility.csproj" />
+    <ProjectReference Include="..\..\Data\Bzway.Data.Core\Bzway.Data.Core.csproj" />
+
+    <ProjectReference Include="..\..\Framework\Bzway.Framework.Application\Bzway.Framework.Application.csproj">
+     </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Bzway.Framework.Connect\Bzway.Framework.Connect.csproj">
+     </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Bzway.Framework.Content\Bzway.Framework.Content.csproj">
+     </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
+    <PackageReference Include="System.ComponentModel.Primitives" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
+  </ItemGroup>
+ 
+</Project>

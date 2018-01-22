@@ -1,0 +1,74 @@
+[
+  {
+    "Name": "早餐",
+    "Image": "/img/category/a.png",
+    "Url": null,
+    "Description": null,
+    "Remark": null,
+    "CreatedBy": null,
+    "CreatedOn": "0001-01-01T00:00:00",
+    "Id": "1",
+    "UpdatedBy": null,
+    "UpdatedOn": "0001-01-01T00:00:00"
+  },
+  {
+    "Name": "正餐",
+    "Image": "/img/category/b.png",
+    "Url": null,
+    "Description": null,
+    "Remark": null,
+    "CreatedBy": null,
+    "CreatedOn": "0001-01-01T00:00:00",
+    "Id": "2",
+    "UpdatedBy": null,
+    "UpdatedOn": "0001-01-01T00:00:00"
+  },
+  {
+    "Name": "生鲜",
+    "Image": "/img/category/c.png",
+    "Url": null,
+    "Description": null,
+    "Remark": null,
+    "CreatedBy": null,
+    "CreatedOn": "0001-01-01T00:00:00",
+    "Id": "3",
+    "UpdatedBy": null,
+    "UpdatedOn": "0001-01-01T00:00:00"
+  },
+  {
+    "Name": "水果",
+    "Image": "/img/category/d.png",
+    "Url": null,
+    "Description": null,
+    "Remark": null,
+    "CreatedBy": null,
+    "CreatedOn": "0001-01-01T00:00:00",
+    "Id": "4",
+    "UpdatedBy": null,
+    "UpdatedOn": "0001-01-01T00:00:00"
+  },
+  {
+    "Name": "下午茶",
+    "Image": "/img/category/e.png",
+    "Url": null,
+    "Description": null,
+    "Remark": null,
+    "CreatedBy": null,
+    "CreatedOn": "0001-01-01T00:00:00",
+    "Id": "5",
+    "UpdatedBy": null,
+    "UpdatedOn": "0001-01-01T00:00:00"
+  },
+  {
+    "Name": "团体餐",
+    "Image": "/img/category/f.png",
+    "Url": null,
+    "Description": null,
+    "Remark": null,
+    "CreatedBy": null,
+    "CreatedOn": "0001-01-01T00:00:00",
+    "Id": "6",
+    "UpdatedBy": null,
+    "UpdatedOn": "0001-01-01T00:00:00"
+  }
+]

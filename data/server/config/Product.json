@@ -1,0 +1,28 @@
+[
+  {
+    "name": "Default",
+    "image": "https://www.bing.com/sa/simg/CN_Logo_Gray.png",
+    "url": null,
+    "description": "test",
+    "CategoryId": 1,
+    "remark": null,
+    "createdBy": null,
+    "createdOn": "0001-01-01T00:00:00",
+    "id": "1",
+    "updatedBy": null,
+    "updatedOn": "0001-01-01T00:00:00"
+  },
+  {
+    "name": "test2",
+    "image": "https://www.bing.com/sa/simg/CN_Logo_Gray.png",
+    "url": null,
+    "description": "test",
+    "CategoryId": 2,
+    "remark": null,
+    "createdBy": null,
+    "createdOn": "0001-01-01T00:00:00",
+    "id": "1",
+    "updatedBy": null,
+    "updatedOn": "0001-01-01T00:00:00"
+  }
+]

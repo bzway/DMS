@@ -1,0 +1,11 @@
+﻿@model Bzway.Wechat.MessageServer.WechatContext
+    @{
+        if (this.Model == null || this.Model.officeId == null)
+        {
+            <a>true</a>
+        }
+        else
+        {
+            <a>false</a>
+        }
+    }

@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RootNamespace>Bzway.Tools.Grok.Core</RootNamespace>
+    <AssemblyName>Bzway.Tools.Grok.Core</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>

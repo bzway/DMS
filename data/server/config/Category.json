@@ -1,0 +1,40 @@
+[
+  {
+    "Id": 1,
+    "Name": "≤‚ ‘",
+    "categoryId": null,
+
+    "image": "https://www.bing.com/sa/simg/CN_Logo_Gray.png",
+    "url": null
+  },
+  {
+    "Id": 2,
+    "Name": "ebook",
+    "categoryId": null,
+
+    "image": "https://www.bing.com/sa/simg/CN_Logo_Gray.png",
+    "url": null
+  },
+  {
+    "Id": 3,
+    "Name": "ebook",
+    "categoryId": null,
+
+    "image": "https://www.bing.com/sa/simg/CN_Logo_Gray.png",
+    "url": null
+  },
+  {
+    "categoryId": null,
+    "name": "Default",
+    "image": "https://www.bing.com/sa/simg/CN_Logo_Gray.png",
+    "url": null,
+    "description": "test",
+    "remark": null,
+    "productTags": null,
+    "createdBy": null,
+    "createdOn": "0001-01-01T00:00:00",
+    "id": "1",
+    "updatedBy": null,
+    "updatedOn": "0001-01-01T00:00:00"
+  }
+]

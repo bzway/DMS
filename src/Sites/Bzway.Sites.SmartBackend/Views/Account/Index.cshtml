@@ -1,0 +1,41 @@
+﻿<div data-role="header" data-position="fixed" data-id="fixedHeader">
+    <h1>我的</h1>
+</div>
+<div data-role="content">
+    <div data-role="navbar">
+        <ul>
+            <li><a href="#" data-icon="alert" data-iconpos="top">待付款</a></li>
+            <li><a href="#" data-icon="alert" data-iconpos="top">待配送</a></li>
+            <li><a href="#" data-icon="alert" data-iconpos="top">待评价</a></li>
+            <li><a href="#" data-icon="alert" data-iconpos="top">已完成</a></li>
+        </ul>
+    </div>
+    <ul data-role="listview" data-inset="true">
+        <li data-role="list-divider"></li>
+        <li><a href="/account/basicInfo">基本信息</a></li>
+        <li><a href="/account/password">密码</a></li>
+        <li><a href="/account/address">收货地址</a></li>
+        <li data-role="list-divider"></li>
+        <li><a href="/account/point">积分</a></li>
+        <li><a href="/account/rate">评价</a></li>
+        <li><a href="/account/cash">钱包</a></li>
+        <li><a href="/account/voucher">卡包</a></li>
+    </ul>
+</div>
+<script>
+    function scanner() {
+        alert("start to scan");
+        QRScanner.prepare(done);
+    }
+    var done = function (err, status) {
+        if (err) {
+            console.error(err._message);
+        } else {
+            console.log('QRScanner is initialized. Status:');
+            console.log(status);
+        }
+    };
+
+
+
+</script>

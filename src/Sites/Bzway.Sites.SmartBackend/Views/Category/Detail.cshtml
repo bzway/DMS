@@ -1,0 +1,16 @@
+﻿@model Product
+<div data-role="header" data-position="fixed" data-id="fixedHeader">
+    <a href="javascript:window.history.go( -1 );" data-icon="arrow-l" data-role="button" data-id="fixedButton">返回</a>
+    <h1>产品详情</h1>
+</div>
+<div data-role="content">
+    <ul data-role="listview" data-inset="true">
+        <li>
+            <a href="@this.Model.Url">
+                <img src="@this.Model.Image">
+                <h2>@this.Model.Name</h2>
+                <p>@this.Model.Description</p>
+            </a>
+        </li>
+    </ul>
+</div>

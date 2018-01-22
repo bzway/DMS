@@ -1,0 +1,22 @@
+﻿
+<div data-role="content">
+    <div id="container" style="width:100%; height:500px; overflow:hidden;"></div>
+    <button data-role="back">back</button>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=653ff46fd12ef30fe0d53b2b867e90b2"></script>
+    <script src="~/js/map.js"></script>
+
+
+    <script>
+
+        jQuery(".page").on("pagebeforeshow", function (event) {
+            showMap("container");
+        });
+        jQuery(".page").on("pageaftershow", function (event) {
+            console.log($.mobile.activePage);
+
+        });
+    </script>
+} 

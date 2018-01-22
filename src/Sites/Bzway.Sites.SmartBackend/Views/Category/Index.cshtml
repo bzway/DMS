@@ -1,0 +1,28 @@
+﻿@model IList<Category>
+<div data-role="header" data-position="fixed" data-id="fixedHeader">
+    <h1>请选择类别</h1>
+</div>
+<div data-role="content">
+    <div data-role="navbar">
+        <ul>
+            @foreach (var item in this.Model)
+            {
+                <li>
+                    <a href="/product/index?categroy=@item.Id">
+                        <img src="@item.Image" style="width:80px; height:50px;" />
+                        <h2>@item.Name</h2>
+                        <p>@item.Description</p>
+                    </a>
+                </li>
+            }
+            @*<li><a href="#">&nbsp;</a></li>*@
+        </ul>
+    </div>
+    <p></p>
+    <div class="banner">
+        <div><img src="~/img/banner/banner1.svg" style="width:100%; " /></div>
+        <div><img src="~/img/banner/banner2.svg" style="width:100%; " /> </div>
+        <div><img src="~/img/banner/banner3.svg" style="width:100%; " /> </div>
+        <div><img src="~/img/banner/banner4.svg" style="width:100%; " /> </div>
+    </div>
+</div>

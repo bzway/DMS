@@ -1,0 +1,90 @@
+﻿@using System.Net.Http;
+@using System.Text;
+@{
+    var url = "http://hq.sinajs.cn/?list=sz002024,sz300058,sz300466" + this.Context.Request.Query["list"];
+    var result = string.Empty;
+    using (HttpClient client = new HttpClient())
+    {
+        using (var content = new StringContent("", Encoding.ASCII))
+        {
+            var buffer = client.PostAsync(url, content).Result.Content.ReadAsByteArrayAsync().Result;
+            result = Encoding.ASCII.GetString(buffer);
+        }
+    }
+    List<SecondPrice> list = new List<SecondPrice>();
+
+    foreach (var line in result.Split('\r', '\n'))
+    {
+        if (line.Length < 100)
+        {
+            continue;
+        }
+        list.Add(SecondPrice.NewStockPrice(line));
+    }
+
+}
+
+<table class="table table-bordered table-striped table-hover table-condensed">
+    <thead>
+        <tr>
+            <th class="text-center">Id</th>
+            <th class="text-center">Code</th>
+            <th class="text-center">price</th>
+            <th class="text-center">%</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            List<double> p = new List<double>();
+            p.Add(11.28);
+            p.Add(10.30);
+            p.Add(33.00);
+
+            var i = 0;
+            foreach (var item in list)
+            {
+
+                <tr>
+                    <td>@i</td>
+                    <td>@item.Code </td>
+                    <td>@item.Current  </td>
+                    <td>@(double.Parse(item.Current) / p[i])</td>
+                </tr>
+                i++;
+            }
+        }
+    </tbody>
+</table>
+@section scripts{
+    @*<script>
+            $.widget.bridge('uibutton', $.ui.button);
+        </script>*@
+    <!-- Morris.js charts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="~/js/morris/morris.min.js"></script>
+    <!-- Sparkline -->
+    <script src="~/js/sparkline/jquery.sparkline.min.js"></script>
+    <!-- jvectormap -->
+    <script src="~/js/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="~/js/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="~/js/knob/jquery.knob.js"></script>
+    <!-- daterangepicker -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+    <script src="~/js/daterangepicker/daterangepicker.js"></script>
+    <!-- datepicker -->
+    <script src="~/js/datepicker/bootstrap-datepicker.js"></script>
+    <!-- Bootstrap WYSIHTML5 -->
+    <script src="~/js/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+    <!-- Slimscroll -->
+    <script src="~/js/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="~/js/fastclick/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/js/app.min.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="~/js/pages/dashboard.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/js/demo.js"></script>
+
+}

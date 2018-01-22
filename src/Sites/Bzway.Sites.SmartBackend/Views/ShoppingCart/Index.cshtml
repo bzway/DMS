@@ -1,0 +1,104 @@
+﻿@model IList<ShoppingCartViewModel>
+<div data-role="header" data-position="fixed" data-id="fixedHeader">
+    <a data-rel="back" data-icon="arrow-l" data-role="button" data-id="fixedButton">返回</a>
+    <h1>我的购物袋</h1>
+
+</div>
+
+<div data-role="content">
+
+    <ul data-role="listview">
+        <li data-role="list-divider"><h1>送货地址</h1></li>
+        <li data-icon="location">
+            <a onclick='showMap("map", "container", "#result")' class="result">正在定位中...</a>
+            <fieldset>
+                <select name="select-h-6a" id="select-h-6a">
+                    <option value="#">选择常用的地址</option>
+                    <option value="#">公司住址</option>
+                    <option value="#">家庭住址</option>
+                </select>
+            </fieldset>
+
+
+
+        </li>
+        <li>
+            <table style="text-align:center;">
+                <thead>
+                    <tr>
+                        <td style="width:5%;min-width:32px;"> </td>
+                        <td style="width:5%"> </td>
+                        <td style="width:90%"> </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in this.Model)
+                    {
+                        <tr data-role="list-divider">
+                            <td>
+                                <input type="checkbox" checked="checked" id="checkbox-@item.ProductId" name="checkbox-@item.ProductId">
+                            </td>
+                            <td><img style="width:100%; height:100%; min-width:100px;" src="@item.ProductImage" /></td>
+                            <td style="text-align:left;">
+                                <a href="/product/detail/@item.ProductId" title="@item.Remark">
+                                    <h2>
+                                        @item.ProductName
+                                    </h2>
+                                </a>
+                                <p>价格：@item.ProductPrice.ToString("##.00")</p>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div style="float:left; line-height:42px;">小计：@((item.Number * item.ProductPrice).ToString("##.00"))</div>
+                                <div data-role="controlgroup" data-type="horizontal" data-mini="true" style="float:right;">
+                                    <a data-icon="minus" data-iconpos="notext" data-role="button" onclick="removeCart('@item.ProductId','aaaaaaaa', 1);">aaa</a>
+                                    <button id="@("productItem" + item.ProductId)" style="width:20px;">@item.Number</button>
+                                    <a data-icon="plus" data-iconpos="notext" data-role="button" onclick="addCart('@item.ProductId','aaaaaaaa', 1);">bbb</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">
+                            <div data-role="controlgroup" data-type="horizontal" style="float:right;">
+                                <label>
+                                    <input type="checkbox" checked="checked">全选
+                                </label>
+                                <button>总计：3000.44</button>  <a data-role="button" onclick="test();" class="ui-btn-inline">创建订单</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </li>
+
+
+    </ul>
+
+
+
+</div>
+
+
+@section scripts{
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=653ff46fd12ef30fe0d53b2b867e90b2"></script>
+}
+
+@section footer{
+
+    <div data-role="page" id="map">
+        <div data-role="header" data-position="fixed">
+            <h1>请选择地址</h1>
+        </div>
+        <div data-role="content" id="container" style=" height:350px; overflow:hidden;"></div>
+        <div data-role="footer">
+            <label id="result">请选择地址</label>
+            <a data-role="button" onclick="confirmAddress();" data-rel="back">确认地址</a>
+            <a data-role="button" data-rel="back">取消</a>
+        </div>
+    </div>
+}

@@ -1,0 +1,48 @@
+﻿@model LoginModel
+
+<div data-role="header" data - position="fixed" data-id="fixedHeader">
+    <h1>请先登录系统</h1>
+</div>
+<div data-role="content">
+    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, true, new { id = "subForm" }))
+    {
+        @Html.Raw(Html.ValidationSummary(true, "", new { data_role = "" }));
+        @Html.ValidationSummary()
+        <label for="username">用户名:</label>
+        <input type="text" name="username" id="username" data-clear-btn="true" placeholder="请输入手机号或电子邮箱">
+        @Html.ValidationMessageFor(m => m.UserName)
+        <label for="password">密码：</label>
+        <input type="password" name="password" id="password" data-clear-btn="true" autocomplete="off">
+        @Html.ValidationMessageFor(m => m.Password)
+
+        <button type="submit" class="ui-btn ui-corner-all">登录<span class="ui-icon ui-icon-left"></span></button>
+        <a href="Index">忘记密码</a>
+    }
+    <ul data-role="listview">
+        <li>
+            <button onclick="Installed();" data-role="button">
+                Installed();
+            </button>
+        </li>
+        <li><button onclick="Share();" data-role="button">Share();</button></li>
+        <li><button onclick="Login();" data-role="button">Login();</button></li>
+    </ul>
+</div>
+
+
+@*<script>
+        function aaaa(mess) {
+            $.mobile.changePage("http://www.baidu.com");
+        }
+        var done = function (err, status) {
+            if (err) {
+                console.error(err._message);
+            } else {
+                console.log('QRScanner is initialized. Status:');
+                console.log(status);
+            }
+        };
+
+        QRScanner.prepare(done);
+
+    </script>*@

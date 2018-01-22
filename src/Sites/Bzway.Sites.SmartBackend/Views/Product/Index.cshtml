@@ -1,0 +1,56 @@
+﻿@model IList<Product>
+
+<div data-role="header" data-position="fixed" data-id="fixedHeader">
+    <a href="javascript:window.history.go( -1 );" data-icon="arrow-l" data-role="button" data-id="fixedButton">返回</a>
+    <h1>商品列表</h1>
+    <a href="/shoppingcart" data-ajax="false" data-icon="shop">
+        购物袋  &nbsp; &nbsp;&nbsp;
+        <span id="totalItem" class="ui-li-count" style="background: red;color: #fff;font-size: 10px;margin-top: -12px;display: inline-block;opacity: 0.55;min-width: 12px;padding: 5px 3px 0px 3px;text-align: center;white-space: nowrap;vertical-align: middle;border-radius: 10px;height: 10px;line-height: 10px;">1</span>
+    </a>
+</div>
+<div data-role="content">
+    <ul data-role="listview">
+        <li data-role="list-divider"><h1>送货地址</h1></li>
+        <li>
+            <table style="text-align:center;">
+                <thead>
+                    <tr>
+                        <td style="width:5%;min-width:32px;"> </td>
+                        <td style="width:5%"> </td>
+                        <td style="width:90%"> </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in this.Model)
+                    {
+                        <tr data-role="list-divider">
+                            <td><img style="width:100%; height:100%; min-width:100px;" src="@item.Image" /></td>
+                            <td style="text-align:left;">
+                                <a href="/product/detail/@item.Id" title="@item.Remark">
+                                    <h2>
+                                        @item.Name
+                                    </h2>
+                                </a>
+                                <p>价格：@item.Price.ToString("##.00")</p>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div data-role="controlgroup" data-type="horizontal" data-mini="true" style="float:right;">
+                                    <a data-icon="minus" data-iconpos="notext" data-role="button" onclick="removeCart('@item.Id',1);">-</a>
+                                    <button id="@("productItem" + item.Id)" class="product-number" style="width:20px;" data-product="@item.Id">0</button>
+                                    <a data-icon="plus" data-iconpos="notext" data-role="button" onclick="addCart('@item.Id',1);">+</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </li>
+    </ul>
+</div>
+
+@section scripts{
+    <script src="~/js/shopping.js"></script>
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "Name": "Default",
+    "Domains": "localhost:1289",
+    "ProviderName": "Default",
+    "ConnectionString": "Database",
+    "DatabaseName": "Test"
+
+  }
+]

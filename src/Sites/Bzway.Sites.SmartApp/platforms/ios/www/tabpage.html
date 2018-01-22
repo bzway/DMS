@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Page</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
+    <style>
+    </style>
+</head>
+<body>
+    <div class="page" data-role="page" data-theme="a">
+        <div data-role="header" data-position="fixed">
+            <h1>订餐</h1>
+        </div>
+        <div data-role="content" class="pages">
+
+            <div id="Discover" style="display:none;">
+                <h1>First tab contents</h1>
+            </div>
+            <div id="Home" style="display:none;">
+                <ul data-role="listview">
+                    <li><a href="#">Acura</a></li>
+                    <li><a href="#">Audi</a></li>
+                    <li><a href="#">BMW</a></li>
+                    <li><a href="#">Cadillac</a></li>
+                    <li><a href="#">Ferrari</a></li>
+                </ul>
+            </div>
+            <div id="Account" style="display:none;">
+                <ul data-role="listview">
+                    <li><a href="#">Account</a></li>
+                    <li><a href="#">Account</a></li>
+                    <li><a href="#">Account</a></li>
+                    <li><a href="#">Account</a></li>
+                    <li><a href="#">Account</a></li>
+                </ul>
+            </div>
+
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#Home" onclick="fff(this);" data-icon="home">订餐</a></li>
+                    <li><a href="#Discover" onclick="fff(this);" data-icon="grid">发现</a></li>
+                    <li><a href="#Account" onclick="fff(this);" data-icon="gear">我的</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/jquery.mobile-1.4.5.min.js"></script>
+    <script>
+        function fff(sender) {
+
+            $(".pages").find("div").hide();
+            $(".pages").find($(sender).attr("href")).show();
+        }</script>
+</body>
+</html>

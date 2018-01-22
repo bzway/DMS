@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Bzway.Common.Script\Bzway.Common.Script.csproj" />
+    <ProjectReference Include="..\..\Common\Bzway.Common.Share\Bzway.Common.Share.csproj" />
+    <ProjectReference Include="..\..\Common\Bzway.Common.Utility\Bzway.Common.Utility.csproj" />
+    <ProjectReference Include="..\..\Data\Bzway.Data.Core\Bzway.Data.Core.csproj" />
+    <ProjectReference Include="..\..\Framework\Bzway.Framework.Application\Bzway.Framework.Application.csproj" />
+    <ProjectReference Include="..\..\Framework\Bzway.Framework.Content\Bzway.Framework.Content.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="1.1.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
+  </ItemGroup>
+ 
+</Project>

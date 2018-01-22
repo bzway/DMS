@@ -1,0 +1,105 @@
+﻿@model IEnumerable<OpenData.Business.Model.Site>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Caption)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LogoUrl)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FaviconUrl)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Domains)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeZone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsShowLogo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsShowMenu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsShowSideBar)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProviderName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DatabaseName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ConnectionString)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Caption)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LogoUrl)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FaviconUrl)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Domains)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TimeZone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsShowLogo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsShowMenu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsShowSideBar)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProviderName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DatabaseName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ConnectionString)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

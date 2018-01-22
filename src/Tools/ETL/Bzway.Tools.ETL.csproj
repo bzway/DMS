@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RootNamespace>Bzway.Tools.ETL</RootNamespace>
+    <AssemblyName>Bzway.Tools.ETL</AssemblyName>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Template.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Bzway.Common.Script\Bzway.Common.Script.csproj" />
+    <ProjectReference Include="..\..\Common\Bzway.Common.Share\Bzway.Common.Share.csproj" />
+    <ProjectReference Include="..\..\Common\Bzway.Common.Utility\Bzway.Common.Utility.csproj" />
+    <ProjectReference Include="..\..\Database\Bzway.Database.Core\Bzway.Database.Core.csproj" />
+    <ProjectReference Include="..\Grok.Core\Bzway.Tools.Grok.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.50.4" />
+    <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.4.2" />
+  </ItemGroup>
+</Project>

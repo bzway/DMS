@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width,height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="css/slick.css" />
+    <link rel="stylesheet" href="css/slick-theme.css" />
+    <link rel="stylesheet" href="css/index.css" />
+</head>
+<body>
+    <div id="Home" class="page" data-role="page">
+        <div data-role="header" data-position="fixed" data-id="fixedHeader">
+            <h1>订餐</h1>
+        </div>
+        <div data-role="content">
+            <ul data-role="listview" data-inset="true">
+                <li><a href='http://192.168.1.102:11568/account/login'>打开外部链接</a></li> 
+            </ul>
+            <div class="banner">
+                <div><img src="img/banner.png" />banner</div>
+                <div><img src="img/logo.png" />logo</div>
+            </div>
+        </div>
+        <div data-role="footer" data-position="fixed" data-id="fixedNavbar">
+            <div data-role="navbar" data-id="fixedNavbar1">
+                <ul>
+                    <li><a href="#Home" class="ui-state-persist ui-btn-active" data-icon="home">订餐</a></li>
+                    <li><a href="#Discover" data-icon="grid">发现</a></li>
+                    <li><a href="#Account" data-icon="gear">我的</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="Discover" class="page" data-role="page">
+        <div data-role="header" data-position="fixed" data-id="fixedHeader">
+            <a href="#Home" data-icon="arrow-l" data-role="button" data-id="fixedButton">返回</a>
+            <h1>发现</h1>
+        </div>
+        <div data-role="content">
+            <ul data-role="listview" data-inset="true">
+                <li><a href="#" data-icon="camera">扫一扫</a></li>
+                <li><a href="#" data-icon="navigation">提货站</a></li>
+                <li><a href="#" data-icon="calendar">新鲜事</a></li>
+            </ul>
+        </div>
+        <div data-role="footer" data-position="fixed" data-id="fixedNavbar">
+            <div data-role="navbar" data-id="fixedNavbar1">
+                <ul>
+                    <li><a href="#Home" data-icon="home">订餐</a></li>
+                    <li><a href="#Discover" class="ui-state-persist ui-btn-active" data-icon="grid">发现</a></li>
+                    <li><a href="#Account" data-icon="gear">我的</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="Account" class="page" data-role="page">
+        <div data-role="header" data-position="fixed" data-id="fixedHeader">
+            <a href="#Home" data-icon="arrow-l" data-role="button" data-id="fixedButton">返回</a>
+            <h1>我的</h1>
+        </div>
+        <div data-role="content">
+            <p></p>
+            <ul data-role="listview" data-inset="true">
+                <li data-role="list-divider">基本信息</li>
+                <li><a href="#">名字</a></li>
+                <li><a href="#">密码</a></li>
+                <li><a href="#">地址</a></li>
+            </ul>
+
+            <p></p>
+            <ul data-role="listview" data-inset="true">
+                <li data-role="list-divider">账号信息</li>
+                <li><a href="#">积分</a></li>
+                <li><a href="#">钱包</a></li>
+                <li><a href="#">卡包</a></li>
+            </ul>
+        </div>
+        <div data-role="footer" data-position="fixed" data-id="fixedNavbar">
+            <div data-role="navbar" data-id="fixedNavbar1">
+                <ul>
+                    <li><a href="#Home" data-icon="home">订餐</a></li>
+                    <li><a href="#Discover" data-icon="grid">发现</a></li>
+                    <li><a href="#Account" class="ui-state-persist ui-btn-active" data-icon="gear">我的</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/jquery.mobile-1.4.5.min.js"></script>
+    <script src="js/slick.min.js"></script>
+    <script src="cordova.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

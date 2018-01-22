@@ -1,0 +1,46 @@
+﻿[
+  {
+    "Name": "Default",
+    "Domains": "localhost:1289",
+    "ProviderName": "Default",
+    "ConnectionString": "Database",
+    "DatabaseName": "Test"
+
+  },
+  {
+    "Name": "Default",
+    "Domains": "localhost:1294",
+    "ProviderName": "Default",
+    "ConnectionString": "Database",
+    "DatabaseName": "Test"
+
+  },
+  {
+    "Name": "ebook",
+    "Domains": "localhost:22031",
+    "ProviderName": "Default",
+    "ConnectionString": "Database",
+    "DatabaseName": "Test"
+  },
+  {
+    "Name": "SmartStore",
+    "Domains": "localhost:11568",
+    "ProviderName": "File",
+    "ConnectionString": "SmartStore",
+    "DatabaseName": "SmartStore" 
+  },
+  {
+    "Name": "SmartStore",
+    "Domains": "192.168.1.102:11568",
+    "ProviderName": "File",
+    "ConnectionString": "SmartStore",
+    "DatabaseName": "SmartStore" 
+  },
+  {
+    "Name": "SmartStore",
+    "Domains": "192.168.1.102:11568",
+    "ProviderName": "Mongo",
+    "ConnectionString": "mongodb://localhost:27017",
+    "DatabaseName": "SmartStore"
+  }
+]

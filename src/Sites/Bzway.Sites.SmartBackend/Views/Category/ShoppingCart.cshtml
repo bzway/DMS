@@ -1,0 +1,21 @@
+﻿@model IList<ShoppingCartViewModel>
+
+<div data-role="header" data - position="fixed" data-id="fixedHeader">
+    <a href="javascript:window.history.go(- window.history.length +1 );" data-icon="arrow-l" data-role="button" data-id="fixedButton">返回</a>
+    <h1>请先登录系统</h1>
+</div>
+<div data-role="content">
+    <ul data-role="listview" data-inset="true">
+        @foreach (var item in this.Model)
+        {
+            <li>
+                <input type="checkbox" name="@item.ProductId" id="@item.ProductId">
+                <a href="@item.Url">
+                    <img src="@item.Image">
+                    <h2>@item.ProductName</h2>
+                    <p>@item.Description</p>
+                </a>
+            </li>
+        }
+    </ul>   
+</div>

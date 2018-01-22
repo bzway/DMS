@@ -1,0 +1,25 @@
+rem pack 
+dotnet pack D:\Work\OpenData.Core\Common\Bzway.Common.Script\project.json 
+dotnet pack D:\Work\OpenData.Core\Common\Bzway.Common.Share\project.json 
+dotnet pack D:\Work\OpenData.Core\Common\Bzway.Common.Utility\project.json 
+dotnet pack D:\Work\OpenData.Core\Data\Bzway.Data.Core\project.json 
+dotnet pack D:\Work\OpenData.Core\Data\Bzway.Data.File\project.json 
+dotnet pack D:\Work\OpenData.Core\Data\Bzway.Data.Mongo\project.json 
+dotnet pack D:\Work\OpenData.Core\Data\Bzway.Data.Sql\project.json 
+dotnet pack D:\Work\OpenData.Core\Framework\Bzway.Framework.Application\project.json 
+dotnet pack D:\Work\OpenData.Core\Framework\Bzway.Framework.Connect\project.json 
+dotnet pack D:\Work\OpenData.Core\Framework\Bzway.Framework.Connect.Authentication\project.json 
+dotnet pack D:\Work\OpenData.Core\Framework\Bzway.Framework.Connect.Cookies\project.json 
+dotnet pack D:\Work\OpenData.Core\Framework\Bzway.Framework.Connect.Wechat\project.json 
+dotnet pack D:\Work\OpenData.Core\Framework\Bzway.Framework.Content\project.json 
+dotnet pack D:\Work\OpenData.Core\Modules\Bzway.Module.Core\project.json 
+dotnet pack D:\Work\OpenData.Core\Modules\Bzway.Module.MemberClub\project.json 
+dotnet pack D:\Work\OpenData.Core\Modules\Bzway.Module.Publisher\project.json 
+dotnet pack D:\Work\OpenData.Core\Modules\Bzway.Module.UserSite\project.json 
+dotnet pack D:\Work\OpenData.Core\Modules\Bzway.Module.Wechat\project.json 
+dotnet pack D:\Work\OpenData.Core\Server\Bzway.Wechat.MessageServer\project.json 
+dotnet pack D:\Work\OpenData.Core\Sites\Bzway.Site.BackOffice\project.json 
+dotnet pack D:\Work\OpenData.Core\Sites\Bzway.Site.FrontPage\project.json 
+dotnet pack D:\Work\OpenData.Core\Sites\Bzway.Sites.OpenApi\project.json 
+dotnet pack D:\Work\OpenData.Core\Tests\AppTest\project.json 
+dotnet pack D:\Work\OpenData.Core\Tests\Data.Test\project.json 

@@ -1,0 +1,30 @@
+﻿[
+  {
+    "name": "一本属于架构师自己的电子书，4月刊免费下载",
+    "image": "http://mmbiz.qpic.cn/mmbiz_jpg/LaW7jDBKBg3XtZu7A3Yq7tYLdoxhBxslXkicEekAyueiaJEG39xgYprr0ApmKZlkOOO15ibvyA1qwxrzfKojHWISA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1",
+    "url": "https://mp.weixin.qq.com/s?__biz=MzA5Nzc4OTA1Mw==&mid=2659599140&idx=1&sn=59323048503116d431ec4ed6bafd05b0&chksm=8be99636bc9e1f2049d7ed61e422161a6199e3cab30edbe2203b5fc700b1895d15aeb6086243&mpshare=1&scene=1&srcid=0413706K81DHVtloxQ64URkA&pass_ticket=AmzPbnXvJc9ZjwknhUc3%2B0cvugSPTl%2F2wukbyinl7G14p4Iztm3rjNZ0OxbnAMBF#rd,",
+    "description": "《架构师》是由InfoQ中文站制作发布的刊物，为高级技术开发和管理人员提供关于技术创新方面的深度文章与最新观点，范围包括但不限于语言开发、架构设计、团队管理、流程管理、基础架构、企业架构等方面。每月8日发布的《架构师》月刊是电子刊物，可从InfoQ中文站上下载获取。",
+    "CategoryId": 1,
+    "remark": null,
+    "createdBy": null,
+    "createdOn": "0001-01-01T00:00:00",
+    "id": "1",
+    "updatedBy": null,
+    "updatedOn": "0001-01-01T00:00:00"
+  },
+  
+  {
+    "Categroy": "test",
+    "Name": "测试",
+    "Image": null,
+    "Url": null,
+    "Description": null,
+    "Remark": null,
+    "ProductTags": null,
+    "CreatedBy": "None",
+    "CreatedOn": "2017-04-13T15:42:38.9525547Z",
+    "Id": "7a61bab9669c400b928a293debf1c61a",
+    "UpdatedBy": "None",
+    "UpdatedOn": "2017-04-13T15:42:38.9525547Z"
+  }
+]

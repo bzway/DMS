@@ -1,0 +1,21 @@
+{
+  "input": {
+    "type": "log", //file|sqlserver|log
+    "path": "C:/inetpub/logs/LogFiles/W3SVC1/u_ex170830.log",
+    "connectionString": "Server=.;user ID=sa;password=abc123$;persist security info=True;initial catalog=CRM;Trusted_Connection=True;MultipleActiveResultSets=true",
+    "sql": "select * from temp",
+    "maxRecord": 100
+  },
+  "transfer": {
+    "type": "grok", //map|grok
+    "map": "row => row",
+    "grok": "%{TIMESTAMP_ISO8601:log_timestamp} %{IPORHOST:site} %{WORD:method} %{URIPATH:page} %{NOTSPACE:querystring} %{NUMBER:port} %{NOTSPACE:username} %{IPORHOST:clienthost} %{NOTSPACE:useragent} %{NUMBER:response} %{NUMBER:subresponse} %{NUMBER:scstatus} %{NUMBER:time_taken}"
+    //"%{DATA:http_host} %{DATA:server_addr} %{IP:client_Ip} %{Word:test}"
+  },
+  "output": {
+    "type": "mongodb",
+    "connection": "mongodb://127.0.0.1:27017", //mongodb://[username:password@]hostname[:port][/[database][?options]]
+    "database": "nginx",
+    "table": "access"
+  }
+}

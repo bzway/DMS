@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TargetFrameworks>net461;netstandard1.6</TargetFrameworks>
+    <DefineConstants>$(DefineConstants);NETCORE</DefineConstants>
+    <AssemblyName>Bzway.Framework.WebTest</AssemblyName>
+    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6' ">$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <ProjectGuid>{341BBE6A-158F-4CF3-AB29-AD5E945F7EB0}</ProjectGuid>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="**\*.cs" />
+    <EmbeddedResource Include="**\*.resx" />
+    <EmbeddedResource Include="compiler\resources\**\*" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Bzway.Common.Script\Bzway.Common.Script.csproj">
+      <Project>{c4f05e7d-46f0-4b8f-a457-9d5bd98fb626}</Project>
+      <Name>Bzway.Common.Script</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Bzway.Common.Share\Bzway.Common.Share.csproj">
+      <Project>{1f754992-13cb-40f8-89c1-f4f7b9d38166}</Project>
+      <Name>Bzway.Common.Share</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Bzway.Common.Utility\Bzway.Common.Utility.csproj">
+      <Project>{d3a10611-3e72-4fa9-abd6-aa753346a807}</Project>
+      <Name>Bzway.Common.Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\Bzway.Data.Core\Bzway.Data.Core.csproj">
+      <Project>{3531115b-1d09-44a5-b313-95617ce09279}</Project>
+      <Name>Bzway.Data.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bzway.Framework.Application\Bzway.Framework.Application.csproj">
+      <Project>{1b9518af-ac05-4582-b736-7e9ae2ce7d97}</Project>
+      <Name>Bzway.Framework.Application</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
+    <OutputPath>bin\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

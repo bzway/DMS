@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Bootstrap表单构造器</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="基于Bootstrap的web表单构造器，通过拖拽组件的方式生成完整可用的表单">
+    <meta name="keywords" content="Bootstrap,Form,表单,拖拽">
+    <meta name="author" content="Bootstrap中文网">
+    <script src="Scripts/ckeditor/ckeditor.js"></script>
+</head>
+<body>
+
+    <form>
+        <div id="editor1" contenteditable="true">
+
+        </div>
+        <script>
+            // Replace the <textarea id="editor1"> with a CKEditor
+            // instance, using default configuration.
+            var editor = CKEDITOR.inline('editor1', {
+                toolbar: [
+                    ['Bold', 'Italic', 'Underline', 'Strike'],
+                    ['Cut', 'Copy', 'Paste'],
+                    ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote'],
+                    ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock','Abbr']
+                ],
+                extraPlugins: 'abbr',
+            });
+
+
+
+
+        </script>
+    </form>
+
+@section Scripts{
+    <script src="../Scripts/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var editor = CKEDITOR.replace('editor1', {
+                toolbar: [
+                    ['Bold', 'Italic', 'Underline', 'Strike'],
+                    ['Cut', 'Copy', 'Paste'],
+                    ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Blockquote'],
+                    ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', 'wechatnews']
+                ],
+                language: "zh-cn"
+                , extraPlugins: 'wechatnews',
+            });
+        });
+    </script>
+
+}
+<textarea rows="30" cols="50" name="editor1" id="editor01"></textarea>
+
+
+
+</body>
+</html>

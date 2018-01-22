@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="~/css/jquery.mobile-1.4.5.min.css" />
+    @*<link rel="stylesheet" href="~/css/green.min.css" />*@
+    <link rel="stylesheet" href="~/css/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="~/css/slick.css" />
+    <link rel="stylesheet" href="~/css/slick-theme.css" />
+
+
+</head>
+<body>
+    @RenderSection("header", required: false)
+    <div data-role="page" class="page">
+        @RenderBody()
+        <div data-role="footer" data-position="fixed" data-id="footerNavbar" style="border-style:none;">
+            <div data-role="navbar" style="border-style: none;">
+                <ul id="fixedNavbar">
+                    <li><a href="/category" style="border-style:none; color: #000000;" data-icon="home" class="@(ViewBag.Tab=="product"?"ui-btn-active ui-state-persist":"")">订餐</a></li>
+                    <li><a href="/article" style="border-style:none; color: #000000;" data-icon="grid" class="@(ViewBag.Tab=="article"?"ui-btn-active ui-state-persist":"")">发现</a></li>
+                    <li><a href="/account" style="border-style:none; color: #000000;" data-icon="gear" class="@(ViewBag.Tab=="account"?"ui-btn-active ui-state-persist":"")">我的</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @RenderSection("footer", required: false)
+    <script src="~/js/jquery-1.11.1.min.js"></script>
+    <script src="~/js/jquery.mobile-1.4.5.min.js"></script>
+    <script src="~/js/slick.min.js"></script>
+    <script src="~/cordova.js"></script>
+    <script src="~/js/app.js"></script>
+    <script src="~/js/shopping.js"></script>
+    <script src="~/js/map.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
