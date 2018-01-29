@@ -35,13 +35,6 @@ namespace Bzway.Sites.FrontPage
             //Add framework services.
             services.AddMultiTenant();
             services.AddMvc();
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                    .AddCookie(o => o.LoginPath = new PathString("/login"));
-            // Add application services.
-            services.AddTransient<IWechatApiService, WechatApiService>();
-            services.AddTransient<ISiteService, SiteService>();
-            services.AddTransient<IWechatService, WechatService>();
-            services.AddSingleton<ICacheManager, DefaultCache>();
             return services.Build();
         }
 
@@ -67,7 +60,7 @@ namespace Bzway.Sites.FrontPage
                 routes.MapRoute(
                     name: "Developement",
                     template: "dev/{*PageUrl}",
-                    defaults: new { controller = "Developement", action = "Index", PageUrl = "" }
+                    defaults: new { controller = "Development", action = "Index", PageUrl = "" }
                 );
                 //Front Page Uat
                 routes.MapRoute(

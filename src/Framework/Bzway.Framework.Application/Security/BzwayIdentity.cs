@@ -27,7 +27,7 @@ namespace Bzway.Framework.Application
         [JsonIgnore]
         public bool IsAuthenticated
         {
-            get { return !string.IsNullOrEmpty(this.ID); }
+            get { return !string.IsNullOrEmpty(this.Id); }
         }
     }
     public enum LockType

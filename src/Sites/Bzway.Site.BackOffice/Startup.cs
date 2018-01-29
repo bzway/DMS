@@ -41,10 +41,6 @@ namespace Bzway.Sites.BackOffice
             //Add framework services.
             services.AddMultiTenant();
             services.AddMvc();
-            // Add application services.
-            services.AddTransient<IWechatApiService, WechatApiService>();
-            services.AddTransient<ISiteService, SiteService>();
-            services.AddTransient<IWechatService, WechatService>();
             return services.Build();
         }
 

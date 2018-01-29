@@ -183,9 +183,9 @@ namespace Bzway.Sites.FrontPage.Controllers
 
 
     }
-    public class DevelopementController : HomeController
+    public class DevelopmentController : HomeController
     {
-        public DevelopementController(
+        public DevelopmentController(
             IStaticFileService staticFileService,
             IWebContentService webContentService,
             ILoggerFactory loggerFactory,

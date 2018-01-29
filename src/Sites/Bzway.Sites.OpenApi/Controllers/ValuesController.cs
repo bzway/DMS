@@ -27,7 +27,7 @@ namespace Bzway.Sites.OpenApi.Controllers
         {
             var tenant = (ITenant)this.HttpContext.RequestServices.GetService(typeof(ITenant));
 
-            return tenant.GetContext().Request.Path;
+            return tenant.Context.Request.Path;
         }
 
         // POST api/values
