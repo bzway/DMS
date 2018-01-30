@@ -1,0 +1,35 @@
+﻿@model LoginRequestModel
+@section Scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}
+
+@{
+    this.ViewBag.Title = "Log in";
+}
+
+
+@using (Html.BeginForm("Login", "Connect", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, true, new { id = "subForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="login-box">
+        <div class="login-ul">
+            <ul>
+                <li>
+                    @Html.ValidationMessageFor(m => m.AppId)
+                    @Html.ValidationMessage("LoginModelRequired")
+                </li>
+                <li>
+                    @Html.TextBoxFor(m => m.AppId)
+                </li>
+                <li>
+                    @Html.TextBoxFor(m => m.Random)
+                </li>
+                <li>
+                    @Html.PasswordFor(m => m.Signature)
+                </li>
+            </ul>
+        </div>
+    </div>
+}

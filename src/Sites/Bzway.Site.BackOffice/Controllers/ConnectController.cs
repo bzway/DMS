@@ -31,20 +31,20 @@ namespace Bzway.Sites.BackOffice.Controllers
                 return Result<AuthorizationResponseModel>.Fail(ResultCode.Error);
 
             }
-            var provider = this.loginProvider.Get(model.GrantType);
+            var provider = this.loginProvider.TryResolveService(model.GrantType);
             if (provider == null)
             {
                 return Result<AuthorizationResponseModel>.Fail(ResultCode.Error);
             }
-            var result = provider.Login(model.AppId, model.Signature);
+            var result = provider.Login(model.AppId, model.Signature,model.Random);
 
-            if (result.Code == (int)ResultCode.OK)
+            if (result.Code == ResultCode.OK)
             {
                 var token = this.HttpContext.Principal().SaveToken(new UserIdentity()
                 {
                     Id = result.Data.Id,
                     Language = result.Data.Language,
-                    Locked = result.Data.IsLocked ? LockType.MobilePhone : LockType.None,
+                     
                     Name = result.Data.Name,
                     Roles = string.Join(',', result.Data.Roles),
                     //Version = result.Data.Birthday,

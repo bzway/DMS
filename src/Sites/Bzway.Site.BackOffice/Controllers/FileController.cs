@@ -25,7 +25,7 @@ namespace Bzway.Sites.BackOffice.Controllers
             var file = this.Request.Form.Files["File"];
             if (file == null)
             {
-                Result<UploadFileResponseModel>.Fail(HttpStatusCode.BadRequest, "No file upload");
+                Result<UploadFileResponseModel>.Fail(ResultCode.BadRequest, "No file upload");
             }
             var root = $"d:\\files\\{this.User.Identity.Name}\\";
             if (!Directory.Exists(root))

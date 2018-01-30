@@ -11,7 +11,8 @@ namespace Bzway.Common.Share
         public RedisCacheManager()
         {
             ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
-            this.server = redis.GetServer("localhost");
+      
+            this.server = redis.GetServer("localhost" , 6379);
             this.db = redis.GetDatabase();
         }
         public T Get<T>(string key, Func<T> call, int timeOut = 0)

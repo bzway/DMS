@@ -69,6 +69,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bzway.Tools.ETL", "src\Tool
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bzway.Sites.OpenApi", "src\Sites\Bzway.Sites.OpenApi\Bzway.Sites.OpenApi.csproj", "{84D45751-B165-4C1B-BEB5-A616EBFB0474}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{186172A2-7BD9-416E-AE46-086A3B84C1FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -379,6 +381,18 @@ Global
 		{84D45751-B165-4C1B-BEB5-A616EBFB0474}.Release|x64.Build.0 = Release|Any CPU
 		{84D45751-B165-4C1B-BEB5-A616EBFB0474}.Release|x86.ActiveCfg = Release|Any CPU
 		{84D45751-B165-4C1B-BEB5-A616EBFB0474}.Release|x86.Build.0 = Release|Any CPU
+		{186172A2-7BD9-416E-AE46-086A3B84C1FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{186172A2-7BD9-416E-AE46-086A3B84C1FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{186172A2-7BD9-416E-AE46-086A3B84C1FC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{186172A2-7BD9-416E-AE46-086A3B84C1FC}.Debug|x64.Build.0 = Debug|Any CPU
+		{186172A2-7BD9-416E-AE46-086A3B84C1FC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{186172A2-7BD9-416E-AE46-086A3B84C1FC}.Debug|x86.Build.0 = Debug|Any CPU
+		{186172A2-7BD9-416E-AE46-086A3B84C1FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{186172A2-7BD9-416E-AE46-086A3B84C1FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{186172A2-7BD9-416E-AE46-086A3B84C1FC}.Release|x64.ActiveCfg = Release|Any CPU
+		{186172A2-7BD9-416E-AE46-086A3B84C1FC}.Release|x64.Build.0 = Release|Any CPU
+		{186172A2-7BD9-416E-AE46-086A3B84C1FC}.Release|x86.ActiveCfg = Release|Any CPU
+		{186172A2-7BD9-416E-AE46-086A3B84C1FC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

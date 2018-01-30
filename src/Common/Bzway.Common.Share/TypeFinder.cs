@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyModel;
 
 namespace Bzway.Common.Share
 {
-  
+
     public interface ITypeFinder
     {
         IEnumerable<T> Find<T>(params string[] paths);
@@ -23,19 +23,23 @@ namespace Bzway.Common.Share
     }
     public class TypeFinder : ITypeFinder
     {
-        List<Type> types = new List<Type>();
+        static List<Type> types = null;
 
         IEnumerable<Type> Find(Type fromType, params string[] paths)
         {
-            foreach (var item in paths)
+            if (types == null)
             {
-                try
+                types = new List<Type>();
+                foreach (var item in paths)
                 {
-                    types.AddRange(Assembly.Load(AssemblyLoadContext.GetAssemblyName(item)).GetTypes());
+                    try
+                    {
+                        types.AddRange(Assembly.Load(AssemblyLoadContext.GetAssemblyName(item)).GetTypes());
+                    }
+                    catch { }
                 }
-                catch { }
             }
-            return this.types.Where(t => fromType.IsAssignableFrom(t) && fromType != t);
+            return types.Where(t => fromType.IsAssignableFrom(t) && fromType != t);
         }
         public IEnumerable<T> Find<T>(params string[] paths)
         {

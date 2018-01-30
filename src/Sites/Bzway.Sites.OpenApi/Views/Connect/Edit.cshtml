@@ -1,0 +1,93 @@
+﻿@model Bzway.Module.Wechat.Entity.WechatNewsMaterial
+
+@{
+    ViewData["Title"] = "新闻编辑";
+}
+
+<h2>新闻编辑</h2>
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>新闻编辑</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="Title" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ThumbMediaId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ThumbMediaId" class="form-control" />
+                <span asp-validation-for="ThumbMediaId" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Author" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Author" class="form-control" />
+                <span asp-validation-for="Author" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Digest" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Digest" class="form-control" />
+                <span asp-validation-for="Digest" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Content" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <textarea asp-for="Content" class="form-control"></textarea>
+                <span asp-validation-for="Content" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ContentSourceUrl" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ContentSourceUrl" type="url" class="form-control" />
+                <span asp-validation-for="ContentSourceUrl" class="text-danger" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/lib/ckeditor/ckeditor.js"></script>
+    <script>
+        var ckEditor = function (editorId) {
+            return CKEDITOR.replace(editorId, {
+                toolbar: [
+                    ['Source', '-', 'Cut', 'Copy', 'Paste', '-', 'Styles', '-', 'RemoveFormat'],
+                    ['NumberedList', 'BulletedList', 'TextColor', 'BGColor', '-', 'Link', 'Unlink', 'Image', 'wechatnews'],
+                    ['Format', 'Font', 'FontSize'],
+                ],
+                //htmlEncodeOutput: true,
+                //language: "zh-cn",
+                //htmlEncodeOutput: true,
+                //extraAllowedContent: 'img[!src, data-content-id,data-version-no];',
+                pasteFilter: 'h1 h2 h3 label div img i b span em p ul ol li; a[!href];',
+                extraPlugins: 'wechatnews',
+            });
+        };
+        $(document).ready(function () {
+            var editor = ckEditor("Content");
+        });
+
+
+    </script>
+}

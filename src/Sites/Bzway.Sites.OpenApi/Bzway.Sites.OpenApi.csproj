@@ -24,6 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Database\Bzway.Database.Core\Bzway.Database.Core.csproj" />
+    <ProjectReference Include="..\..\Database\Bzway.Database.File\Bzway.Database.File.csproj" />
     <ProjectReference Include="..\..\Framework\Bzway.Framework.Application\Bzway.Framework.Application.csproj" />
   </ItemGroup>
 

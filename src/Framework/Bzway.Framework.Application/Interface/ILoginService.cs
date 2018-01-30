@@ -6,6 +6,6 @@ namespace Bzway.Framework.Application
 {
     public interface ILoginService
     {
-        Result<UserProfile> Login(string userName, string password);
+        Result<UserProfile> Login(string userName, string password, string validateCode);
     }
 }
