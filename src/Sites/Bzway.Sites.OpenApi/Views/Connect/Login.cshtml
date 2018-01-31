@@ -5,31 +5,20 @@
 }
 
 @{
-    this.ViewBag.Title = "Log in";
+    this.ViewBag.Title = "Log in".ToLocalized();
 }
-
-
-@using (Html.BeginForm("Login", "Connect", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, true, new { id = "subForm" }))
+@using (Html.BeginForm("Login", "Connect", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, true, new { @class = "form-signin" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-    <div class="login-box">
-        <div class="login-ul">
-            <ul>
-                <li>
-                    @Html.ValidationMessageFor(m => m.AppId)
-                    @Html.ValidationMessage("LoginModelRequired")
-                </li>
-                <li>
-                    @Html.TextBoxFor(m => m.AppId)
-                </li>
-                <li>
-                    @Html.TextBoxFor(m => m.Random)
-                </li>
-                <li>
-                    @Html.PasswordFor(m => m.Signature)
-                </li>
-            </ul>
-        </div>
-    </div>
+    <h2 class="form-signin-heading">@("Please sign in".ToLocalized())</h2>
+    @Html.LabelFor(m => m.AppId, new { @class = "sr-only" })
+    @Html.TextBoxFor(m => m.AppId, new { @class = "form-control", placeholder = "Email address".ToLocalized(), required = "", autofocus = "" })
+    @Html.LabelFor(m => m.Signature, new { @class = "sr-only" })
+    @Html.PasswordFor(m => m.Signature, new { @class = "form-control", placeholder = "Password".ToLocalized(), required = "" })
+    @Html.LabelFor(m => m.Random, new { @class = "sr-only" })
+    @Html.TextBoxFor(m => m.Random, new { @class = "form-control", placeholder = "Validate Code".ToLocalized(), required = "" })
+    <button class="btn btn-lg btn-primary btn-block" type="submit">@("Sign in".ToLocalized())</button>
 }
+
+

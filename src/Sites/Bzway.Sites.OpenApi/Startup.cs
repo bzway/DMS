@@ -44,7 +44,7 @@ namespace Bzway.Sites.OpenApi
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseMvc();
+            app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
         }
     }

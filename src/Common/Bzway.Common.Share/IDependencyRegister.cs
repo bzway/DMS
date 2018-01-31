@@ -17,6 +17,7 @@ namespace Bzway.Common.Share
 
         public void Register(ContainerBuilder builder)
         {
+            builder.RegisterType<DefaultResourceManager>().As<IResourceManager>();
         }
     }
 }
