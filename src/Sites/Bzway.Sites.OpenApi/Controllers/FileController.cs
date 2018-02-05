@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.Net;
-using Bzway.Sites.BackOffice.Models;
 using Bzway.Framework.Application;
 using Microsoft.Extensions.Logging;
+using Bzway.Sites.OpenApi.Models;
 
-namespace Bzway.Sites.BackOffice.Controllers
+namespace Bzway.Sites.OpenApi.Controllers
 {
     [Route("File")]
     public class FileController : BaseController<FileController>
     {
-        public FileController(ILoggerFactory loggerFactory, ISiteService siteService) : base(loggerFactory, siteService)
+        public FileController(ILoggerFactory loggerFactory) : base(loggerFactory)
         {
 
         }

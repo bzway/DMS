@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-namespace Bzway.Sites.BackOffice.Models
+namespace Bzway.Sites.OpenApi.Models
 {
     public class UploadFileRequestModel
     {
