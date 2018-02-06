@@ -8,7 +8,7 @@ namespace Bzway.Common.Share
 {
     public interface IMessageQueue<T>
     {
-        void Subscribe(string queue, Action<T> action);
+        void Subscribe(string queue, Action<T> action, int millisecondsTimeout = 1000);
         void Publish(T data, string queue = "");
     }
 }

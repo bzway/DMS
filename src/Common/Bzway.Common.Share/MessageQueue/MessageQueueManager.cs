@@ -27,7 +27,7 @@ namespace Bzway.Common.Share
                     {
                         if (manager == null)
                         {
-                            manager = new MessageQueueManager(ConnectionMultiplexer.Connect(""));
+                            manager = new MessageQueueManager(ConnectionMultiplexer.Connect("localhost"));
                         }
                     }
                 }

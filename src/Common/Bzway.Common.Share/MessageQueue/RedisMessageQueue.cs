@@ -3,7 +3,10 @@ using StackExchange.Redis;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Bzway.Common.Share
 {
@@ -20,7 +23,7 @@ namespace Bzway.Common.Share
             subscriber.Publish(channel, data);
         }
 
-        public void Subscribe(string channel, Action<string> action)
+        public void Subscribe(string channel, Action<string> action, int millisecondsTimeout = 1000)
         {
             var subscriber = connection.GetSubscriber();
             subscriber.Subscribe(channel, (c, value) => { action(value); });
@@ -38,17 +41,69 @@ namespace Bzway.Common.Share
         public virtual void Publish(T data, string channel)
         {
             var subscriber = connection.GetSubscriber();
+            var db = this.connection.GetDatabase();
+            var key = channel + ":data";
+            db.ListRightPush(key, JsonConvert.SerializeObject(data));
             subscriber.Publish(channel, JsonConvert.SerializeObject(data));
         }
 
-        public virtual void Subscribe(string channel, Action<T> action)
+        public virtual void Subscribe(string channel, Action<T> action, int millisecondsTimeout = 1000)
         {
-            var subscriber = connection.GetSubscriber();
-            subscriber.Subscribe(channel, (c, v) =>
+            bool hasValue = false;
+            var db = this.connection.GetDatabase();
+            var key = channel + ":data";
+            RedisValue value;
+            do
             {
-                var receivced = JsonConvert.DeserializeObject<T>(v);
-                action(receivced);
-            });
+                value = db.ListRightPop(key);
+                if (value.HasValue)
+                {
+                    hasValue = true;
+                    var receivced = JsonConvert.DeserializeObject<T>(value);
+                    action(receivced);
+                }
+            } while (value.HasValue);
+
+            if (hasValue)
+            {
+                return;
+            }
+            var watch = Stopwatch.StartNew();
+            watch.Start();
+
+            using (ManualResetEvent blocker = new ManualResetEvent(false))
+            {
+                var subscriber = this.connection.GetSubscriber();
+                subscriber.Subscribe(channel, (c, v) =>
+                {
+                    blocker.Set();
+                });
+                while (true)
+                {
+                    millisecondsTimeout -= (int)watch.ElapsedMilliseconds;
+                    if (millisecondsTimeout <= 0)
+                    {
+                        return;
+                    }
+                    blocker.WaitOne(millisecondsTimeout);
+                    do
+                    {
+                        value = db.ListRightPop(key);
+                        if (value.HasValue)
+                        {
+                            hasValue = true;
+                            var receivced = JsonConvert.DeserializeObject<T>(value);
+                            action(receivced);
+                        }
+                    } while (value.HasValue);
+                    if (hasValue)
+                    {
+                        return;
+                    }
+                    blocker.Reset();
+                }
+            }
+
         }
     }
 }

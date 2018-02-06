@@ -6,16 +6,21 @@ using Microsoft.AspNetCore.Mvc;
 using Bzway.Framework.Application;
 using Bzway.Database.Core;
 using Bzway.Sites.OpenApi.Models;
+using Bzway.Common.Share;
 
 namespace Bzway.Sites.OpenApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("message")]
     public class MessageController : Controller
     {
         readonly ISystemDatabase db;
-        public MessageController(ISystemDatabase db)
+        readonly ICacheManager cache;
+        readonly IMessageQueue<MessageResponseModel> messageQueue;
+        public MessageController()
         {
-            this.db = db;
+
+            this.cache = AppEngine.GetService<ICacheManager>("Redis");
+            this.messageQueue = MessageQueueManager.Default.GetMessage<MessageResponseModel>();
         }
 
         // GET api/values/5
@@ -41,7 +46,12 @@ namespace Bzway.Sites.OpenApi.Controllers
                 return Result<List<MessageResponseModel>>.Success(null);
             }
             //todo: getdate from redis cache;
-            return Result<List<MessageResponseModel>>.Success(null);
+            List<MessageResponseModel> list = new List<MessageResponseModel>();
+            this.messageQueue.Subscribe("messages:list", m =>
+            {
+                list.Add(m);
+            }, 1000000);
+            return Result<List<MessageResponseModel>>.Success(list,list.Count().ToString());
         }
 
 
@@ -67,10 +77,14 @@ namespace Bzway.Sites.OpenApi.Controllers
             }
             return "@@" + groupId;
         }
-        [HttpPost]
+        [HttpPost("Send")]
         public void Send(string SessionId, string Type, string Content)
         {
+            for (int i = 0; i < 100; i++)
+            {
+                this.messageQueue.Publish(new MessageResponseModel() { Type = "test" + i, Data = new { NickName = "Mike" + i, Age = 123 } }, "messages:list");
 
+            }
         }
 
         [HttpPost]

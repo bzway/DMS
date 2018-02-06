@@ -27,7 +27,7 @@ namespace Bzway.Common.Share
                 }
             }
         }
-        public void Subscribe(string queue, Action<T> action)
+        public void Subscribe(string queue, Action<T> action, int millisecondsTimeout = 1000)
         {
             IConnection connection = factory.CreateConnection();
             {
@@ -65,7 +65,7 @@ namespace Bzway.Common.Share
                 }
             }
         }
-        public void Subscribe(string queue, Action<string> action)
+        public void Subscribe(string queue, Action<string> action,int millisecondsTimeout = 1000)
         {
 
             IConnection connection = factory.CreateConnection();
