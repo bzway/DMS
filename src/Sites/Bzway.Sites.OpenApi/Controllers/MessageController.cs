@@ -7,6 +7,8 @@ using Bzway.Framework.Application;
 using Bzway.Database.Core;
 using Bzway.Sites.OpenApi.Models;
 using Bzway.Common.Share;
+using Bzway.Common.Utility;
+using System.Text;
 
 namespace Bzway.Sites.OpenApi.Controllers
 {
@@ -14,13 +16,10 @@ namespace Bzway.Sites.OpenApi.Controllers
     public class MessageController : Controller
     {
         readonly ISystemDatabase db;
-        readonly ICacheManager cache;
         readonly IMessageQueue<MessageResponseModel> messageQueue;
         public MessageController()
         {
-
-            this.cache = AppEngine.GetService<ICacheManager>("Redis");
-            this.messageQueue = MessageQueueManager.Default.GetMessage<MessageResponseModel>();
+            this.messageQueue = MessageQueueManager.Default.CreateMessageQueue<MessageResponseModel>();
         }
 
         // GET api/values/5
@@ -51,7 +50,7 @@ namespace Bzway.Sites.OpenApi.Controllers
             {
                 list.Add(m);
             }, 1000000);
-            return Result<List<MessageResponseModel>>.Success(list,list.Count().ToString());
+            return Result<List<MessageResponseModel>>.Success(list, list.Count().ToString());
         }
 
 
@@ -87,9 +86,15 @@ namespace Bzway.Sites.OpenApi.Controllers
             }
         }
 
-        [HttpPost]
-        public void Push(string SessionId, string Type, string Content)
+        [HttpPost("Push")]
+        public object Push(string SessionId, string Type, string Content)
         {
+            var keys = Cryptor.GenerateKeys();
+            return new
+            {
+                result = Cryptor.RSADecrypt(keys.PrivateKey, Cryptor.RSAEncrypt(keys.PublicKey, "test")),
+                key = keys
+            };
         }
 
 

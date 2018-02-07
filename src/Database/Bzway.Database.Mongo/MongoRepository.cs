@@ -31,7 +31,7 @@ namespace Bzway.Database.Mongo
                 this.client = new MongoClient(url);
             }
             this.database = client.GetDatabase(database);
-            var cache = AppEngine.GetService<ICacheManager>();
+            var cache = CacheManager.Default.DefaultCacheProvider;
         }
         public IQueryable<T> Query()
         {

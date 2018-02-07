@@ -11,18 +11,20 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 namespace Bzway.Sites.OpenApi.Models
-{ 
+{
     [ModelBinder(typeof(FromOrBodyModelBinder))]
 
     public class LoginRequestModel
     {
+
         public string GrantType { get; set; }
         [Required]
         public string AppId { get; set; }
-        public string Language { get; set; }
-        public string Random { get; set; }
+        public string ValidateCode { get; set; }
         [Required]
-        public string Signature { get; set; }
+        public string SecretKey { get; set; }
+        public string Language { get; set; }
+
     }
 
     public class AuthorizationModel
@@ -55,7 +57,7 @@ namespace Bzway.Sites.OpenApi.Models
                 obj = JsonConvert.DeserializeObject("{" + string.Join(',', list) + "}", bindingContext.ModelType);
             }
             else
-            { 
+            {
                 var length = (int)bindingContext.HttpContext.Request.ContentLength;
                 byte[] buffer = new byte[length];
 

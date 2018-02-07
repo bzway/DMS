@@ -96,7 +96,6 @@ namespace System
     {
         string GetString(string key, string culture);
     }
-
     public class DefaultResourceManager : IResourceManager
     {
         public string GetString(string key, string culture)

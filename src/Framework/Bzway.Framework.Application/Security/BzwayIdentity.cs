@@ -4,7 +4,8 @@ using System.Security.Principal;
 
 namespace Bzway.Framework.Application
 {
-    public class UserIdentity : ClaimsIdentity
+
+    public class UserModel
     {
         [JsonProperty("i")]
         public string Id { get; set; }
@@ -17,15 +18,21 @@ namespace Bzway.Framework.Application
 
         [JsonProperty("v")]
         public int Version { get; set; }
-        //[JsonIgnore]
-        //public string AuthenticationType
-        //{
-        //    get { return "Token"; }
-        //}
+    }
+    public class UserIdentity : ClaimsIdentity
+    {
+        public UserModel User { get; set; }
         [JsonIgnore]
         public override bool IsAuthenticated
         {
-            get { return !string.IsNullOrEmpty(this.Id); }
+            get
+            {
+                if (this.User == null)
+                {
+                    return false;
+                }
+                return !string.IsNullOrEmpty(this.User.Id);
+            }
         }
 
     }

@@ -10,14 +10,5 @@ namespace Bzway.Common.Share
         int Order { get; }
 
         void Register(ContainerBuilder builder);
-    }
-    public class DefaultRegister : IDependencyRegister
-    {
-        public int Order => 1;
-
-        public void Register(ContainerBuilder builder)
-        {
-            builder.RegisterType<DefaultResourceManager>().As<IResourceManager>();
-        }
-    }
+    } 
 }

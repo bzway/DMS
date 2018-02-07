@@ -42,9 +42,9 @@ namespace Bzway.Framework.Application
         }
         public void Register(ContainerBuilder builder)
         {
-            builder.RegisterType<UserLoginService>().As<ILoginService>().Named<ILoginService>(LoginProvider.ClientCredential);
             builder.RegisterType<AppLoginService>().As<ILoginService>().Named<ILoginService>(LoginProvider.AppCredential);
             builder.RegisterType<AuthLoginService>().As<ILoginService>().Named<ILoginService>(LoginProvider.AuthCredential);
+            builder.RegisterType<UserLoginService>().As<ILoginService>().Named<ILoginService>(LoginProvider.ClientCredential);
             builder.RegisterType<LoginProvider>().As<ILoginProvider>();
         }
     }

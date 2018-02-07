@@ -131,7 +131,7 @@ namespace Bzway.Server.Wechat
                 return false;
             }
             string id = this.context.Request.Path.Value;
-            this.CurrentOfficialAccount = AppEngine.Current.Resolve<ICacheManager>().Get<WechatOfficialAccount>("Wechat.MessageServer.OfficialAccount." + id, () => { return new WechatOfficialAccount(); });
+            this.CurrentOfficialAccount = CacheManager.Default.DefaultCacheProvider.Get<WechatOfficialAccount>("Wechat.MessageServer.OfficialAccount." + id, () => { return new WechatOfficialAccount(); });
             if (CurrentOfficialAccount == null)
             {
                 return false;

@@ -34,9 +34,9 @@ namespace Bzway.Common.Share
     public class RedisMessageQueue<T> : IMessageQueue<T>
     {
         readonly ConnectionMultiplexer connection;
-        public RedisMessageQueue(ConnectionMultiplexer connection)
+        public RedisMessageQueue()
         {
-            this.connection = connection;
+            this.connection = ConnectionMultiplexer.Connect("localhost");
         }
         public virtual void Publish(T data, string channel)
         {

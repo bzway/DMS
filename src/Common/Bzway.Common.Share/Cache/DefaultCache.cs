@@ -6,16 +6,25 @@ using System.Threading.Tasks;
 
 namespace Bzway.Common.Share
 {
-    public class DefaultCache : ICacheManager
+    public class DefaultCache : ICache
     {
+        #region ctor
+        static readonly Lazy<DefaultCache> lazy = new Lazy<DefaultCache>(() => { return new DefaultCache(); });
+        public static DefaultCache Default
+        {
+            get
+            {
+                return lazy.Value;
+            }
+        }
         private readonly IMemoryCache cache;
-        private IList<string> keys = new List<string>();
-
-        public DefaultCache()
+        private readonly IList<string> keys = new List<string>();
+        private DefaultCache()
         {
             var options = new MemoryCacheOptions();
             this.cache = new MemoryCache(options);
         }
+        #endregion
         public T Get<T>(string key, Func<T> call, int timeOut = 0)
         {
             if (keys.Contains(key))

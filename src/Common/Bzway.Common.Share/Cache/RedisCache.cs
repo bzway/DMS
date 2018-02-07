@@ -4,17 +4,27 @@ using System;
 using System.Collections.Generic;
 namespace Bzway.Common.Share
 {
-    public class RedisCacheManager : ICacheManager
+    public class RedisCache : ICache
     {
+        #region ctor
+        static readonly Lazy<ICache> lazy = new Lazy<ICache>(() => { return new RedisCache(); });
+        public static ICache Default
+        {
+            get
+            {
+                return lazy.Value;
+            }
+        }
         private readonly IDatabase db;
         private readonly IServer server;
-        public RedisCacheManager()
+        RedisCache()
         {
             ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
-      
-            this.server = redis.GetServer("localhost" , 6379);
+            this.server = redis.GetServer("localhost", 6379);
             this.db = redis.GetDatabase();
         }
+        #endregion
+
         public T Get<T>(string key, Func<T> call, int timeOut = 0)
         {
             if (this.db.KeyExists(key))

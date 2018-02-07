@@ -1,14 +1,18 @@
-﻿using System;
+﻿using Bzway.Common.Utility.RSAHelper;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Bzway.Common.Utility
 {
-    public class Cryptor
+    public static class Cryptor
     {
         #region AES
         public static string DecryptAES(string encryptedDataString, string Key, string IV)
@@ -108,7 +112,7 @@ namespace Bzway.Common.Utility
         }
         #endregion
 
-        #region Other
+        #region Hash
         public static string EncryptMD5(string input, string salt = "")
         {
             if (string.IsNullOrEmpty(input))
@@ -119,27 +123,359 @@ namespace Bzway.Common.Utility
             using (MD5 md5 = MD5.Create())
             {
                 byte[] bytes = Encoding.UTF8.GetBytes(input);
-                return BitConverter.ToString(md5.ComputeHash(bytes));
+                return Convert.ToBase64String(md5.ComputeHash(bytes));
             }
         }
-
         public static string EncryptSHA1(string input, string salt = "")
         {
             if (string.IsNullOrEmpty(input))
             {
                 return string.Empty;
             }
-            StringBuilder stringBuilder = new StringBuilder();
             input += salt;
             using (var sha1 = SHA1.Create())
             {
-                foreach (var item in sha1.ComputeHash(Encoding.UTF8.GetBytes(input)))
+                byte[] bytes = Encoding.UTF8.GetBytes(input);
+                return Convert.ToBase64String(sha1.ComputeHash(bytes));
+            }
+        }
+        #endregion
+
+        #region RSA
+        /// <summary>
+        /// RSA加密
+        /// </summary>
+        /// <param name="publickey"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public static string RSAEncrypt(string publickey, string content)
+        {
+            using (var rsa = RSA.Create())
+            {
+                rsa.FromPublicString(publickey);
+                var cipherbytes = rsa.Encrypt(Convert.FromBase64String(content), RSAEncryptionPadding.Pkcs1);
+                rsa.Clear();
+                return Convert.ToBase64String(cipherbytes);
+            }
+        }
+        /// <summary>
+        /// RSA解密
+        /// </summary>
+        /// <param name="privatekey"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public static string RSADecrypt(string privatekey, string content)
+        {
+            using (var rsa = RSA.Create())
+            {
+                rsa.FromPrivateString(privatekey);
+                var cipherbytes = rsa.Decrypt(Convert.FromBase64String(content), RSAEncryptionPadding.Pkcs1);
+                rsa.Clear();
+                return Convert.ToBase64String(cipherbytes);
+            }
+        }
+
+
+        public static PublicAndPrivateKey GenerateKeys()
+        {
+            using (var rsa = RSA.Create())
+            {
+                var parameters = rsa.ExportParameters(true);
+                var result = new PublicAndPrivateKey()
                 {
-                    stringBuilder.AppendFormat("{0:x2}", item);
+                    PrivateKey = Convert.ToBase64String(AsnKeyBuilder.PrivateKeyToPKCS8(parameters).GetBytes()),
+                    PublicKey = Convert.ToBase64String(AsnKeyBuilder.PublicKeyToX509(parameters).GetBytes())
+                };
+                rsa.Clear();
+                return result;
+            }
+        }
+
+        #region 导入密钥算法  
+        #region XML
+        internal static void FromXmlStringX(this RSA rsa, string xmlString)
+        {
+            RSAParameters parameters = new RSAParameters();
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlString);
+
+            if (xmlDoc.DocumentElement.Name.Equals("RSAKeyValue"))
+            {
+                foreach (XmlNode node in xmlDoc.DocumentElement.ChildNodes)
+                {
+                    switch (node.Name)
+                    {
+                        case "Modulus": parameters.Modulus = (string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText)); break;
+                        case "Exponent": parameters.Exponent = (string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText)); break;
+                        case "P": parameters.P = (string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText)); break;
+                        case "Q": parameters.Q = (string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText)); break;
+                        case "DP": parameters.DP = (string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText)); break;
+                        case "DQ": parameters.DQ = (string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText)); break;
+                        case "InverseQ": parameters.InverseQ = (string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText)); break;
+                        case "D": parameters.D = (string.IsNullOrEmpty(node.InnerText) ? null : Convert.FromBase64String(node.InnerText)); break;
+                    }
                 }
             }
-            return stringBuilder.ToString();
+            else
+            {
+                throw new Exception("Invalid XML RSA key.");
+            }
+
+            rsa.ImportParameters(parameters);
         }
+        internal static string ToXmlStringX(this RSA rsa, bool includePrivateParameters)
+        {
+            RSAParameters parameters = rsa.ExportParameters(includePrivateParameters);
+            return string.Format("<RSAKeyValue><Modulus>{0}</Modulus><Exponent>{1}</Exponent><P>{2}</P><Q>{3}</Q><DP>{4}</DP><DQ>{5}</DQ><InverseQ>{6}</InverseQ><D>{7}</D></RSAKeyValue>",
+                  parameters.Modulus != null ? Convert.ToBase64String(parameters.Modulus) : null,
+                  parameters.Exponent != null ? Convert.ToBase64String(parameters.Exponent) : null,
+                  parameters.P != null ? Convert.ToBase64String(parameters.P) : null,
+                  parameters.Q != null ? Convert.ToBase64String(parameters.Q) : null,
+                  parameters.DP != null ? Convert.ToBase64String(parameters.DP) : null,
+                  parameters.DQ != null ? Convert.ToBase64String(parameters.DQ) : null,
+                  parameters.InverseQ != null ? Convert.ToBase64String(parameters.InverseQ) : null,
+                  parameters.D != null ? Convert.ToBase64String(parameters.D) : null);
+        }
+        #endregion
+
+        #region Java
+        internal static void FromPrivateString(this RSA rsa, string key)
+        {
+            var PKCS8 = Convert.FromBase64String(key);
+            AsnKeyParser keyParser = new AsnKeyParser(PKCS8);
+            RSAParameters rsaParameters = keyParser.ParseRSAPrivateKey();
+            rsa.ImportParameters(rsaParameters);
+
+        }
+        internal static void FromPublicString(this RSA rsa, string key)
+        {
+            var x509Key = Convert.FromBase64String(key);
+            AsnKeyParser keyParser = new AsnKeyParser(x509Key);
+            RSAParameters rsaParameters = keyParser.ParseRSAPublicKey();
+            rsa.ImportParameters(rsaParameters);
+        }
+
+        #endregion
+
+        #region others
+        private static void CreateDsaKeys()
+        {
+            CspParameters csp = new CspParameters();
+
+            csp.KeyContainerName = "DSA Test (OK to Delete)";
+
+            const int PROV_DSS_DH = 13;
+            csp.ProviderType = PROV_DSS_DH;
+
+            // Can't use AT_EXCHANGE for creation. This is
+            //  a signature algorithm
+            const int AT_SIGNATURE = 2;
+            csp.KeyNumber = AT_SIGNATURE;
+
+            DSACryptoServiceProvider dsa =
+                new DSACryptoServiceProvider(1024, csp);
+            dsa.PersistKeyInCsp = false;
+
+            // Encoded key
+            AsnKeyBuilder.AsnMessage key = null;
+
+            // Private Key
+            DSAParameters privateKey = dsa.ExportParameters(true);
+            key = AsnKeyBuilder.PrivateKeyToPKCS8(privateKey);
+
+            using (BinaryWriter writer = new BinaryWriter(
+                new FileStream("private.dsa.cs.ber", FileMode.Create,
+                    FileAccess.ReadWrite)))
+            {
+                writer.Write(key.GetBytes());
+            }
+
+            // Public Key
+            DSAParameters publicKey = dsa.ExportParameters(false);
+            key = AsnKeyBuilder.PublicKeyToX509(publicKey);
+
+            using (BinaryWriter writer = new BinaryWriter(
+                new FileStream("public.dsa.cs.ber", FileMode.Create,
+                    FileAccess.ReadWrite)))
+            {
+                writer.Write(key.GetBytes());
+            }
+
+            // See http://blogs.msdn.com/tess/archive/2007/10/31/
+            //   asp-net-crash-system-security-cryptography-cryptographicexception.aspx
+            dsa.Clear();
+        }
+
+        private static void LoadDsaPrivateKey()
+        {
+            //
+            // Load the Private Key
+            //   PKCS#8 Format
+            //
+            AsnKeyParser keyParser = new AsnKeyParser("private.dsa.cs.ber");
+
+            DSAParameters privateKey = keyParser.ParseDSAPrivateKey();
+
+            //
+            // Initailize the CSP
+            //   Supresses creation of a new key
+            //
+            CspParameters csp = new CspParameters();
+            csp.KeyContainerName = "DSA Test (OK to Delete)";
+
+            // Can't use PROV_DSS_DH for loading. We have lost
+            //   parameters such as seed and j.
+            // const int PROV_DSS_DH = 13;
+            const int PROV_DSS = 3;
+            csp.ProviderType = PROV_DSS;
+
+            // const int AT_EXCHANGE = 1;
+            const int AT_SIGNATURE = 2;
+            csp.KeyNumber = AT_SIGNATURE;
+
+            //
+            // Initialize the Provider
+            //
+            DSACryptoServiceProvider dsa =
+              new DSACryptoServiceProvider(csp);
+            dsa.PersistKeyInCsp = false;
+
+            //
+            // The moment of truth...
+            //
+            dsa.ImportParameters(privateKey);
+
+            // See http://blogs.msdn.com/tess/archive/2007/10/31/
+            //   asp-net-crash-system-security-cryptography-cryptographicexception.aspx
+            dsa.Clear();
+        }
+
+        private static void LoadDsaPublicKey()
+        {
+            //
+            // Load the Public Key
+            //   X.509 Format
+            //
+            AsnKeyParser keyParser = new AsnKeyParser("public.dsa.cs.ber");
+
+            DSAParameters publicKey = keyParser.ParseDSAPublicKey();
+
+            //
+            // Initailize the CSP
+            //   Supresses creation of a new key
+            //
+            CspParameters csp = new CspParameters();
+
+            // const int PROV_DSS_DH = 13;
+            const int PROV_DSS = 3;
+            csp.ProviderType = PROV_DSS;
+
+            const int AT_SIGNATURE = 2;
+            csp.KeyNumber = AT_SIGNATURE;
+
+            csp.KeyContainerName = "DSA Test (OK to Delete)";
+
+            //
+            // Initialize the Provider
+            //
+            DSACryptoServiceProvider dsa = new DSACryptoServiceProvider(csp);
+            dsa.PersistKeyInCsp = false;
+
+            //
+            // The moment of truth...
+            //
+            dsa.ImportParameters(publicKey);
+
+            // See http://blogs.msdn.com/tess/archive/2007/10/31/
+            //   asp-net-crash-system-security-cryptography-cryptographicexception.aspx
+            dsa.Clear();
+        }
+
+        private static void LoadRsaPrivateKey()
+        {
+            //
+            // Load the Private Key
+            //   PKCS#8 Format
+            //
+            AsnKeyParser keyParser = new AsnKeyParser("private.rsa.cs.ber");
+
+            RSAParameters privateKey = keyParser.ParseRSAPrivateKey();
+
+            //
+            // Initailize the CSP
+            //   Supresses creation of a new key
+            //
+            CspParameters csp = new CspParameters();
+            csp.KeyContainerName = "RSA Test (OK to Delete)";
+
+            const int PROV_RSA_FULL = 1;
+            csp.ProviderType = PROV_RSA_FULL;
+
+            const int AT_KEYEXCHANGE = 1;
+            // const int AT_SIGNATURE = 2;
+            csp.KeyNumber = AT_KEYEXCHANGE;
+
+            //
+            // Initialize the Provider
+            //
+            RSACryptoServiceProvider rsa =
+              new RSACryptoServiceProvider(csp);
+            rsa.PersistKeyInCsp = false;
+
+            //
+            // The moment of truth...
+            //
+            rsa.ImportParameters(privateKey);
+
+            // See http://blogs.msdn.com/tess/archive/2007/10/31/
+            //   asp-net-crash-system-security-cryptography-cryptographicexception.aspx
+            rsa.Clear();
+        }
+
+        private static void LoadRsaPublicKey()
+        {
+            //
+            // Load the Public Key
+            //   X.509 Format
+            //
+            AsnKeyParser keyParser =
+              new AsnKeyParser("public.rsa.cs.ber");
+
+            RSAParameters publicKey = keyParser.ParseRSAPublicKey();
+
+            //
+            // Initailize the CSP
+            //   Supresses creation of a new key
+            //
+            CspParameters csp = new CspParameters();
+            csp.KeyContainerName = "RSA Test (OK to Delete)";
+
+            const int PROV_RSA_FULL = 1;
+            csp.ProviderType = PROV_RSA_FULL;
+
+            const int AT_KEYEXCHANGE = 1;
+            // const int AT_SIGNATURE = 2;
+            csp.KeyNumber = AT_KEYEXCHANGE;
+
+            //
+            // Initialize the Provider
+            //
+            RSACryptoServiceProvider rsa =
+              new RSACryptoServiceProvider(csp);
+            rsa.PersistKeyInCsp = false;
+
+            //
+            // The moment of truth...
+            //
+            rsa.ImportParameters(publicKey);
+
+            // See http://blogs.msdn.com/tess/archive/2007/10/31/
+            //   asp-net-crash-system-security-cryptography-cryptographicexception.aspx
+            rsa.Clear();
+        }
+        #endregion
+
+        #endregion
         #endregion
     }
 }

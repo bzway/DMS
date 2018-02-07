@@ -25,13 +25,10 @@ namespace Bzway.Framework.Application
         public static readonly string SessionKey = "USR";
         private readonly IDictionary<string, string> cookies;
         private readonly HttpContext httpContext;
-        private readonly ICacheManager cache;
 
         public BzwayPrincipal(IHttpContextAccessor contextAccessor)
         {
             this.httpContext = contextAccessor.HttpContext;
-            this.cache = AppEngine.GetService<ICacheManager>("Redis");
-
             this.cookies = new Dictionary<string, string>();
             foreach (var item in this.httpContext.Request.Cookies.Where(m => m.Key == SessionKey))
             {
@@ -52,11 +49,12 @@ namespace Bzway.Framework.Application
                     if (cookies.ContainsKey(SessionKey))
                     {
                         var key = cookies[SessionKey];
-                        this.identity = cache.Get<UserIdentity>(key);
+                        var user = CacheManager.Default.RedisCacheProvider.Get<UserModel>(key);
+                        this.identity = new UserIdentity() { User = user };
                     }
-                    if (this.identity == null)
+                    else
                     {
-                        this.identity = new UserIdentity() { Id = string.Empty, Roles = string.Empty };
+                        this.identity = new UserIdentity();
                     }
                 }
                 return this.identity;
@@ -75,23 +73,23 @@ namespace Bzway.Framework.Application
                 return;
             }
             var timeOutInSeconds = 1000;
-            var value = JsonConvert.SerializeObject(identity);
 
-            var userKey = "user_token:" + this.identity.Id;
+
+            var userKey = "user_token:" + this.identity.User.Id;
 
             //根据用户Id得到token key
             string tokenKey;
-            if (this.cache.IsSet(userKey))
+            if (CacheManager.Default.RedisCacheProvider.IsSet(userKey))
             {
-                tokenKey = this.cache.Get<string>(userKey);
+                tokenKey = CacheManager.Default.RedisCacheProvider.Get<string>(userKey);
             }
             else
             {
                 tokenKey = "http_session:" + Guid.NewGuid().ToString("N");
-                this.cache.Set(userKey, tokenKey, timeOutInSeconds);
+                CacheManager.Default.RedisCacheProvider.Set(userKey, tokenKey, timeOutInSeconds);
             }
             //记录tokenKey
-            this.cache.Set(tokenKey, value, timeOutInSeconds);
+            CacheManager.Default.RedisCacheProvider.Set(tokenKey, this.identity.User, timeOutInSeconds);
             //写入token
             this.httpContext.Response.Cookies.Append(SessionKey, tokenKey, new CookieOptions()
             {

@@ -49,7 +49,7 @@ namespace Bzway.Module.Wechat.Service
         {
             try
             {
-                var cache = AppEngine.Current.Resolve<ICacheManager>();
+                var cache = CacheManager.Default.RedisCacheProvider;
                 var accessToken = cache.Get<string>("Wechat.AccessToken." + this.CurrentWechatId, () =>
                 {
                     var currentWechatOffianalAccount = cache.Get<WechatOfficialAccount>("Wechat.OfficialAccount" + this.CurrentWechatId, () =>

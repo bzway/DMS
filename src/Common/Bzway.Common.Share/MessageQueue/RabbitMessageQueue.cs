@@ -10,8 +10,6 @@ using System.Text;
 
 namespace Bzway.Common.Share
 {
-
-
     public class RabbitMessageQueue<T> : IMessageQueue<T>
     {
         static ConnectionFactory factory = new ConnectionFactory { HostName = "localhost" };
@@ -48,8 +46,6 @@ namespace Bzway.Common.Share
             }
         }
     }
-
-
     public class RabbitMessageQueue : IMessageQueue<string>
     {
         static ConnectionFactory factory = new ConnectionFactory { HostName = "localhost" };

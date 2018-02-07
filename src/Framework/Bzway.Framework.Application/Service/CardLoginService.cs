@@ -14,19 +14,17 @@ namespace Bzway.Framework.Application
         #region ctor
         private readonly ILogger<UserLoginService> logger;
         private readonly ISystemDatabase db;
-        private readonly ICacheManager cache;
         public UserLoginService(ILoggerFactory loggerFactory)
         {
             this.logger = loggerFactory.CreateLogger<UserLoginService>();
             this.db = SystemDatabase.GetDatabase();
-            this.cache = AppEngine.GetService<ICacheManager>("Redis");
         }
         #endregion
 
         public Result<UserProfile> Login(string userName, string password, string validateCode)
         {
-            var key = "authorize_code:" + userName;
-            if (!string.Equals(validateCode, this.cache.Get<string>(key), StringComparison.CurrentCultureIgnoreCase))
+            var key = "authorize_code:" + validateCode;
+            if (!CacheManager.Default.RedisCacheProvider.IsSet(key))
             {
                 return Result<UserProfile>.Fail(ResultCode.Error, "验证码错误");
             }
@@ -107,7 +105,7 @@ namespace Bzway.Framework.Application
             {
                 return Result<UserProfile>.Fail(ResultCode.Error);
             }
-            if (Cryptor.EncryptSHA1(phoneNumber + code + password) == Cryptor.EncryptSHA1(phoneNumber + code + user.Password))
+            if (Cryptor.EncryptMD5(password) == user.Password)
             {
 
                 return Result<UserProfile>.Success(new UserProfile()
@@ -122,6 +120,7 @@ namespace Bzway.Framework.Application
                     IsLunarBirthday = user.IsLunarBirthday,
                     LockedTime = user.LockedTime,
                     Name = user.Name,
+                    Id = user.Id,
                     NickName = user.NickName,
                     Province = user.Province,
                     UserName = user.UserName,
@@ -191,8 +190,9 @@ namespace Bzway.Framework.Application
             {
                 return Result<UserProfile>.Fail(ResultCode.Error);
             }
-            if (Cryptor.EncryptSHA1(email + code + password) == Cryptor.EncryptSHA1(email + code + user.Password))
+            if (Cryptor.EncryptMD5(password) == user.Password)
             {
+                var a = Cryptor.EncryptMD5(password);
                 return Result<UserProfile>.Success(new UserProfile()
                 {
                     Birthday = user.Birthday,
@@ -205,6 +205,7 @@ namespace Bzway.Framework.Application
                     IsLunarBirthday = user.IsLunarBirthday,
                     LockedTime = user.LockedTime,
                     Name = user.Name,
+                    Id = user.Id,
                     NickName = user.NickName,
                     Province = user.Province,
                     UserName = user.UserName,
@@ -221,9 +222,8 @@ namespace Bzway.Framework.Application
             {
                 return Result<UserProfile>.Fail(ResultCode.Error);
             }
-            if (Cryptor.EncryptSHA1(phoneNumber + code + password) == Cryptor.EncryptSHA1(phoneNumber + code + user.Password))
+            if (Cryptor.EncryptMD5(password) == user.Password)
             {
-
                 return Result<UserProfile>.Success(new UserProfile()
                 {
                     Birthday = user.Birthday,
@@ -236,6 +236,7 @@ namespace Bzway.Framework.Application
                     IsLunarBirthday = user.IsLunarBirthday,
                     LockedTime = user.LockedTime,
                     Name = user.Name,
+                    Id = user.Id,
                     NickName = user.NickName,
                     Province = user.Province,
                     UserName = user.UserName,

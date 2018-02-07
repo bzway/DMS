@@ -1,5 +1,4 @@
-@model WebApplication1.Models.test
-
+@model AuthorizationModel
 @{
     ViewData["Title"] = "Create";
 }
@@ -12,17 +11,17 @@
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Age" class="col-md-2 control-label"></label>
+            <label asp-for="AppId" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Age" class="form-control" />
-                <span asp-validation-for="Age" class="text-danger" />
+                <input asp-for="AppId" class="form-control" />
+                <span asp-validation-for="AppId" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <label asp-for="AppId" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger" />
+                <input asp-for="AppId" class="form-control" />
+                <span asp-validation-for="AppId" class="text-danger" />
             </div>
         </div>
         <div class="form-group">

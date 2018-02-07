@@ -7,9 +7,11 @@ using Bzway.Framework.Application;
 using Microsoft.AspNetCore.Authorization;
 using Bzway.Sites.OpenApi.Models;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 
 namespace Bzway.Sites.OpenApi.Controllers
 {
+    [Route("Connect")]
     public class ConnectController : Controller
     {
         private readonly ITenant tenant;
@@ -22,7 +24,7 @@ namespace Bzway.Sites.OpenApi.Controllers
             this.logger = loggerFactory.CreateLogger<ConnectController>();
         }
 
-        [HttpGet]
+        [HttpGet("Authorize")]
         public ActionResult Authorize(string appId, string responseType, string scope, string state, string callBack)
         {
             if (string.IsNullOrEmpty(responseType))
@@ -37,7 +39,7 @@ namespace Bzway.Sites.OpenApi.Controllers
             {
                 return this.RedirectToAction("login", new
                 {
-                    returnUrl = $"/Authorize?appId={appId}&responseType={responseType}&scope={scope}&state={state}&callBack={callBack}"
+                    returnUrl = $"/Connect/Authorize?appId={appId}&responseType={responseType}&scope={scope}&state={state}&callBack={callBack}"
                 });
             }
 
@@ -56,7 +58,7 @@ namespace Bzway.Sites.OpenApi.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpPost("Authorize")]
         [ValidateAntiForgeryToken]
         public ActionResult Authorize(AuthorizationModel model)
         {
@@ -68,6 +70,7 @@ namespace Bzway.Sites.OpenApi.Controllers
             return Redirect(model.CallBack + "&" + model.ResponseType + "=" + code + "&state=" + model.State);
         }
 
+        [HttpGet("Login")]
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -75,7 +78,7 @@ namespace Bzway.Sites.OpenApi.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("Login")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginRequestModel model, string returnUrl)
@@ -92,7 +95,7 @@ namespace Bzway.Sites.OpenApi.Controllers
                     ModelState.AddModelError("LoginModelRequired", "GrantType is Wrong");
                     return View(model);
                 }
-                var result = loginProvider.Login(model.AppId, model.Signature, model.Random);
+                var result = loginProvider.Login(model.AppId, model.SecretKey, model.ValidateCode);
                 if (result.Code != ResultCode.OK)
                 {
                     ModelState.AddModelError("LoginModelRequired", result.Message);
@@ -100,10 +103,14 @@ namespace Bzway.Sites.OpenApi.Controllers
                 }
                 this.User.AddIdentity(new UserIdentity()
                 {
-                    Id = result.Data.Id,
-                    NickName = result.Data.NickName,
-                    Roles = string.Join(',', result.Data.Roles),
-                    Version = 1
+                    User = new UserModel()
+                    {
+                        Id = result.Data.Id,
+                        NickName = result.Data.NickName,
+                        Roles = string.Join(',', result.Data.Roles),
+                        Version = 1,
+                        Language = result.Data.Language,
+                    }
                 });
 
 
@@ -123,13 +130,13 @@ namespace Bzway.Sites.OpenApi.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("AccessToken")]
         public ActionResult AccessToken(string appId, string secretKey, string code, string grantType)
         {
             var result = this.loginProvider.TryResolveService(grantType).Login(appId, secretKey, code);
             return Redirect("/");
         }
-        [HttpGet]
+        [HttpGet("RefreshToken")]
         public ActionResult RefreshToken(string appId, string refreshToken, string grantType)
         {
             var result = this.loginProvider.TryResolveService(grantType).Login(appId, refreshToken, grantType);

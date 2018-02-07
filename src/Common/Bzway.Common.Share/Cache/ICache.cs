@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Bzway.Common.Share
 {
-    public interface ICacheManager
+    public interface ICache
     {
         T Get<T>(string key);
         T Get<T>(string key, Func<T> call, int timeOut = 0);
