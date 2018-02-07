@@ -12,8 +12,6 @@ using System.Threading;
 using System.Threading.Tasks;
 namespace Bzway.Sites.OpenApi.Models
 {
-    [ModelBinder(typeof(FromOrBodyModelBinder))]
-
     public class LoginRequestModel
     {
 
@@ -29,11 +27,11 @@ namespace Bzway.Sites.OpenApi.Models
 
     public class AuthorizationModel
     {
-        public string ResponseType { get; internal set; }
-        public string CallBack { get; internal set; }
-        public string State { get; internal set; }
-        public string AppId { get; internal set; }
-        public string Scope { get; internal set; }
+        public string ResponseType { get; set; }
+        public string CallBack { get; set; }
+        public string State { get; set; }
+        public string AppId { get; set; }
+        public string Scope { get; set; }
     }
 
     public class FromOrBodyModelBinder : IModelBinder

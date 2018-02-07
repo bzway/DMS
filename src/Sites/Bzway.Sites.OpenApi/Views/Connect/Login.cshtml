@@ -1,8 +1,5 @@
 ﻿@model LoginRequestModel
-@section Scripts {
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-}
+
 
 @{
     this.ViewBag.Title = "Log in".ToLocalized();
@@ -22,4 +19,7 @@
     <button class="btn btn-lg btn-primary btn-block" type="submit">@("Sign in".ToLocalized())</button>
 }
 
-
+@section Scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}

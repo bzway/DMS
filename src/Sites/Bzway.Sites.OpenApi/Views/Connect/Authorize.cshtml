@@ -2,13 +2,8 @@
 @{
     ViewData["Title"] = "Create";
 }
-
-<h2>Create</h2>
-
-<form asp-action="Create">
+<form asp-action="Authorize">
     <div class="form-horizontal">
-        <h4>test</h4>
-        <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="AppId" class="col-md-2 control-label"></label>
@@ -18,15 +13,36 @@
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="AppId" class="col-md-2 control-label"></label>
+            <label asp-for="ResponseType" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="AppId" class="form-control" />
-                <span asp-validation-for="AppId" class="text-danger" />
+                <input asp-for="ResponseType" class="form-control" />
+                <span asp-validation-for="ResponseType" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Scope" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Scope" class="form-control" />
+                <span asp-validation-for="Scope" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="State" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="State" class="form-control" />
+                <span asp-validation-for="State" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CallBack" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CallBack" class="form-control" />
+                <span asp-validation-for="CallBack" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-primary btn-block" />
             </div>
         </div>
     </div>
@@ -34,7 +50,7 @@
 
 <div>
     <a asp-action="Index">Back to List</a>
-</div>
+</div> 
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
