@@ -16,11 +16,13 @@ namespace Bzway.Sites.OpenApi.Controllers
     {
         private readonly ITenant tenant;
         private readonly ILogger logger;
-        private readonly ILoginProvider loginProvider;
-        public ConnectController(ITenant tenant, ILoginProvider loginProvider, ILoggerFactory loggerFactory)
+        private readonly ILoginService loginService;
+        private readonly ITokenService tokenService;
+        public ConnectController(ITenant tenant, ILoginService loginService, ITokenService tokenService, ILoggerFactory loggerFactory)
         {
             this.tenant = tenant;
-            this.loginProvider = loginProvider;
+            this.loginService = loginService;
+            this.tokenService = tokenService;
             this.logger = loggerFactory.CreateLogger<ConnectController>();
         }
 
@@ -66,7 +68,11 @@ namespace Bzway.Sites.OpenApi.Controllers
             {
                 return View(model);
             }
-            var code = this.loginProvider.ToString();
+            if (model.Scope == "")
+            {
+                //var code = Guid.NewGuid().ToString("N");
+            }
+            var code = this.loginService.ToString();
             return Redirect(model.CallBack + "&" + model.ResponseType + "=" + code + "&state=" + model.State);
         }
 
@@ -89,13 +95,7 @@ namespace Bzway.Sites.OpenApi.Controllers
                 {
                     return View(model);
                 }
-                var loginProvider = this.loginProvider.TryResolveService(model.GrantType);
-                if (loginProvider == null)
-                {
-                    ModelState.AddModelError("LoginModelRequired", "GrantType is Wrong");
-                    return View(model);
-                }
-                var result = loginProvider.Login(model.AppId, model.SecretKey, model.ValidateCode);
+                var result = this.loginService.Login(model.UserName, model.Password, model.ValidateCode);
                 if (result.Code != ResultCode.OK)
                 {
                     ModelState.AddModelError("LoginModelRequired", result.Message);
@@ -133,13 +133,23 @@ namespace Bzway.Sites.OpenApi.Controllers
         [HttpGet("AccessToken")]
         public ActionResult AccessToken(string appId, string secretKey, string code, string grantType)
         {
-            var result = this.loginProvider.TryResolveService(grantType).Login(appId, secretKey, code);
+            if (string.IsNullOrEmpty(grantType))
+            {
+                grantType = "client_credential";
+            }
+
+            if (grantType == "client_credential")
+            {
+
+                return Redirect("/");
+            }
+            var result = this.tokenService.GenerateAccessToken(appId, secretKey, code);
             return Redirect("/");
         }
         [HttpGet("RefreshToken")]
         public ActionResult RefreshToken(string appId, string refreshToken, string grantType)
         {
-            var result = this.loginProvider.TryResolveService(grantType).Login(appId, refreshToken, grantType);
+            var result = this.tokenService.GenerateAccessToken(appId, refreshToken, grantType);
             return Redirect("/");
         }
     }

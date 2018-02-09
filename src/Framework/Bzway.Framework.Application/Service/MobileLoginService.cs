@@ -8,24 +8,5 @@ using System.Linq;
 
 namespace Bzway.Framework.Application
 {
-    internal class AuthLoginService : ILoginService
-    {
-        #region ctor
-        private readonly ILogger<AuthLoginService> logger;
-        private readonly ISystemDatabase db;
-        public AuthLoginService(ILoggerFactory loggerFactory)
-        {
-            this.logger = loggerFactory.CreateLogger<AuthLoginService>();
-            this.db = SystemDatabase.GetDatabase();
-        }
-
-
-        #endregion
-
-        public Result<UserProfile> Login(string userName, string password, string validateCode)
-        {
-            throw new NotImplementedException();
-        }
- 
-    }
+   
 }

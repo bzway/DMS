@@ -22,7 +22,7 @@ namespace Bzway.Framework.Application
     }
     public class BzwayPrincipal : ClaimsPrincipal
     {
-        public static readonly string SessionKey = "USR";
+        private const string SessionKey = "USR";
         private readonly IDictionary<string, string> cookies;
         private readonly HttpContext httpContext;
 
@@ -66,6 +66,7 @@ namespace Bzway.Framework.Application
         }
         public override void AddIdentity(ClaimsIdentity identity)
         {
+
             this.identity = identity as UserIdentity;
             if (this.identity == null)
             {
@@ -74,6 +75,7 @@ namespace Bzway.Framework.Application
             }
             var timeOutInSeconds = 1000;
 
+            CacheManager.Default.RedisCacheProvider.Set("abc", identity);
 
             var userKey = "user_token:" + this.identity.User.Id;
 

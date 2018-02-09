@@ -14,15 +14,12 @@ namespace Bzway.Sites.OpenApi.Models
 {
     public class LoginRequestModel
     {
-
-        public string GrantType { get; set; }
         [Required]
-        public string AppId { get; set; }
+        public string UserName { get; set; }
+        [Required]
+        public string Password { get; set; }
         public string ValidateCode { get; set; }
-        [Required]
-        public string SecretKey { get; set; }
         public string Language { get; set; }
-
     }
 
     public class AuthorizationModel
@@ -32,6 +29,12 @@ namespace Bzway.Sites.OpenApi.Models
         public string State { get; set; }
         public string AppId { get; set; }
         public string Scope { get; set; }
+    }
+
+    public enum AuthorizationScope
+    {
+        base_info = 0,
+        private_info = 1
     }
 
     public class FromOrBodyModelBinder : IModelBinder

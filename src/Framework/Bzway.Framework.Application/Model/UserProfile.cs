@@ -5,6 +5,13 @@ using Bzway.Framework.Application.Entity;
 
 namespace Bzway.Framework.Application
 {
+    public class TokenModel
+    {
+        public string Token { get; set; }
+        public string RefreshToken { get; set; }
+        public int ExpiredIn { get; set; }
+        public string UserId { get; set; }
+    }
     public class UserProfile
     {
         public string Name { get; set; }
