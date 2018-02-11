@@ -23,38 +23,42 @@ namespace Bzway.Framework.Application
     public class BzwayPrincipal : ClaimsPrincipal
     {
         private const string SessionKey = "USR";
-        private readonly IDictionary<string, string> cookies;
         private readonly HttpContext httpContext;
+        private readonly ITokenService tokenService;
 
-        public BzwayPrincipal(IHttpContextAccessor contextAccessor)
+        public BzwayPrincipal(IHttpContextAccessor contextAccessor, ITokenService tokenService)
         {
             this.httpContext = contextAccessor.HttpContext;
-            this.cookies = new Dictionary<string, string>();
-            foreach (var item in this.httpContext.Request.Cookies.Where(m => m.Key == SessionKey))
-            {
-                this.cookies.Add(item.Key, item.Value);
-            }
-            foreach (var item in this.httpContext.Request.Headers.Where(m => m.Key == SessionKey))
-            {
-                this.cookies.Add(item.Key, item.Value);
-            }
+            this.tokenService = tokenService;
         }
-        private UserIdentity identity;
+        private ClaimsIdentity identity;
         public override IIdentity Identity
         {
             get
             {
                 if (this.identity == null)
                 {
-                    if (cookies.ContainsKey(SessionKey))
+                    var token = string.Empty;
+                    if (this.httpContext.Request.Cookies.ContainsKey(SessionKey))
                     {
-                        var key = cookies[SessionKey];
-                        var user = CacheManager.Default.RedisCacheProvider.Get<UserModel>(key);
-                        this.identity = new UserIdentity() { User = user };
+                        token = this.httpContext.Request.Cookies[SessionKey];
+                    }
+                    else if (this.httpContext.Request.Query.ContainsKey(SessionKey))
+                    {
+                        token = this.httpContext.Request.Query[SessionKey];
                     }
                     else
                     {
-                        this.identity = new UserIdentity();
+                        token = this.httpContext.Request.Headers[SessionKey].FirstOrDefault();
+                    }
+                    ClaimsIdentity identity = this.tokenService.GetUserToken(token).Data;
+                    if (identity == null)
+                    {
+                        this.identity = new ClaimsIdentity();
+                    }
+                    else
+                    {
+                        this.identity = identity;
                     }
                 }
                 return this.identity;
@@ -66,36 +70,11 @@ namespace Bzway.Framework.Application
         }
         public override void AddIdentity(ClaimsIdentity identity)
         {
-
-            this.identity = identity as UserIdentity;
-            if (this.identity == null)
-            {
-                base.AddIdentity(identity);
-                return;
-            }
-            var timeOutInSeconds = 1000;
-
-            CacheManager.Default.RedisCacheProvider.Set("abc", identity);
-
-            var userKey = "user_token:" + this.identity.User.Id;
-
-            //根据用户Id得到token key
-            string tokenKey;
-            if (CacheManager.Default.RedisCacheProvider.IsSet(userKey))
-            {
-                tokenKey = CacheManager.Default.RedisCacheProvider.Get<string>(userKey);
-            }
-            else
-            {
-                tokenKey = "http_session:" + Guid.NewGuid().ToString("N");
-                CacheManager.Default.RedisCacheProvider.Set(userKey, tokenKey, timeOutInSeconds);
-            }
-            //记录tokenKey
-            CacheManager.Default.RedisCacheProvider.Set(tokenKey, this.identity.User, timeOutInSeconds);
+            var token = this.tokenService.GenerateUserAccessToken(identity).Data;
             //写入token
-            this.httpContext.Response.Cookies.Append(SessionKey, tokenKey, new CookieOptions()
+            this.httpContext.Response.Cookies.Append(SessionKey, token.Token, new CookieOptions()
             {
-                Expires = DateTimeOffset.Now.AddSeconds(timeOutInSeconds),
+                Expires = DateTimeOffset.Now.AddSeconds(token.ExpiredIn),
                 HttpOnly = true,
             });
         }

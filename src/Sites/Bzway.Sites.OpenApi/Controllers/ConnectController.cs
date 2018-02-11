@@ -140,16 +140,20 @@ namespace Bzway.Sites.OpenApi.Controllers
 
             if (grantType == "client_credential")
             {
-
+                var result = this.tokenService.GenerateAuthAccessToken(appId, secretKey, code);
                 return Redirect("/");
             }
-            var result = this.tokenService.GenerateAccessToken(appId, secretKey, code);
-            return Redirect("/");
+            else
+            {
+                var result = this.tokenService.GenerateAuthAccessToken(appId, secretKey, code);
+                return Redirect("/");
+            }
+
         }
         [HttpGet("RefreshToken")]
         public ActionResult RefreshToken(string appId, string refreshToken, string grantType)
         {
-            var result = this.tokenService.GenerateAccessToken(appId, refreshToken, grantType);
+            var result = this.tokenService.GenerateAuthAccessToken(appId, refreshToken, grantType);
             return Redirect("/");
         }
     }
