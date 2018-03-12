@@ -49,7 +49,7 @@ namespace Bzway.Module.Wechat
         public long subscribe_time { get; set; }
         public DateTime SubscribeTime()
         {
-            return DateTimeHelper.ConvertToBaseTime(subscribe_time);
+            return DateTimeHelper.GetEpochDateTime(subscribe_time);
         }
 
         public string unionid { get; set; }

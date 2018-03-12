@@ -41,7 +41,7 @@ namespace Bzway.Module.Wechat.Model
         [XmlIgnore]
         public DateTime CreateTime { get; set; }
         [XmlElement("CreateTime")]
-        public long WechatCreateTime
+        public double WechatCreateTime
         {
             get
             {
@@ -49,7 +49,7 @@ namespace Bzway.Module.Wechat.Model
             }
             set
             {
-                this.CreateTime = DateTimeHelper.ConvertToBaseTime(value);
+                this.CreateTime = DateTimeHelper.GetEpochDateTime(value);
             }
         }
     }

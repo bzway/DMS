@@ -15,14 +15,15 @@ namespace Bzway.Sites.BackOffice.Controllers
     public class HomeController : BaseController<HomeController>
     {
         #region ctor
-        readonly IWechatService wechatService;
+        //readonly IWechatService wechatService;
         readonly ITenant tenant;
         public HomeController(
-            IWechatService wechatService, ITenant tenant,
+            //IWechatService wechatService,
+            ITenant tenant,
             ISiteService siteService,
             ILoggerFactory loggerFactory) : base(loggerFactory, siteService)
         {
-            this.wechatService = wechatService;
+            //this.wechatService = wechatService;
             this.tenant = tenant;
         }
         #endregion

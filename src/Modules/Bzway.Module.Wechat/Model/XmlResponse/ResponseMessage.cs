@@ -16,7 +16,7 @@ namespace Bzway.Module.Wechat
         [XmlIgnore]
         public DateTime CreateTime { get; set; }
         [XmlElement("CreateTime")]
-        public long CreateTimeWechat
+        public double CreateTimeWechat
         {
             get
             {
@@ -24,7 +24,7 @@ namespace Bzway.Module.Wechat
             }
             set
             {
-                this.CreateTime = DateTimeHelper.ConvertToBaseTime(value);
+                this.CreateTime = DateTimeHelper.GetEpochDateTime(value);
             }
         }
         public string ToXMLString()

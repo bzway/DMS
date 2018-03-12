@@ -35,11 +35,16 @@ namespace Bzway.Module.Wechat.Entity
         /// 所属公众号
         /// </summary>
         public string OfficialAccount { get; set; }
-        public string MaterialID { get; set; }
+
         /// <summary>
-        /// 微信唯一标识
+        /// 关联的文章Id,文章的内容在这里有冗余。
         /// </summary>
-        public string MediaId { get; set; }
+        public string ArticleId { get; set; }
+
+        /// <summary>
+        /// 关联WechatMaterial中多图文的MediaID
+        /// </summary>
+        public string WechatMaterialId { get; set; }
 
         public int SortBy { get; set; }
         /// <summary>

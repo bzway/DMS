@@ -88,7 +88,6 @@ namespace Bzway.Common.Utility
 
         internal class TimeStamp
         {
-            private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             private static readonly DateTime BaseTime = new DateTime(2017, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             public static readonly int lenthOfTimeStamp = 42;//机器码长度
             public static readonly long maxTimeStamp = 1L << lenthOfTimeStamp; //最大机器码
@@ -104,10 +103,7 @@ namespace Bzway.Common.Utility
                 double value = input >> (64 - lenthOfTimeStamp);
                 return BaseTime.AddMilliseconds(value);
             }
-            public static DateTime GetEpochDateTime(double input)
-            {
-                return Epoch.AddSeconds(input);
-            }
+          
         }
         internal class Machine
         {

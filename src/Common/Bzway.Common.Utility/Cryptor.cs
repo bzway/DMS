@@ -175,12 +175,43 @@ namespace Bzway.Common.Utility
             }
         }
 
+        public static string RSASign(string privatekey, string content)
+        {
+            using (var rsa = RSA.Create())
+            {
+                rsa.FromPrivateString(privatekey);
+                var bytes = rsa.SignData(Encoding.UTF8.GetBytes(content), HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+                rsa.Clear();
+                return Convert.ToBase64String(bytes);
+            }
+        }
+
+        public static string ToKey(string privatekey)
+        {
+            using (var rsa = RSA.Create())
+            {
+                rsa.FromPrivateString(privatekey);
+                return rsa.ToXmlStringX(true);
+            }
+        }
+
+        public static bool RSAVerifySign(string publickey, string content, string sign)
+        {
+            using (var rsa = RSA.Create())
+            {
+                rsa.FromPublicString(publickey);
+                var result = rsa.VerifyData(Encoding.UTF8.GetBytes(content), Convert.FromBase64String(sign), HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+                rsa.Clear();
+                return result;
+            }
+        }
 
         public static PublicAndPrivateKey GenerateKeys()
         {
             using (var rsa = RSA.Create())
             {
                 var parameters = rsa.ExportParameters(true);
+
                 var result = new PublicAndPrivateKey()
                 {
                     PrivateKey = Convert.ToBase64String(AsnKeyBuilder.PrivateKeyToPKCS8(parameters).GetBytes()),
@@ -476,6 +507,71 @@ namespace Bzway.Common.Utility
         #endregion
 
         #endregion
+        #endregion
+
+        #region EC Key
+
+        public class HashWithSaltResult
+        {
+            public string Salt { get; }
+            public string Digest { get; set; }
+
+            public HashWithSaltResult(string salt, string digest)
+            {
+                Salt = salt;
+                Digest = digest;
+            }
+        }
+        public class RNG
+        {
+            public string GenerateRandomCryptographicKey(int keyLength)
+            {
+                return Convert.ToBase64String(GenerateRandomCryptographicBytes(keyLength));
+            }
+
+            public byte[] GenerateRandomCryptographicBytes(int keyLength)
+            {
+                RNGCryptoServiceProvider rngCryptoServiceProvider = new RNGCryptoServiceProvider();
+                byte[] randomBytes = new byte[keyLength];
+                rngCryptoServiceProvider.GetBytes(randomBytes);
+                return randomBytes;
+            }
+        }
+        public class PKCS
+        {
+            public HashWithSaltResult HashPasswordWithPkcs(string plainPassword, int roundOfHashIterations, int saltLengthBytes)
+            {
+                RNG rng = new RNG();
+                byte[] saltBytes = rng.GenerateRandomCryptographicBytes(saltLengthBytes);
+                Rfc2898DeriveBytes pbkdf = new Rfc2898DeriveBytes(plainPassword, saltBytes, roundOfHashIterations);
+                byte[] derivedBytes = pbkdf.GetBytes(32);
+                return new HashWithSaltResult(Convert.ToBase64String(saltBytes), Convert.ToBase64String(derivedBytes));
+            }
+        }
+        public static string HashPassword(string password)
+        {
+
+            PKCS pkcs = new PKCS();
+            var result = pkcs.HashPasswordWithPkcs(password, 50000, 32);
+            return result.Digest;
+        }
+        private static void TestPkcs()
+        {
+            string password = "ultra_safe_P455w0rD";
+            PKCS pkcs = new PKCS();
+            HashWithSaltResult hashResult100Iterations = pkcs.HashPasswordWithPkcs(password, 100, 32);
+            HashWithSaltResult hashResult10000Iterations = pkcs.HashPasswordWithPkcs(password, 10000, 32);
+            HashWithSaltResult hashResult50000Iterations = pkcs.HashPasswordWithPkcs(password, 50000, 32);
+
+            Console.WriteLine(hashResult100Iterations.Salt);
+            Console.WriteLine(hashResult100Iterations.Digest);
+            Console.WriteLine();
+            Console.WriteLine(hashResult10000Iterations.Salt);
+            Console.WriteLine(hashResult10000Iterations.Digest);
+            Console.WriteLine();
+            Console.WriteLine(hashResult50000Iterations.Salt);
+            Console.WriteLine(hashResult50000Iterations.Digest);
+        }
         #endregion
     }
 }

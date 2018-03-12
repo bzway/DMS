@@ -6,16 +6,7 @@ namespace Tests
     [TestClass]
     public class Tests
     {
-        public void TestDateTime()
-        {
-            DateTime baseTime = new DateTime(1970, 1, 1);
-            var expected = (long)(DateTime.UtcNow - baseTime).TotalSeconds;
-            var v1 = DateTime.Now.ToFileTimeUtc();
-            var v2 = DateTime.UtcNow.ToFileTime();
-            Assert.Equals(expected, v1);
-            Assert.Equals(expected, v2);
-        }
-
+      
         [TestMethod]
         public void Test1()
         {

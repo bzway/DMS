@@ -25,7 +25,6 @@ namespace Bzway.Framework.Connect
             {
                 dict.Add(item.Key, item.Value);
             }
-            context.User = new BzwayPrincipal(null);
             await _next.Invoke(context);
         }
     }

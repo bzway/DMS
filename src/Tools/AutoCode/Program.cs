@@ -1,11 +1,16 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
+
 namespace AutoCode
 {
     public static class Program
     {
-        static void Main(string[] arg)
+
+
+        [STAThread]
+        static void Main()
         {
             var workPath = System.Environment.CurrentDirectory;
             var cmdBuilder = new StringBuilder();
@@ -27,6 +32,8 @@ namespace AutoCode
             var batFile = Path.Combine(workPath, "publish.bat");
             File.WriteAllText(batFile, cmdBuilder.ToString());
             Process.Start(batFile);
+
+
         }
     }
 }
