@@ -21,6 +21,8 @@
         }
         list.Add(SecondPrice.NewStockPrice(line));
     }
+    Bzway.Framework.Scheduler.SchedulerManager.Default.AddJob<Bzway.Framework.Scheduler.AssemblyJob>("0 0/1 * 1/1 * ? *");
+    
     var key = Bzway.Common.Utility.Cryptor.GenerateKeys();
     key.PrivateKey = @"MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDQEvZC8r+YeBdd
 pg8xnPOGBABgXE7qCSBw2m2eCYFE97cdZKuLEyUGxY/nBTSbmwOvaghiPY1Q/leI
@@ -60,7 +62,7 @@ bQIDAQAB";
     var contents = "_gateway_client_id=api_test01&_gateway_client_noncestr=fe5b10450b9e506fb1eaa77e2f0ceb74&_gateway_client_signtype=RSA&_gateway_client_timestamp=1519803906810&param1=1&param2=2&param3=3&serviceMethod=echo&serviceType=com.ebuy.gateway.web.apidoc.service.TestGatewayService";
     var sign = Bzway.Common.Utility.Cryptor.RSASign(key.PrivateKey, contents);
     var abc = Bzway.Common.Utility.Cryptor.RSAVerifySign(key.PublicKey, contents, sign);
-   
+
 
 }
 <div>

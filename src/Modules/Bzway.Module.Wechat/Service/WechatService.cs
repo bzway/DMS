@@ -39,7 +39,7 @@ namespace Bzway.Module.Wechat.Service
                     var existedItem = this.db.Entity<WechatMaterial>().Query().Where(m => m.MediaId, item.media_id, CompareType.Equal).First();
                     if (existedItem != null)
                     {
-                        foreach (var newsItem in this.db.Entity<WechatNewsMaterial>().Query().Where(m => m.MaterialID, existedItem.Id, CompareType.Equal).ToList())
+                        foreach (var newsItem in this.db.Entity<WechatNewsMaterial>().Query().Where(m => m.ArticleId, existedItem.Id, CompareType.Equal).ToList())
                         {
                             this.db.Entity<WechatNewsMaterial>().Delete(newsItem);
                         };
@@ -75,8 +75,7 @@ namespace Bzway.Module.Wechat.Service
                             Digest = detail.digest,
                             IsReleased = true,
                             LastUpdateTime = DateTime.UtcNow,
-                            MaterialID = materialId,
-                            MediaId = item.media_id,
+                            
                             ThumbMediaId = detail.thumb_media_id,
                             OfficialAccount = string.Empty,
                             ShowCoverPicture = detail.show_cover_pic > 0,
