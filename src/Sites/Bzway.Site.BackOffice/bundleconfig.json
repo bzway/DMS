@@ -9,6 +9,11 @@
     ]
   },
   {
+    "inputFiles": [ "wwwroot/**/*(*.js|!(*.min.js)" ]
+
+  },
+  {
+
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
       "wwwroot/js/site.js"

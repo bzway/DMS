@@ -31,6 +31,7 @@ namespace Bzway.Sites.OpenApi
             services.AddLogging();
             //Add framework services.
             services.AddMultiTenant();
+          
             services.AddMvc();
             return services.Build();
         }

@@ -1,77 +1,31 @@
 ﻿@using System.Net.Http;
 @using System.Text;
-@{
-    var url = "http://hq.sinajs.cn/?list=sz002024,sz300058,sz300466" + this.Context.Request.Query["list"];
-    var result = string.Empty;
-    using (HttpClient client = new HttpClient())
-    {
-        using (var content = new StringContent("", Encoding.ASCII))
+@using System.Linq;
+@model List<Bzway.Sites.BackOffice.Controllers.HomeController.MobileModel>
+@*@{
+        var types = AppEngine.GetService<ITypeFinder>().Find<Controller>().ToArray();
+        var controllers = from t in types
+                          orderby t.FullName
+                          from m in t.GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.DeclaredOnly)
+                          where !m.IsSpecialName
+                          select new { ControllerName = t.FullName, ActionName = m.Name, Params = m.GetParameters() };
+
+        StringBuilder sb = new StringBuilder();
+        foreach (var item in controllers)
         {
-            var buffer = client.PostAsync(url, content).Result.Content.ReadAsByteArrayAsync().Result;
-            result = Encoding.ASCII.GetString(buffer);
+            var paramters = string.Join(",", item.Params.Select(m => m.Name).ToList());
+
+            sb.AppendLine(string.Format("Controller: {0} , Action: {1}({2}) <br/>", item.ControllerName, item.ActionName, paramters));
+
         }
+        sb.AppendLine(string.Format("Controller / action count: {0} <br/>", controllers.Count()));
+        sb.AppendLine(string.Format("Controller count: {0} <br/>", controllers.GroupBy(c => c.ControllerName).Count()));
     }
-    List<SecondPrice> list = new List<SecondPrice>();
-
-    foreach (var line in result.Split('\r', '\n'))
-    {
-        if (line.Length < 100)
-        {
-            continue;
-        }
-        list.Add(SecondPrice.NewStockPrice(line));
-    }
-    Bzway.Framework.Scheduler.SchedulerManager.Default.AddJob<Bzway.Framework.Scheduler.AssemblyJob>("0 0/1 * 1/1 * ? *");
-    
-    var key = Bzway.Common.Utility.Cryptor.GenerateKeys();
-    key.PrivateKey = @"MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDQEvZC8r+YeBdd
-pg8xnPOGBABgXE7qCSBw2m2eCYFE97cdZKuLEyUGxY/nBTSbmwOvaghiPY1Q/leI
-KRjZQCoo8C73a4y4nBnHEK7dJIgCm1uo7DqFvKlyBYvZwDv0DitutMiyGW4GwDAU
-ATAqF+6x5aG+bBBORZqZT0A9d17M67bTa6Rk5Z2CZh+Qn73XS92fV1hr9ahYxxLB
-xmzVt2EDjolUffc6ViKi+w3YVzTpIwL5ZRtWXZSius29zyA7pfXSKXjuDlwxZD9v
-7ULf2HaJu3ADJKN/Jt4Abjq0aoABy0TYeDAkFaT2YWPx56gS/42W3M6hB/N7ngIz
-A7Q3bdBNAgMBAAECggEAfy/YEDxKGWzu+3OSPgVuZjDz+fLy2eQSTGl4L+4ncnzp
-FbJ/mVdufqEswU5RRfyPWB48WbC+PQ/7eWOFqOar3rJSQzMepYnlx+TOvqah7NYC
-RVOAwlb8TJJPVh9HhntS2SzwsM0SkFXSDahcRJ60bVGseLWdkfrB8Yyb+/aHoEIr
-GOH3lfB9YZVYYTzBQCM/4gnY4UlKIOOIDlLLZjRmKgaGKWNiEL3TFQJyKSP98HFg
-3AKoSVlDZ4RCjftv4XiU+ca66jP59rK/PDDJUAYOBmVbRN1eRP01Ib27/0W5ZYNe
-HPzfAzr1YHjUqUsqO2aANR2EoiMgIcZDVEInfi9hgQKBgQDsDIXRxG1frR5wPzEl
-3F2DKu1YLa/qz6V8MtNrVuuXitsJZ0lqjs8yVmaGrqpxHdexj2St4oNYxWM17PfE
-I9sVUOOeVpssHGSj2K9IA45BDLXtHdSVNGRuwI2Ybe5TgTQLyHeI7TVOnQqVg0lw
-RJGq4zC9ESqiFyweyIAiJtzgaQKBgQDhqSMd2vrXI4G/lZkCl5hjrJzzxlLBR4D6
-anrn+nbyDEOkBSwXkj9Q53LRRMgyx7HCxWnKciFDzy7iuQFLZTc+Jdc39l4SpLok
-90bxRQusClsbTkPKsSMldbEnn8LL4lVnbdiMBB+zZaVMiiyzot4UA0KXDBH14DmE
-kPL+09A0RQKBgQCDjfMi1pOSaBx3uHA+xpMDYHBI3aWWe0Wic30q7JV+ru+mTP84
-uQC28DpRw5TQWC53EhCtbHmBhvjk+/2WPdmDBsLk4yW2LtjUDBacTwcAMAJQdXid
-80YqB3yiwFm8Bl0oWABuuq0j9BgK/dF3FXANynLGXIPjNIDtYxcucXRWSQKBgQDc
-IJvq8cQjvbVB6HKcPrke8jEg8+OiO1gr71b5mDATqbcJ9ymtzLIK/9vXHBuWvYpA
-D0dFftPITADWldYXcCLVcyBgrOnTkfErQjRoAwyBxJBfMJecz/MTBZ3Mo2HodV8O
-R+8nlpY97/exlFBK46NzLkL1CYczrIkvMh54SrMdaQKBgQC+UyA3ZANka4FXvvwR
-QrEyHcZw6GT3p3pLenvgCM6z/3CZl0QWmy28EdvhaIEYU4N8DfPy4mW29G+O2Iv8
-v+LeJJtEjqgWDYBJ8dTHwuwKH23PaK9qg3kmgl0Z8p6361yiSbheYq9KoSRohvxc
-SjO9qmFnEpf3jjYXuQPClnQNFg==
-";
-    key.PublicKey = @"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2ayjtdQezUv9LWH6nIOl
-OMGx/bAi8YUPhEWnpAQktaJ1K4M07ZutJ8dp+ZdeRvuQJ64cGqLsKscZZkYLMB+p
-B2SAFT5ojbULV2pga0+nmH/6LtOzJ0DEM0CZb/5BZx1FarNWTHJEE4K4pbb+M+Fk
-qXFveiiuOrlpk8m1TGzvAyTkr+WK1xAWNy1gjKMzhY7wD04UvSxLoEaUgQnJSzET
-+5oy/gZR7iQuzov2XClkWW+AI3SHVR8oZg7Aj8hJEa6GXvgZb3wP4qUCALc8Ej25
-ZMTWisgLgYRIphWv0qNcoa/luOz57/cKbPNp2RM12U7kwBsoaM9hok6edDi4AJ2H
-bQIDAQAB";
-
-    var contents = "_gateway_client_id=api_test01&_gateway_client_noncestr=fe5b10450b9e506fb1eaa77e2f0ceb74&_gateway_client_signtype=RSA&_gateway_client_timestamp=1519803906810&param1=1&param2=2&param3=3&serviceMethod=echo&serviceType=com.ebuy.gateway.web.apidoc.service.TestGatewayService";
-    var sign = Bzway.Common.Utility.Cryptor.RSASign(key.PrivateKey, contents);
-    var abc = Bzway.Common.Utility.Cryptor.RSAVerifySign(key.PublicKey, contents, sign);
-
-
-}
-<div>
-    @abc
-</div>
+    <div>
+        @Html.Raw(sb.ToString())
+    </div>
+*@
 <hr />
-<div>
-    @sign
-</div>
 <table class="table table-bordered table-striped table-hover table-condensed">
     <thead>
         <tr>
@@ -82,31 +36,18 @@ bQIDAQAB";
         </tr>
     </thead>
     <tbody>
-        @{
-            List<double> p = new List<double>();
-            p.Add(11.28);
-            p.Add(10.30);
-            p.Add(33.00);
-
-            var i = 0;
-            foreach (var item in list)
-            {
-
-                <tr>
-                    <td>@i</td>
-                    <td>@item.Code </td>
-                    <td>@item.Current  </td>
-                    <td>@(double.Parse(item.Current) / p[i])</td>
-                </tr>
-                i++;
-            }
+        @foreach (var item in this.Model)
+        {
+            <tr>
+                <td>@item.Prefix</td>
+                <td>@item.Proince</td>
+                <td>@item.City</td>
+                <td>@item.Vendor)</td>
+            </tr>
         }
     </tbody>
 </table>
-@section scripts{
-    @*<script>
-            $.widget.bridge('uibutton', $.ui.button);
-        </script>*@
+@section scripts    {
     <!-- Morris.js charts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="~/js/morris/morris.min.js"></script>
@@ -117,9 +58,6 @@ bQIDAQAB";
     <script src="~/js/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
     <!-- jQuery Knob Chart -->
     <script src="~/js/knob/jquery.knob.js"></script>
-    <!-- daterangepicker -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-    <script src="~/js/daterangepicker/daterangepicker.js"></script>
     <!-- datepicker -->
     <script src="~/js/datepicker/bootstrap-datepicker.js"></script>
     <!-- Bootstrap WYSIHTML5 -->
@@ -128,11 +66,6 @@ bQIDAQAB";
     <script src="~/js/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- FastClick -->
     <script src="~/js/fastclick/fastclick.js"></script>
-    <!-- AdminLTE App -->
-    <script src="~/js/app.min.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="~/js/pages/dashboard.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="~/js/demo.js"></script>
-
 }

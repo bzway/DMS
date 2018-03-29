@@ -61,7 +61,7 @@ namespace Bzway.Sites.BackOffice
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            app.UseAuthentication();
             app.UseMvcWithDefaultRoute();
         }
     }

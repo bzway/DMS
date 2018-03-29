@@ -4,13 +4,15 @@ using System.Reflection;
 using System.Runtime.Loader;
 using System.Linq;
 using Microsoft.Extensions.DependencyModel;
+using System.IO;
 
 namespace Bzway.Common.Share
 {
 
     public interface ITypeFinder
     {
-        IEnumerable<T> Find<T>(params string[] paths);
+        IEnumerable<Type> Find<T>(params string[] paths);
+        IEnumerable<Type> Find(Type fromType, params string[] paths);
     }
     public class AssemblyLoader : AssemblyLoadContext
     {
@@ -23,36 +25,32 @@ namespace Bzway.Common.Share
     }
     public class TypeFinder : ITypeFinder
     {
-        static List<Type> types = null;
+        static Dictionary<string, List<Type>> typeCache = new Dictionary<string, List<Type>>();
 
-        IEnumerable<Type> Find(Type fromType, params string[] paths)
+        public IEnumerable<Type> Find(Type fromType, params string[] paths)
         {
-            if (types == null)
+            if (paths.Length == 0)
             {
-                types = new List<Type>();
-                foreach (var item in paths)
+                var folder = Path.Combine(Directory.GetCurrentDirectory(), "bin");
+                paths = Directory.GetFiles(folder, "*.dll", SearchOption.AllDirectories);
+            }
+            List<Type> types = new List<Type>();
+
+            foreach (var item in paths)
+            {
+                if (!typeCache.ContainsKey(item))
                 {
-                    try
-                    {
-                        types.AddRange(Assembly.Load(AssemblyLoadContext.GetAssemblyName(item)).GetTypes());
-                    }
-                    catch { }
+                    List<Type> list = new List<Type>();
+                    list.AddRange(Assembly.Load(AssemblyLoadContext.GetAssemblyName(item)).GetTypes());
+                    typeCache.Add(item, list);
                 }
+                types.AddRange(typeCache[item]);
             }
             return types.Where(t => fromType.IsAssignableFrom(t) && fromType != t);
         }
-        public IEnumerable<T> Find<T>(params string[] paths)
+        public IEnumerable<Type> Find<T>(params string[] paths)
         {
-            List<T> list = new List<T>();
-            foreach (var item in this.Find(typeof(T), paths))
-            {
-                try
-                {
-                    list.Add((T)Activator.CreateInstance(item));
-                }
-                catch { }
-            }
-            return list;
+            return this.Find(typeof(T), paths);
         }
     }
 }

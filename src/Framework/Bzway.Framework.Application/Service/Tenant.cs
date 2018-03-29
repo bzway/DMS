@@ -26,7 +26,7 @@ namespace Bzway.Framework.Application
         public Tenant(IHttpContextAccessor contextAccessor, IPrincipal principal)
         {
             this.Context = contextAccessor.HttpContext;
-            this.Context.User = principal as ClaimsPrincipal;
+            //this.Context.User = principal as ClaimsPrincipal;
             var cache = CacheManager.Default.DefaultCacheProvider;
             var domain = this.Context.Request.Host.Value;
             this.Site = cache.Get<Site>("Site.Domain." + domain, () =>

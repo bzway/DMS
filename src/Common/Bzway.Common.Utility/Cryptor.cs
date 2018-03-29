@@ -185,13 +185,19 @@ namespace Bzway.Common.Utility
                 return Convert.ToBase64String(bytes);
             }
         }
-
-        public static string ToKey(string privatekey)
+        public static string ToXmlKey(string keyString, bool IsPrivateKey = true)
         {
             using (var rsa = RSA.Create())
             {
-                rsa.FromPrivateString(privatekey);
-                return rsa.ToXmlStringX(true);
+                if (IsPrivateKey)
+                {
+                    rsa.FromPrivateString(keyString);
+                }
+                else
+                {
+                    rsa.FromPublicString(keyString);
+                }
+                return rsa.ToXmlStringX(IsPrivateKey);
             }
         }
 
