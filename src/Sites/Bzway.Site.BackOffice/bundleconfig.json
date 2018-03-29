@@ -9,8 +9,16 @@
     ]
   },
   {
-    "inputFiles": [ "wwwroot/**/*(*.js|!(*.min.js)" ]
-
+    "outputFileName": "wwwroot/js/app.min.js",
+    "inputFiles": [
+      "wwwroot/js/app.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/pages/dashboard.min.js",
+    "inputFiles": [
+      "wwwroot/js/pages/dashboard.js"
+    ]
   },
   {
 
