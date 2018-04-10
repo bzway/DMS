@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:36378/",
+      "applicationUrl": "http://localhost:1290/",
       "sslPort": 0
     }
   },
@@ -18,10 +18,11 @@
     "Bzway.Sites.OpenApi": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "http://localhost:1290",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:36379/"
+      "applicationUrl": "http://localhost:1290"
     }
   }
 }

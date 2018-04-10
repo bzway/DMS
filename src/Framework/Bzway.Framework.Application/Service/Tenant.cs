@@ -26,18 +26,30 @@ namespace Bzway.Framework.Application
         public Tenant(IHttpContextAccessor contextAccessor, IPrincipal principal)
         {
             this.Context = contextAccessor.HttpContext;
-            //this.Context.User = principal as ClaimsPrincipal;
-            var cache = CacheManager.Default.DefaultCacheProvider;
-            var domain = this.Context.Request.Host.Value;
-            this.Site = cache.Get<Site>("Site.Domain." + domain, () =>
-            {
-                var db = SystemDatabase.GetDatabase().Entity<Site>();
-                return db.Query().Where(m => m.Domains.Contains(domain)).FirstOrDefault();
-            });
+            this.MasterDatabase = SystemDatabase.GetDatabase();
         }
         #endregion
         public HttpContext Context { get; private set; }
-        public Site Site { get; private set; }
+
+        Site site;
+        public Site Site
+        {
+            get
+            {
+                if (site == null)
+                {
+                    var domain = this.Context.Request.Host.Value;
+                    var key = "Site.Domain." + domain;
+                    this.site = CacheManager.Default.MemCacheProvider.Get<Site>(key, () =>
+                    {
+                        return this.MasterDatabase.Entity<Site>().Query().Where(m => m.Domains.Contains(domain)).FirstOrDefault();
+                    });
+                }
+                return site;
+            }
+        }
+
+        public ISystemDatabase MasterDatabase { get; private set; }
     }
 
 

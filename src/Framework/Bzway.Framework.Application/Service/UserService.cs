@@ -22,13 +22,13 @@ namespace Bzway.Framework.Application
 
         public UserEmail VerifyEmail(string email)
         {
-            return db.Entity<UserEmail>().Query().Where(m => m.Email == email).First();
+            return db.Entity<UserEmail>().Query().Where(m => m.Email == email).FirstOrDefault();
         }
 
         public User FindUserByID(string userID)
         {
 
-            return db.Entity<User>().Query().Where(m => m.Id == userID).First();
+            return db.Entity<User>().Query().Where(m => m.Id == userID).FirstOrDefault();
         }
 
         public IEnumerable<UserEmail> FindUserEmailsByUserID(string userID)
@@ -39,13 +39,11 @@ namespace Bzway.Framework.Application
 
         public UserEmail FindUserEmailByValidationCode(string code)
         {
-            return db.Entity<UserEmail>().Query().Where(m => m.ValidateCode == code)
-                                     .First();
+            return db.Entity<UserEmail>().Query().Where(m => m.ValidateCode == code).FirstOrDefault();
         }
         public UserPhone FindUserPhoneByValidationCode(string code)
         {
-            return db.Entity<UserPhone>().Query().Where(m => m.ValidateCode == code)
-                                   .Where(m => m.ValidateTime >= DateTime.UtcNow.AddDays(-1)).First();
+            return db.Entity<UserPhone>().Query().Where(m => m.ValidateCode == code).Where(m => m.ValidateTime >= DateTime.UtcNow.AddDays(-1)).FirstOrDefault();
         }
         public IEnumerable<UserPhone> FindUserPhonesByUserID(string userID)
         {
@@ -54,13 +52,13 @@ namespace Bzway.Framework.Application
 
         public UserPhone VerifyPhone(string phoneNumber)
         {
-            return db.Entity<UserPhone>().Query().Where(m => m.PhoneNumber == phoneNumber).First();
+            return db.Entity<UserPhone>().Query().Where(m => m.PhoneNumber == phoneNumber).FirstOrDefault();
         }
         public User VerifyUser(string userName, string password)
         {
             password = Cryptor.EncryptMD5(password);
             return db.Entity<User>().Query().Where(m => m.UserName == userName)
-                 .Where(m => m.Password == password).First();
+                 .Where(m => m.Password == password).FirstOrDefault();
         }
 
         public UserPhone RegisterByPhoneNumber(string phoneNumber, string password)

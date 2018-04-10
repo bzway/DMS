@@ -22,7 +22,7 @@ namespace Bzway.Database.File
             this.user = user;
             this.fileProvider = fileProvider;
             this.type = typeof(T);
-            var cache = CacheManager.Default.DefaultCacheProvider;
+            var cache = CacheManager.Default.MemCacheProvider;
             this.fileInfo = cache.Get<IFileInfo>("FileInfo." + type.Name, () =>
             {
                 string path = $"/{type.Name}.json";

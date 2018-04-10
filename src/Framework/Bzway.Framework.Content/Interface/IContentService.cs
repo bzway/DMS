@@ -1,4 +1,4 @@
-﻿using Bzway.Data.Core;
+﻿using Bzway.Database.Core;
 using Bzway.Framework.Application;
 using Microsoft.Extensions.Logging;
 using System.Security.Principal;

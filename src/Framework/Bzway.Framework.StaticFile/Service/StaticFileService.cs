@@ -1,4 +1,4 @@
-using Bzway.Data.Core;
+using Bzway.Database.Core;
 using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
@@ -29,6 +29,10 @@ namespace Bzway.Framework.StaticFile
             this.siteService = siteService;
             var site = this.tenant.Site;
             var root = Path.Combine(Directory.GetCurrentDirectory(), AppEngine.Default.DataFolder, "sites", site.Name, "static");
+            if (!Directory.Exists(root))
+            {
+                Directory.CreateDirectory(root);
+            }
             this.fileProvider = new PhysicalFileProvider(root);
         }
         #endregion

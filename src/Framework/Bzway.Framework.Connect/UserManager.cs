@@ -1,5 +1,5 @@
 ﻿using Bzway.Common.Utility;
-using Bzway.Data.Core;
+using Bzway.Database.Core;
 using Bzway.Framework.Connect.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;

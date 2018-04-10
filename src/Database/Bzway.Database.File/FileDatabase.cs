@@ -44,16 +44,15 @@ namespace Bzway.Database.File
     public class FileDatabase : SystemDatabase
     {
         readonly IFileProvider fileProvider;
-        public FileDatabase(string root = "")
+        public FileDatabase(string root = "", string data = "")
         {
             if (string.IsNullOrEmpty(root))
             {
-                
-                root = Path.Combine(Directory.GetCurrentDirectory(), AppEngine.Default.DataFolder , "server", "config");
+                root = Path.Combine(Directory.GetCurrentDirectory(), AppEngine.Default.DataFolder, "server", "data");
             }
             else
             {
-                root = Path.Combine(Directory.GetCurrentDirectory(), AppEngine.Default.DataFolder, "sites", root);
+                root = Path.Combine(Directory.GetCurrentDirectory(), AppEngine.Default.DataFolder, "sites", root, data);
             }
             if (!Directory.Exists(root))
             {

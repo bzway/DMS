@@ -1,0 +1,9 @@
+﻿[
+  {
+    "Name": "Default",
+    "Domains": "localhost:1288,localhost:1289,localhost:1290",
+    "ProviderName": "File",
+    "ConnectionString": "Default",
+    "DatabaseName": "data"
+  }
+]

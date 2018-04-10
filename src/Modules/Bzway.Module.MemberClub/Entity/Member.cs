@@ -1,4 +1,4 @@
-﻿using Bzway.Data.Core;
+﻿using Bzway.Database.Core;
 using System;
 
 namespace Bzway.Module.MemberClub.Entity

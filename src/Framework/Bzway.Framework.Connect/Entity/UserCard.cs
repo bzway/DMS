@@ -1,4 +1,4 @@
-﻿using Bzway.Data.Core;
+﻿using Bzway.Database.Core;
 
 namespace Bzway.Framework.Connect.Entity
 {

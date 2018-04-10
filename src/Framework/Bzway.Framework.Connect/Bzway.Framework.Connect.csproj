@@ -14,7 +14,7 @@
     <ProjectReference Include="..\..\Common\Bzway.Common.Script\Bzway.Common.Script.csproj" />
     <ProjectReference Include="..\..\Common\Bzway.Common.Share\Bzway.Common.Share.csproj" />
     <ProjectReference Include="..\..\Common\Bzway.Common.Utility\Bzway.Common.Utility.csproj" />
-    <ProjectReference Include="..\..\Data\Bzway.Data.Core\Bzway.Data.Core.csproj" />
+    <ProjectReference Include="..\..\Database\Bzway.Database.Core\Bzway.Database.Core.csproj" />
     <ProjectReference Include="..\Bzway.Framework.Application\Bzway.Framework.Application.csproj" />
   </ItemGroup>
 

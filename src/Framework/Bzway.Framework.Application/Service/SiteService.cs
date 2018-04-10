@@ -39,11 +39,11 @@ namespace Bzway.Framework.Application
         }
         public Site FindSiteByID(string id)
         {
-            return this.db.Entity<Site>().Query().Where(m => m.Id == id).First();
+            return this.db.Entity<Site>().Query().Where(m => m.Id == id).FirstOrDefault();
         }
         public Site FindSiteByName(string siteName)
         {
-            return this.db.Entity<Site>().Query().Where(m => m.Name == siteName).First();
+            return this.db.Entity<Site>().Query().Where(m => m.Name == siteName).FirstOrDefault();
         }
         public void CreateOrUpdateSite(Site site)
         {
@@ -60,8 +60,7 @@ namespace Bzway.Framework.Application
         {
             this.db.Entity<Site>().Delete(siteID);
             var userSite = this.db.Entity<UserSite>().Query()
-                .Where(m => m.SiteID == siteID)
-                .First();
+                .Where(m => m.SiteID == siteID)                .FirstOrDefault();
             this.db.Entity<UserSite>().Delete(userSite);
         }
     }

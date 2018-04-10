@@ -10,5 +10,6 @@ namespace Bzway.Framework.Application
     {
         HttpContext Context { get; }
         Site Site { get; }
+        ISystemDatabase MasterDatabase { get; }
     }
 }

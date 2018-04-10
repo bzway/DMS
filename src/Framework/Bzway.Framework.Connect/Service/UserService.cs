@@ -1,9 +1,10 @@
-﻿using Bzway.Data.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Bzway.Framework.Connect.Entity;
 using Microsoft.Extensions.Logging;
 using Bzway.Common.Utility;
+using Bzway.Database.Core;
+using System.Linq;
 
 namespace Bzway.Framework.Connect
 {
@@ -11,77 +12,53 @@ namespace Bzway.Framework.Connect
     {
         #region ctor
         private readonly ILogger<UserService> logger;
-        private readonly IDatabase db;
+        private readonly ISystemDatabase db;
         public UserService(ILoggerFactory loggerFactory)
         {
-            this.db = OpenDatabase.GetDatabase();
+            this.db = SystemDatabase.GetDatabase();
             this.logger = loggerFactory.CreateLogger<UserService>();
         }
         #endregion
 
         public UserEmail VerifyEmail(string email)
         {
-            return db.Entity<UserEmail>().Query().Where(m => m.Email, email, CompareType.Equal).First();
+            return db.Entity<UserEmail>().Query().Where(m => m.Email == email).FirstOrDefault();
         }
 
         public User FindUserByID(string userID)
         {
-            using (var db = OpenDatabase.GetDatabase())
-            {
-                return db.Entity<User>().Query().Where(m => m.Id, userID, CompareType.Equal).First();
-            }
+            return db.Entity<User>().Query().Where(m => m.Id == userID).FirstOrDefault();
         }
 
         public IEnumerable<UserEmail> FindUserEmailsByUserID(string userID)
         {
-            using (var db = OpenDatabase.GetDatabase())
-            {
-                return db.Entity<UserEmail>().Query().Where(m => m.UserID, userID, CompareType.Equal).ToList();
-            }
+            return db.Entity<UserEmail>().Query().Where(m => m.UserID == userID).ToList();
         }
 
         public UserEmail FindUserEmailByValidationCode(string code)
         {
-            using (var db = OpenDatabase.GetDatabase())
-            {
-                return db.Entity<UserEmail>().Query().Where(m => m.ValidateCode, code, CompareType.Equal)
-                                     //.Where(m => m.ValidateTime, DateTime.UtcNow.AddDays(-1), CompareType.GreaterThanOrEqual)
-                                     .First();
-            }
+            return db.Entity<UserEmail>().Query().Where(m => m.ValidateCode == code).FirstOrDefault();
         }
 
         public UserPhone FindUserPhoneByValidationCode(string code)
         {
-            using (var db = OpenDatabase.GetDatabase())
-            {
-                return db.Entity<UserPhone>().Query().Where(m => m.ValidateCode, code, CompareType.Equal)
-                                     .Where(m => m.ValidateTime, DateTime.UtcNow.AddDays(-1), CompareType.GreaterThanOrEqual).First();
-            }
+            return db.Entity<UserPhone>().Query().Where(m => m.ValidateCode == code).FirstOrDefault();
         }
 
         public IEnumerable<UserPhone> FindUserPhonesByUserID(string userID)
         {
-            using (var db = OpenDatabase.GetDatabase())
-            {
-                return db.Entity<UserPhone>().Query().Where(m => m.UserID, userID, CompareType.Equal).ToList();
-            }
+            return db.Entity<UserPhone>().Query().Where(m => m.UserID == userID).ToList();
         }
 
         public UserPhone VerifyPhone(string phoneNumber)
         {
-            using (var db = OpenDatabase.GetDatabase())
-            {
-                return db.Entity<UserPhone>().Query().Where(m => m.PhoneNumber, phoneNumber, CompareType.Equal).First();
-            }
+            return db.Entity<UserPhone>().Query().Where(m => m.PhoneNumber == phoneNumber).FirstOrDefault();
         }
         public User VerifyUser(string userName, string password)
         {
             password = Cryptor.EncryptMD5(password);
-            using (var db = OpenDatabase.GetDatabase())
-            {
-                return db.Entity<User>().Query().Where(m => m.UserName, userName, CompareType.Equal)
-                    .Where(m => m.Password, password, CompareType.Equal).First();
-            }
+            return db.Entity<User>().Query().Where(m => m.UserName == userName)
+                .Where(m => m.Password == password).FirstOrDefault();
         }
 
 
@@ -119,11 +96,8 @@ namespace Bzway.Framework.Connect
                 ValidateCode = ValidateCodeGenerator.CreateRandomCode(6),
             };
 
-            using (var db = OpenDatabase.GetDatabase())
-            {
-                db.Entity<User>().Insert(user);
-                db.Entity<UserPhone>().Insert(userPhone);
-            }
+            db.Entity<User>().Insert(user);
+            db.Entity<UserPhone>().Insert(userPhone);
             return userPhone;
         }
 
@@ -158,29 +132,20 @@ namespace Bzway.Framework.Connect
                 IsConfirmed = false,
                 ValidateCode = ValidateCodeGenerator.CreateRandomCode(6),
             };
-            using (var db = OpenDatabase.GetDatabase())
-            {
-                db.Entity<User>().Insert(user);
-                db.Entity<UserEmail>().Insert(userEmail);
-            }
+
+            db.Entity<User>().Insert(user);
+            db.Entity<UserEmail>().Insert(userEmail);
             return userEmail;
         }
 
         public void ConfirmUserEmail(UserEmail userEmail)
         {
-            using (var db = OpenDatabase.GetDatabase())
-            {
-                db.Entity<UserEmail>().Update(userEmail);
-            }
+            db.Entity<UserEmail>().Update(userEmail);
         }
 
         public void ConfirmUserPhone(UserPhone userPhone)
         {
-            using (var db = OpenDatabase.GetDatabase())
-            {
-                db.Entity<UserPhone>().Update(userPhone);
-            }
+            db.Entity<UserPhone>().Update(userPhone);
         }
-
     }
 }

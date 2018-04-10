@@ -14,17 +14,17 @@ namespace Bzway.Data.JsonFile
     public class BaseEntityJsonFileRepository<T> : IRepository<T> where T : new()
     {
         #region Ctor
-        readonly string baseDirectory;
+        readonly string root;
         readonly string entityName;
         readonly Schema schema;
         public BaseEntityJsonFileRepository(string connectionString, string databaseName, Schema schema)
         {
             this.entityName = schema.Name;
             this.schema = schema;
-            this.baseDirectory = Path.Combine(Directory.GetCurrentDirectory(), AppEngine.Default.DataFolder, connectionString, databaseName, entityName);
-            if (!Directory.Exists(this.baseDirectory))
+            this.root = Path.Combine(Directory.GetCurrentDirectory(), AppEngine.Default.DataFolder, connectionString, databaseName, entityName);
+            if (!Directory.Exists(this.root))
             {
-                Directory.CreateDirectory(this.baseDirectory);
+                Directory.CreateDirectory(this.root);
             }
         }
         #endregion
@@ -32,7 +32,7 @@ namespace Bzway.Data.JsonFile
         #region protected
         protected List<T> GetData()
         {
-            var filePath = Path.Combine(this.baseDirectory, "data.json");
+            var filePath = Path.Combine(this.root, "data.json");
             List<T> list;
             if (!File.Exists(filePath))
             {
@@ -50,7 +50,7 @@ namespace Bzway.Data.JsonFile
         }
         protected void SetData(List<T> list)
         {
-            var filePath = Path.Combine(this.baseDirectory, "data.json");
+            var filePath = Path.Combine(this.root, "data.json");
             if (!File.Exists(filePath))
             {
                 File.Create(filePath);

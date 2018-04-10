@@ -18,11 +18,11 @@
     "Bzway.Site.FrontPage": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:22031",
+      "launchUrl": "http://localhost:1289",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:22031"
+      "applicationUrl": "http://localhost:1289"
     }
   }
 }

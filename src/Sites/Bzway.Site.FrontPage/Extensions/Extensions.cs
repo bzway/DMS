@@ -12,10 +12,8 @@ namespace Bzway.Sites.FrontPage.Controllers
         {
             if (!dict.ContainsKey(site.Name))
             {
-                var db = OpenDatabase.GetDatabase(site.ProviderName, site.ConnectionString, site.DatabaseName);
                 if (site.Name == "ebook")
                 {
-
                     var build = new UrlMapBuilder()
                         .Map("/$Area=Defalut/$Controller?=Home/$Action?=Index")
                         .Build();

@@ -22,7 +22,7 @@ namespace Bzway.Common.Share
         {
         }
         #endregion
-        public ICache DefaultCacheProvider
+        public ICache MemCacheProvider
         {
             get
             {

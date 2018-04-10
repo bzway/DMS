@@ -17,7 +17,7 @@ namespace Bzway.Database.File
     {
         public ISystemDatabase GetDatabase(string connectionString, string databaseName)
         {
-            return new FileDatabase(connectionString);
+            return new FileDatabase(connectionString, databaseName);
         }
     }
 }

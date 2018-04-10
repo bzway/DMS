@@ -45,6 +45,10 @@ namespace Bzway.Common.Script
             }
 
             this.root = Path.Combine(Directory.GetCurrentDirectory(), AppEngine.Default.DataFolder, "sites", root, "app");
+            if (!Directory.Exists(root))
+            {
+                Directory.CreateDirectory(root);
+            }
             this.path = string.Format("{0}/{1}/{2}", area, controller, action);
             this.MapData = dict;
             this.hashCode = (this.root + this.path).GetHashCode();
