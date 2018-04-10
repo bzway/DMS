@@ -1,30 +1,29 @@
 ﻿@using System.Net.Http;
 @using System.Text;
 @using System.Linq;
-@model List<Bzway.Sites.BackOffice.Controllers.HomeController.MobileModel>
-@*@{
-        var types = AppEngine.GetService<ITypeFinder>().Find<Controller>().ToArray();
-        var controllers = from t in types
-                          orderby t.FullName
-                          from m in t.GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.DeclaredOnly)
-                          where !m.IsSpecialName
-                          select new { ControllerName = t.FullName, ActionName = m.Name, Params = m.GetParameters() };
+@{
+    var types = AppEngine.Default.GetService<ITypeFinder>().Find<Controller>().ToArray();
+    var controllers = from t in types
+                      orderby t.FullName
+                      from m in t.GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.DeclaredOnly)
+                      where !m.IsSpecialName
+                      select new { ControllerName = t.FullName, ActionName = m.Name, Params = m.GetParameters() };
 
-        StringBuilder sb = new StringBuilder();
-        foreach (var item in controllers)
-        {
-            var paramters = string.Join(",", item.Params.Select(m => m.Name).ToList());
+    StringBuilder sb = new StringBuilder();
+    foreach (var item in controllers)
+    {
+        var paramters = string.Join(",", item.Params.Select(m => m.Name).ToList());
 
-            sb.AppendLine(string.Format("Controller: {0} , Action: {1}({2}) <br/>", item.ControllerName, item.ActionName, paramters));
+        sb.AppendLine(string.Format("Controller: {0} , Action: {1}({2}) <br/>", item.ControllerName, item.ActionName, paramters));
 
-        }
-        sb.AppendLine(string.Format("Controller / action count: {0} <br/>", controllers.Count()));
-        sb.AppendLine(string.Format("Controller count: {0} <br/>", controllers.GroupBy(c => c.ControllerName).Count()));
     }
-    <div>
-        @Html.Raw(sb.ToString())
-    </div>
-*@
+    sb.AppendLine(string.Format("Controller / action count: {0} <br/>", controllers.Count()));
+    sb.AppendLine(string.Format("Controller count: {0} <br/>", controllers.GroupBy(c => c.ControllerName).Count()));
+}
+<div>
+    @Html.Raw(sb.ToString())
+</div>
+
 <hr />
 <table class="table table-bordered table-striped table-hover table-condensed">
     <thead>
@@ -36,15 +35,15 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in this.Model)
+        @*@foreach (var item in this.Model)
         {
             <tr>
                 <td>@item.Prefix</td>
                 <td>@item.Proince</td>
                 <td>@item.City</td>
-                <td>@item.Vendor)</td>
+                <td>@item.Vendor</td>
             </tr>
-        }
+        }*@
     </tbody>
 </table>
 @section scripts    {

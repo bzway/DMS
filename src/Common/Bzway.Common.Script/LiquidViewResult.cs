@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using DotLiquid;
 using DotLiquid.FileSystems;
 using HeyRed.MarkdownSharp;
+using Microsoft.Extensions.Configuration;
 
 namespace Bzway.Common.Script
 {
@@ -43,7 +44,7 @@ namespace Bzway.Common.Script
                 action = dict["action"].ToString();
             }
 
-            this.root = Path.Combine(Directory.GetCurrentDirectory(), "../../../", "data", "sites", root, "app");
+            this.root = Path.Combine(Directory.GetCurrentDirectory(), AppEngine.Default.DataFolder, "sites", root, "app");
             this.path = string.Format("{0}/{1}/{2}", area, controller, action);
             this.MapData = dict;
             this.hashCode = (this.root + this.path).GetHashCode();

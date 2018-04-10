@@ -34,7 +34,7 @@ namespace Bzway.Sites.FrontPage.Controllers
         {
 
             var site = this.tenant.Site;
-            var e = AppEngine.GetService<ScriptEngine>(DynamicDataRegister.DynamicDataProvider);
+            //var e = AppEngine.Default.GetService<ScriptEngine>(DynamicDataRegister.DynamicDataProvider);
             //静态文件
             var result = StaticFile(site, PageUrl);
             if (result != null)

@@ -31,7 +31,7 @@ namespace Bzway.Server.Wechat
         }
         static string ProcessKeyWord(WechatContext context)
         {
-            IWechatService service = AppEngine.Current.Resolve<IWechatService>();
+            IWechatService service = AppEngine.Default.GetService<IWechatService>();
             var list = service.GetWechatResponse(context.openId, Module.Wechat.Entity.SearchType.None, context.CurrentOfficialAccount.Id);
             return "Keyword";
         }

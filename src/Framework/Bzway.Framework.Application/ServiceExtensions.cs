@@ -28,28 +28,13 @@ namespace Microsoft.Extensions.DependencyInjection
         public static void AddMultiTenant(this IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IPrincipal, BzwayPrincipal>();
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
-            //.AddScheme<CookieAuthenticationOptions, OpenAuthenticationHandler>(
-            //    "OpenApiAuthentication",
-            //    options =>
-            //    {
-            //        options.ClaimsIssuer = "";
-            //        options.CookieManager = new ChunkingCookieManager();
-            //        options.Cookie.Name = "Cookies";
-            //        options.LoginPath = new PathString("/Account/Login");
-            //        options.LogoutPath = new PathString("/Account/Logout");
-            //        options.AccessDeniedPath = new PathString("/Account/AccessDenied");
-            //        options.ReturnUrlParameter = "ReturnUrl";
-            //        options.TicketDataFormat = new TicketDataFormat(new EphemeralDataProtectionProvider().CreateProtector("test"));
+            services.AddScoped<IPrincipal>(m => m.GetRequiredService<IHttpContextAccessor>().HttpContext.User);
+            services.AddAuthentication(m =>
+            {
+                m.DefaultScheme = OpenAuthenticationOptions.DefaultSchemeName;
+                m.AddScheme<OpenAuthenticationHandler>(OpenAuthenticationOptions.DefaultSchemeName, OpenAuthenticationOptions.DefaultSchemeName);
+            });
 
-            //    });
-            //services.AddScoped<IPrincipal>(m =>
-            //{
-            //    var authentication = m.GetService<OpenApiAuthenticationHandler>();
-            //    var principal = authentication.AuthenticateAsync().Result.Principal;
-            //    return principal;
-            //});
             services.AddScoped<ITenant, Tenant>();
         }
 
@@ -63,8 +48,9 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 register.Register(builder);
             };
-            AppEngine.Current = builder.Build();
-            return new AutofacServiceProvider(AppEngine.Current);
+            var container = builder.Build();
+            AppEngine.Default.Init(container);
+            return new AutofacServiceProvider(container);
         }
     }
 }

@@ -27,6 +27,7 @@ namespace Bzway.Sites.OpenApi.Controllers
         }
 
         [HttpGet("Authorize")]
+        [AllowAnonymous]
         public ActionResult Authorize(string appId, string responseType, string scope, string state, string callBack)
         {
             if (string.IsNullOrEmpty(responseType))
@@ -113,8 +114,6 @@ namespace Bzway.Sites.OpenApi.Controllers
                     }
                 });
 
-
-
                 if (string.IsNullOrEmpty(returnUrl))
                 {
                     return Redirect("/");
@@ -131,6 +130,7 @@ namespace Bzway.Sites.OpenApi.Controllers
         }
 
         [HttpGet("AccessToken")]
+        [AllowAnonymous]
         public ActionResult AccessToken(string appId, string secretKey, string code, string grantType)
         {
             if (string.IsNullOrEmpty(grantType))
@@ -140,7 +140,7 @@ namespace Bzway.Sites.OpenApi.Controllers
 
             if (grantType == "client_credential")
             {
-                var result = this.tokenService.GenerateAuthAccessToken(appId, secretKey, code);
+                var result = this.tokenService.GenerateClientAccessToken(appId, secretKey);
                 return Redirect("/");
             }
             else
@@ -151,6 +151,7 @@ namespace Bzway.Sites.OpenApi.Controllers
 
         }
         [HttpGet("RefreshToken")]
+        [AllowAnonymous]
         public ActionResult RefreshToken(string appId, string refreshToken, string grantType)
         {
             var result = this.tokenService.GenerateAuthAccessToken(appId, refreshToken, grantType);

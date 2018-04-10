@@ -516,7 +516,6 @@ namespace Bzway.Common.Utility
         #endregion
 
         #region EC Key
-
         public class HashWithSaltResult
         {
             public string Salt { get; }
@@ -553,30 +552,6 @@ namespace Bzway.Common.Utility
                 byte[] derivedBytes = pbkdf.GetBytes(32);
                 return new HashWithSaltResult(Convert.ToBase64String(saltBytes), Convert.ToBase64String(derivedBytes));
             }
-        }
-        public static string HashPassword(string password)
-        {
-
-            PKCS pkcs = new PKCS();
-            var result = pkcs.HashPasswordWithPkcs(password, 50000, 32);
-            return result.Digest;
-        }
-        private static void TestPkcs()
-        {
-            string password = "ultra_safe_P455w0rD";
-            PKCS pkcs = new PKCS();
-            HashWithSaltResult hashResult100Iterations = pkcs.HashPasswordWithPkcs(password, 100, 32);
-            HashWithSaltResult hashResult10000Iterations = pkcs.HashPasswordWithPkcs(password, 10000, 32);
-            HashWithSaltResult hashResult50000Iterations = pkcs.HashPasswordWithPkcs(password, 50000, 32);
-
-            Console.WriteLine(hashResult100Iterations.Salt);
-            Console.WriteLine(hashResult100Iterations.Digest);
-            Console.WriteLine();
-            Console.WriteLine(hashResult10000Iterations.Salt);
-            Console.WriteLine(hashResult10000Iterations.Digest);
-            Console.WriteLine();
-            Console.WriteLine(hashResult50000Iterations.Salt);
-            Console.WriteLine(hashResult50000Iterations.Digest);
         }
         #endregion
     }

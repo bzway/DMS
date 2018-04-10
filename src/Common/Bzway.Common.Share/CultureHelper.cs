@@ -86,7 +86,7 @@ namespace System
         {
             if (resource == null)
             {
-                resource = AppEngine.GetService<IResourceManager>();
+                resource = AppEngine.Default.GetService<IResourceManager>();
             }
             var culture = GetCurrentCulture();
             return resource.GetString(key, culture);

@@ -12,7 +12,7 @@ namespace Bzway.Database.Core
     {
         public static ISystemDatabase GetDatabase(string providerName = "", string connectionString = "", string databaseName = "")
         {
-            var databaseProvider = AppEngine.GetService<IDatabaseProivder>(providerName);
+            var databaseProvider = AppEngine.Default.GetService<IDatabaseProivder>(providerName);
             if (databaseProvider == null)
             {
                 throw new Exception($"proivder:{providerName} is not supported");

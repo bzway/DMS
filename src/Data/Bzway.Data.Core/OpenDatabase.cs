@@ -65,7 +65,7 @@ namespace Bzway.Data.Core
             {
                 providerName = "Default";
             }
-            var db = AppEngine.Current.ResolveNamed<IDatabase>(providerName);
+            var db = AppEngine.Default.GetService<IDatabase>(providerName);
             return db.Clone(ConnectionString, DatabaseName);
         }
         public abstract IDatabase Clone(string ConnectionString, string DatabaseName);

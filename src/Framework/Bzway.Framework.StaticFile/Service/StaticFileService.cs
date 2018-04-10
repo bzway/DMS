@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Primitives;
 using System.Security.Principal;
+using Microsoft.Extensions.Configuration;
 
 namespace Bzway.Framework.StaticFile
 {
@@ -27,7 +28,7 @@ namespace Bzway.Framework.StaticFile
         {
             this.siteService = siteService;
             var site = this.tenant.Site;
-            var root = Path.Combine(Directory.GetCurrentDirectory(), "../../../", "data", "sites", site.Name, "static");
+            var root = Path.Combine(Directory.GetCurrentDirectory(), AppEngine.Default.DataFolder, "sites", site.Name, "static");
             this.fileProvider = new PhysicalFileProvider(root);
         }
         #endregion

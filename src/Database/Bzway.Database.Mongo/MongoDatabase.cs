@@ -16,7 +16,7 @@ namespace Bzway.Database.Mongo
         }
         public override IRepository<T> Entity<T>()
         {
-            return new MongoRepository<T>(this.url, this.database, AppEngine.GetService<IPrincipal>());
+            return new MongoRepository<T>(this.url, this.database, AppEngine.Default.GetService<IPrincipal>());
         }
     }
 }

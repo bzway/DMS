@@ -39,22 +39,24 @@ namespace Bzway.Framework.Application
             var code = Guid.NewGuid().ToString("N");
             var key = requestCodeKey + code;
             var model = new requestCodeModel() { AppId = AppId, UserId = UserId };
-            CacheManager.Default.RedisCacheProvider.Set(key, model, 1000);
+            CacheManager.Default.RedisCacheProvider.Set(key, model, 10000);
             return Result<string>.Success(code);
         }
         public Result<TokenModel> GenerateAuthAccessToken(string appId, string secretKey, string code)
         {
-            var client = this.db.Entity<Client>().Query().Where(m => m.AppKey == appId && m.AppSecret == secretKey).FirstOrDefault();
-            if (client == null)
-            {
-                return Result<TokenModel>.Fail(ResultCode.Error, "Wrong AppId or SecretKey");
-            }
             var key = requestCodeKey + code;
             var codeModel = CacheManager.Default.RedisCacheProvider.Get<requestCodeModel>(key);
             if (codeModel == null || !string.Equals(codeModel.AppId, appId))
             {
                 return Result<TokenModel>.Fail(ResultCode.Error, "Wrong Request Code");
             }
+
+            var client = this.db.Entity<Client>().Query().Where(m => m.AppKey == appId && m.AppSecret == secretKey).FirstOrDefault();
+            if (client == null)
+            {
+                return Result<TokenModel>.Fail(ResultCode.Error, "Wrong AppId or SecretKey");
+            }
+          
             var accessToken = Guid.NewGuid().ToString("N");
             key = authTokenKey + accessToken;
             var model = new TokenModel()

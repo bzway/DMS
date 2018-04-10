@@ -7,6 +7,7 @@ using Bzway.Data.Core.OpenExpressions;
 using System.Linq.Expressions;
 using Bzway.Common.Utility;
 using Bzway.Common.Collections;
+using Microsoft.Extensions.Configuration;
 
 namespace Bzway.Data.JsonFile
 {
@@ -20,7 +21,7 @@ namespace Bzway.Data.JsonFile
         {
             this.entityName = schema.Name;
             this.schema = schema;
-            this.baseDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Data", connectionString, databaseName, entityName);
+            this.baseDirectory = Path.Combine(Directory.GetCurrentDirectory(), AppEngine.Default.DataFolder, connectionString, databaseName, entityName);
             if (!Directory.Exists(this.baseDirectory))
             {
                 Directory.CreateDirectory(this.baseDirectory);

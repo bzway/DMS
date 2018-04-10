@@ -11,12 +11,7 @@ namespace Bzway.Sites.BackOffice.Controllers
     public class ValuesController : BaseController<ValuesController>
     {
 
-        public ValuesController(ILoggerFactory loggerFactory, ISiteService siteService) : base(loggerFactory, siteService)
-        {
-
-        }
-
-
+        public ValuesController(ILoggerFactory loggerFactory, ITenant tenant) : base(loggerFactory, tenant) { }
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()

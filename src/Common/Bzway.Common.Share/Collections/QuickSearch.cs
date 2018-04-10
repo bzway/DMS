@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Runtime;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Bzway.Common.Share.Collections
 {
@@ -18,6 +20,16 @@ namespace Bzway.Common.Share.Collections
         {
             return new MyQuickSearch<T>(array);
         }
+
+        public static IQuickSearch<T> BuildQuickSearch<T>(string dataFile)
+        {
+
+            FileStream fileStream = new FileStream(dataFile, FileMode.Open, FileAccess.Read, FileShare.Read);
+            BinaryFormatter b = new BinaryFormatter();
+            var array = b.Deserialize(fileStream) as Dictionary<int, T>;
+            fileStream.Close();
+            return new MyQuickSearch<T>(array);
+        }
         private class MyQuickSearch<T> : IQuickSearch<T>
         {
             readonly Dictionary<int, T> array;
@@ -28,6 +40,10 @@ namespace Bzway.Common.Share.Collections
                 {
                     this.array.Add(item.GetHashCode(), item);
                 }
+            }
+            public MyQuickSearch(Dictionary<int, T> array)
+            {
+                this.array = array;
             }
             public T Search(T word)
             {

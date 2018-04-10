@@ -22,14 +22,12 @@ namespace Bzway.Sites.BackOffice.Controllers
         private string ipAddress;
         public ApiTrackingAttribute()
         {
-
             this.stopwatch = new Stopwatch();
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             ILoggerFactory loggerFactory = (ILoggerFactory)context.HttpContext.RequestServices.GetService(typeof(ILoggerFactory));
             this.logger = loggerFactory.CreateLogger<ApiTrackingAttribute>();
-
             this.stopwatch.Start();
             this.path = context.HttpContext.Request.Path;
             this.requestTime = DateTime.UtcNow;
@@ -40,11 +38,12 @@ namespace Bzway.Sites.BackOffice.Controllers
         private void requestLog(string requestData)
         {
             this.stopwatch.Stop();
-            var message = string.Format("ApiTracking:{0}:~/{1}/{2},from {3},at {4}, with {5}, takes {6} milliseconds", string.IsNullOrEmpty(this.method) ? "NULL" : this.method,   this.requestTime, requestData.ToString(), this.stopwatch.ElapsedMilliseconds);
+            var message = $"ApiTracking:{this.method}:~/{this.path},from {this.ipAddress} at {this.requestTime} with {requestData}, takes {this.stopwatch.ElapsedMilliseconds} milliseconds";
             this.logger.LogInformation(message);
         }
         public override void OnActionExecuted(ActionExecutedContext context)
         {
+            this.requestLog("");
             base.OnActionExecuted(context);
         }
     }
@@ -53,12 +52,12 @@ namespace Bzway.Sites.BackOffice.Controllers
     public abstract class BaseController<T> : Controller
     {
         #region ctor
-        protected ILogger logger;
-        protected ISiteService siteService;
-        public BaseController(ILoggerFactory loggerFactory, ISiteService siteService)
+        protected readonly ILogger logger;
+        protected readonly ITenant tenant;
+        public BaseController(ILoggerFactory loggerFactory, ITenant tenant)
         {
             this.logger = loggerFactory.CreateLogger<T>();
-            this.siteService = siteService;
+            this.tenant = tenant;
         }
         #endregion
 

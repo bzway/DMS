@@ -11,6 +11,7 @@ using Bzway.Common.Share;
 using System.Reflection;
 using System.Threading;
 using System.Security.Principal;
+using Microsoft.Extensions.Configuration;
 
 namespace Bzway.Database.File
 {
@@ -47,11 +48,12 @@ namespace Bzway.Database.File
         {
             if (string.IsNullOrEmpty(root))
             {
-                root = Path.Combine(Directory.GetCurrentDirectory(), "../../../", "data", "server", "config");
+                
+                root = Path.Combine(Directory.GetCurrentDirectory(), AppEngine.Default.DataFolder , "server", "config");
             }
             else
             {
-                root = Path.Combine(Directory.GetCurrentDirectory(), "../../../", "data", "sites", root);
+                root = Path.Combine(Directory.GetCurrentDirectory(), AppEngine.Default.DataFolder, "sites", root);
             }
             if (!Directory.Exists(root))
             {
@@ -62,7 +64,7 @@ namespace Bzway.Database.File
 
         public override IRepository<T> Entity<T>()
         {
-            return new FileRepository<T>(this.fileProvider, AppEngine.GetService<IPrincipal>());
+            return new FileRepository<T>(this.fileProvider, AppEngine.Default.GetService<IPrincipal>());
         }
     }
 }

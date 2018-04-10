@@ -1,22 +1,9 @@
-﻿using Bzway.Common.Share;
-using Bzway.Framework.Application;
-using Bzway.Framework.Content;
-using Bzway.Module.Wechat.Interface;
-using Bzway.Module.Wechat.Service;
-using Bzway.Sites.BackOffice.Models;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace Bzway.Sites.BackOffice
 {
@@ -29,10 +16,8 @@ namespace Bzway.Sites.BackOffice
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            AppEngine.Default.Configuration = builder.Build();
         }
-
-        public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -47,7 +32,7 @@ namespace Bzway.Sites.BackOffice
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddConsole(AppEngine.Default.Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             app.UseStaticFiles();
 
@@ -55,7 +40,7 @@ namespace Bzway.Sites.BackOffice
             {
                 app.UseDeveloperExceptionPage();
                 //app.UseDatabaseErrorPage();
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
             }
             else
             {

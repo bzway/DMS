@@ -20,10 +20,8 @@ namespace Bzway.Sites.OpenApi
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            AppEngine.Default.Configuration = builder.Build();
         }
-
-        public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -31,7 +29,6 @@ namespace Bzway.Sites.OpenApi
             services.AddLogging();
             //Add framework services.
             services.AddMultiTenant();
-          
             services.AddMvc();
             return services.Build();
         }
@@ -39,13 +36,21 @@ namespace Bzway.Sites.OpenApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddConsole(AppEngine.Default.Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            app.UseStaticFiles();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                //app.UseDatabaseErrorPage();
+                //app.UseBrowserLink();
             }
-            app.UseStaticFiles();
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+            app.UseAuthentication();
             app.UseMvcWithDefaultRoute();
         }
     }
