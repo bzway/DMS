@@ -28,6 +28,7 @@ namespace Bzway.Sites.BackOffice.Controllers
         static IQuickSearch<MobileModel> search;
 
         [Authorize(Roles = "Admin")]
+        [HttpGet("")]
         public IActionResult Index()
         {
             return View();

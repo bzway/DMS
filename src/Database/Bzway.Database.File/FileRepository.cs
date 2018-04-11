@@ -37,7 +37,7 @@ namespace Bzway.Database.File
         }
         public IQueryable<T> Query()
         {
-            var data = System.IO.File.ReadAllText(this.fileInfo.PhysicalPath);
+            var data = System.IO.File.ReadAllText(this.fileInfo.PhysicalPath, Encoding.UTF8);
             var list = JsonConvert.DeserializeObject<List<T>>(data);
             if (list == null)
             {
@@ -59,11 +59,7 @@ namespace Bzway.Database.File
             {
                 list.Remove(item);
             }
-            var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(list));
-            using (var stream = this.fileInfo.CreateReadStream())
-            {
-                stream.Write(data, 0, data.Length);
-            }
+            Save(list);
         }
 
         public void Delete(string uuid)
@@ -74,11 +70,7 @@ namespace Bzway.Database.File
             {
                 list.Remove(item);
             }
-            var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(list));
-            using (var stream = this.fileInfo.CreateReadStream())
-            {
-                stream.Write(data, 0, data.Length);
-            }
+            Save(list);
         }
 
         public bool Execute(ICommand<T> command)
@@ -131,11 +123,11 @@ namespace Bzway.Database.File
             var list = this.Query().ToList();
             list.Add(newData);
             Save(list);
-
         }
         public void Update(IUpdate<T> update, IWhere<T> where)
         {
-            throw new NotImplementedException();
+            IUpdateCommand<T> command = new UpdateCommand() { Update = update, Where = where };
+            ExecuteUpdate(command);
         }
 
         public void Update(T newData, string uuid = "")
@@ -158,11 +150,7 @@ namespace Bzway.Database.File
             }
             list.Remove(item);
             list.Add(newData);
-            var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(list));
-            using (var stream = this.fileInfo.CreateReadStream())
-            {
-                stream.Write(data, 0, data.Length);
-            }
+            Save(list);
         }
 
         private Func<E, bool> GetFilter<E>(IWhere<E> where)
@@ -335,6 +323,11 @@ namespace Bzway.Database.File
             return new Func<E, bool>((target) => { return filterLeft(target) | filterRight(target); });
 
         }
+        class UpdateCommand : IUpdateCommand<T>
+        {
+            public IUpdate<T> Update { get; set; }
 
+            public IWhere<T> Where { get; set; }
+        }
     }
 }

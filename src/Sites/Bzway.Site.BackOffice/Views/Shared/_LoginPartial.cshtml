@@ -19,13 +19,13 @@
         <li class="user-body">
             <div class="row">
                 <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
+                    <a href="#">@("View.Followers".ToLocalized())</a>
                 </div>
                 <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
+                    <a href="#">@("View.Sales".ToLocalized())</a>
                 </div>
                 <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
+                    <a href="#">@("View.Friends".ToLocalized())</a>
                 </div>
             </div>
             <!-- /.row -->
@@ -33,10 +33,10 @@
         <!-- Menu Footer-->
         <li class="user-footer">
             <div class="pull-left">
-                <a asp-controller="Account" asp-action="Profile" class="btn btn-default btn-flat">Profile</a>
+                <a asp-controller="Account" asp-action="Profile" class="btn btn-default btn-flat">@("View.Profile".ToLocalized())</a>
             </div>
             <div class="pull-right">
-                <a asp-controller="Account" asp-action="LogOff" class="btn btn-default btn-flat">Sign out</a>
+                <a asp-controller="Account" asp-action="LogOff" class="btn btn-default btn-flat">@("View.Sign out".ToLocalized())</a>
 
             </div>
         </li>
@@ -45,7 +45,7 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a asp-controller="Account" asp-action="Register">@("Register".ToLocalized())</a></li>
-        <li><a asp-controller="Account" asp-action="Login">Log in</a></li>
+        <li><a asp-controller="Account" asp-action="Register">@("View.Register".ToLocalized())</a></li>
+        <li><a asp-controller="Account" asp-action="Login">@("View.Log in".ToLocalized())</a></li>
     </ul>
 }

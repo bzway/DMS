@@ -2,21 +2,21 @@
 
 
 @{
-    this.ViewBag.Title = "Log in".ToLocalized();
+    this.ViewBag.Title = "View.Log in".ToLocalized();
 }
 @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, true, new { @class = "form-signin" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     @Html.ValidationMessage("LoginModelRequired")
-    <h2 class="form-signin-heading">@("Please sign in".ToLocalized())</h2>
+    <h2 class="form-signin-heading">@("View.Please sign in".ToLocalized())</h2>
     @Html.LabelFor(m => m.UserName, new { @class = "sr-only" })
-    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Mobile/Email/Card".ToLocalized(), required = "", autofocus = "" })
+    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "View.Mobile/Email/Card".ToLocalized(), required = "", autofocus = "" })
     @Html.LabelFor(m => m.Password, new { @class = "sr-only" })
-    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password".ToLocalized(), required = "" })
+    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "View.Password".ToLocalized(), required = "" })
     @Html.LabelFor(m => m.ValidateCode, new { @class = "sr-only" })
-    @Html.TextBoxFor(m => m.ValidateCode, new { @class = "form-control", placeholder = "Validate Code".ToLocalized(), required = "" })
-    <button class="btn btn-lg btn-primary btn-block" type="submit">@("Sign in".ToLocalized())</button>
+    @Html.TextBoxFor(m => m.ValidateCode, new { @class = "form-control", placeholder = "View.Validate Code".ToLocalized(), required = "" })
+    <button class="btn btn-lg btn-primary btn-block" type="submit">@("View.Sign in".ToLocalized())</button>
 }
 
 @section Scripts {

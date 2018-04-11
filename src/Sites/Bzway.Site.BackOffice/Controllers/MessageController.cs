@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 
 namespace Bzway.Sites.BackOffice.Controllers
 {
-    [Route("message")]
     public class MessageController : BaseController<MessageController>
     {
         readonly IMessageQueue<MessageResponseModel> messageQueue;

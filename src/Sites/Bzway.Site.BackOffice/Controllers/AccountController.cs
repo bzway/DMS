@@ -22,7 +22,7 @@ namespace Bzway.Sites.BackOffice.Controllers
 {
 
     [Route("Account")]
-    public class AccountController : BaseController<HomeController>
+    public class AccountController : BaseController<AccountController>
     {
         #region ctor
         private readonly ILoginService loginService;
