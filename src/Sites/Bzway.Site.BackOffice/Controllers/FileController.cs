@@ -7,17 +7,17 @@ using System.IO;
 using System.Net;
 using Bzway.Framework.Application;
 using Microsoft.Extensions.Logging;
-using Bzway.Sites.OpenApi.Models;
+using Bzway.Sites.BackOffice.Models;
 
-namespace Bzway.Sites.OpenApi.Controllers
+namespace Bzway.Sites.BackOffice.Controllers
 {
     [Route("File")]
     public class FileController : BaseController<FileController>
     {
-        public FileController(ILoggerFactory loggerFactory) : base(loggerFactory)
-        {
+        #region ctor
+        public FileController(ITenant tenant, ILoggerFactory loggerFactory) : base(loggerFactory, tenant) { }
+        #endregion
 
-        }
         [HttpPost]
         [Route("Upload")]
         public Result<UploadFileResponseModel> Upload(UploadFileRequestModel model)

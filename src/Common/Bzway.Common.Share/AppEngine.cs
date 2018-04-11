@@ -11,15 +11,9 @@ namespace System
 {
     public class AppEngine
     {
-
+        #region ctor
         static readonly Lazy<AppEngine> lazy = new Lazy<AppEngine>(() => { return new AppEngine(); });
-        IContainer container;
-        static Func<IContainer> ctor;
-        AppEngine()
-        {
-
-        }
-
+        AppEngine() { }
         public static AppEngine Default
         {
             get
@@ -27,6 +21,21 @@ namespace System
                 return lazy.Value;
             }
         }
+        #endregion
+        IContainer container;
+        public void Init(IContainer container)
+        {
+            this.container = container;
+        }
+        public T GetService<T>(string name = "")
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return container.Resolve<T>();
+            }
+            return container.ResolveNamed<T>(name);
+        }
+
         public IConfigurationRoot Configuration { get; set; }
         private string dataFolder;
         public string DataFolder
@@ -40,20 +49,6 @@ namespace System
                 }
                 return this.dataFolder;
             }
-        }
-
-        public void Init(IContainer container)
-        {
-            this.container = container;
-        }
-
-        public T GetService<T>(string name = "")
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                return container.Resolve<T>();
-            }
-            return container.ResolveNamed<T>(name);
         }
     }
 }

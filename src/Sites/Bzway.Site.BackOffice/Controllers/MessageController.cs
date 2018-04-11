@@ -5,19 +5,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Bzway.Framework.Application;
 using Bzway.Database.Core;
-using Bzway.Sites.OpenApi.Models;
+using Bzway.Sites.BackOffice.Models;
 using Bzway.Common.Share;
 using Bzway.Common.Utility;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
-namespace Bzway.Sites.OpenApi.Controllers
+namespace Bzway.Sites.BackOffice.Controllers
 {
     [Route("message")]
-    public class MessageController : Controller
+    public class MessageController : BaseController<MessageController>
     {
-        readonly ISystemDatabase db;
         readonly IMessageQueue<MessageResponseModel> messageQueue;
-        public MessageController()
+        public MessageController(ILoggerFactory loggerFactory, ITenant tenant) : base(loggerFactory, tenant)
         {
             this.messageQueue = MessageQueueManager.Default.CreateMessageQueue<MessageResponseModel>();
         }

@@ -71,8 +71,7 @@ namespace Bzway.Sites.FrontPage.Controllers
                 {
                     return NotFound();
                 }
-                string contentType;
-                if (!this.ContentTypeProvider.TryGetContentType(fileInfo.PhysicalPath, out contentType))
+                if (!this.ContentTypeProvider.TryGetContentType(fileInfo.PhysicalPath, out string contentType))
                 {
                     contentType = "application/octet-stream";
                 }
@@ -83,8 +82,7 @@ namespace Bzway.Sites.FrontPage.Controllers
                 var fileInfo = this.staticFileService.GetFileInfo(PageUrl);
                 if (fileInfo.Exists)
                 {
-                    string contentType;
-                    if (!this.ContentTypeProvider.TryGetContentType(fileInfo.PhysicalPath, out contentType))
+                    if (!this.ContentTypeProvider.TryGetContentType(fileInfo.PhysicalPath, out string contentType))
                     {
                         contentType = "application/octet-stream";
                     }
@@ -138,7 +136,7 @@ namespace Bzway.Sites.FrontPage.Controllers
             var where = action.MapData.ContainsKey("where") ? action.MapData["where"].ToString() : string.Empty;
             var pageIndex = action.MapData.ContainsKey("pageIndex") ? action.MapData["pageIndex"].ToString() : string.Empty;
             var pageSize = action.MapData.ContainsKey("pageSize") ? action.MapData["pageSize"].ToString() : string.Empty;
-            action.MapData.Add("model", getData(site, data, where, pageIndex, pageSize));
+            action.MapData.Add("model", GetData(site, data, where, pageIndex, pageSize));
             Dictionary<string, string> query = new Dictionary<string, string>();
             foreach (var item in this.Request.Query)
             {
@@ -149,9 +147,9 @@ namespace Bzway.Sites.FrontPage.Controllers
             return Content(content, "text/html");
         }
 
-        private object getData(Site site, string data, string where, string pageIndex, string pageSize)
+        private object GetData(Site site, string data, string where, string pageIndex, string pageSize)
         {
-            return new { age = 12, site = site };
+            return new { age = 12,  site };
         }
 
         IActionResult ReflectedPage(Site site, string PageUrl)
@@ -164,8 +162,6 @@ namespace Bzway.Sites.FrontPage.Controllers
             return null;
         }
     }
-
-
     public abstract class BaseController<T> : Controller
     {
         #region ctor
@@ -179,8 +175,6 @@ namespace Bzway.Sites.FrontPage.Controllers
         #endregion
 
         protected FileExtensionContentTypeProvider ContentTypeProvider = new FileExtensionContentTypeProvider();
-
-
     }
     public class DevelopmentController : HomeController
     {

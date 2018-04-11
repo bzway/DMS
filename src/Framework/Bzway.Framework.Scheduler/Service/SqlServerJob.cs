@@ -39,7 +39,7 @@ namespace Bzway.Framework.Scheduler
                 }
                 catch (Exception ex)
                 {
-
+                    var message = ex.Message;
                     stopwatch.Stop();
                     periodBySecond = stopwatch.ElapsedMilliseconds;
                 }

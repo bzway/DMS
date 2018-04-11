@@ -1,5 +1,4 @@
 ﻿/// <autosync enabled="true" />
-/// <reference path="../gulpfile.js" />
 /// <reference path="js/app.js" />
 /// <reference path="js/bootstrap-slider/bootstrap-slider.js" />
 /// <reference path="js/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js" />

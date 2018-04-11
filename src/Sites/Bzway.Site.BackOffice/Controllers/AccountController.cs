@@ -16,69 +16,79 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Web;
+using Bzway.Sites.BackOffice.Models;
 
 namespace Bzway.Sites.BackOffice.Controllers
 {
 
+    [Route("Account")]
     public class AccountController : BaseController<HomeController>
     {
         #region ctor
-        public AccountController(ITenant tenant, ILoggerFactory loggerFactory) : base(loggerFactory, tenant) { }
-        #endregion
-
-        public async Task<IActionResult> Login(string code, string state, string url)
+        private readonly ILoginService loginService;
+        public AccountController(ILoginService loginService, ITenant tenant, ILoggerFactory loggerFactory) : base(loggerFactory, tenant)
         {
-            if (this.User.Identity.IsAuthenticated)
-            {
-                return this.Redirect(url);
-            }
-            //如果没有请求码
-            if (string.IsNullOrEmpty(code))
-            {
-                //get request code
-                if (string.IsNullOrEmpty(url))
-                {
-                    url = "/";
-                }
-                var authorizedUrl = this.Request.Path + "?url=" + url;
-                var redirecturl = this.Request.Path + "?code=123&state=123&url=" + HttpUtility.UrlEncode(authorizedUrl);
-                return this.Redirect(redirecturl);
-            }
-            //如果状态码有误
-            if (!string.Equals(state, "123"))
-            {
-                return Redirect("/Error/Index");
-            }
-            //request access token
-            string appId = "appId";
-            string secretKey = "secretKey";
-            string grantType = "";
-            var token = "/Coonect/AccessToken";//todo get access token from auth server according request code.
-            if (string.IsNullOrEmpty(token))
-            {
-                return Redirect("/Error/Index");
-            }
-            //request user profile
-            var roles = "Admin,SuperUser";//todo get user profile according to access token.
-            ClaimsPrincipal principal = new ClaimsPrincipal();
-            var identity = new ClaimsIdentity(OpenAuthenticationOptions.DefaultSchemeName);
-            identity.AddClaim(new Claim(ClaimTypes.Name, "SuperUser"));
-            foreach (var item in roles.Split(','))
-            {
-                identity.AddClaim(new Claim(ClaimTypes.Role, item));
-            }
-
-            principal.AddIdentity(identity);
-            AuthenticationProperties properties = new AuthenticationProperties()
-            {
-                RedirectUri = url,
-                ExpiresUtc = DateTime.UtcNow.AddDays(30),
-            };
-            return this.SignIn(principal, properties, OpenAuthenticationOptions.DefaultSchemeName);
+            this.loginService = loginService;
         }
+        #endregion 
         public IActionResult LogOff(string code, string state, string url)
         {
             return this.SignOut(OpenAuthenticationOptions.DefaultSchemeName);
+        }
+
+        [HttpGet("Login")]
+        [AllowAnonymous]
+        public ActionResult Login(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+
+        [HttpPost("Login")]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LoginRequestModel model, string returnUrl)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+                var result = this.loginService.Login(model.UserName, model.Password, model.ValidateCode);
+                if (result.Code != ResultCode.OK)
+                {
+                    ModelState.AddModelError("LoginModelRequired", result.Message);
+                    return View(model);
+                }
+
+                ClaimsPrincipal principal = new ClaimsPrincipal();
+                var identity = new ClaimsIdentity(OpenAuthenticationOptions.DefaultSchemeName);
+                identity.AddClaim(new Claim(ClaimTypes.Name, result.Data.NickName));
+                identity.AddClaim(new Claim("Language", result.Data.Language));
+                foreach (var item in result.Data.Roles)
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Role, item));
+                }
+                principal.AddIdentity(identity);
+
+                if (string.IsNullOrEmpty(returnUrl))
+                {
+                    returnUrl = "/";
+                }
+                AuthenticationProperties properties = new AuthenticationProperties()
+                {
+                    RedirectUri = returnUrl,
+                    ExpiresUtc = DateTime.UtcNow.AddDays(30),
+                };
+                return this.SignIn(principal, properties, OpenAuthenticationOptions.DefaultSchemeName);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, "AccountController.Login");
+                ModelState.AddModelError("LoginModelRequired", "throw exception".ToLocalized());
+                return View(model);
+            }
         }
     }
 }

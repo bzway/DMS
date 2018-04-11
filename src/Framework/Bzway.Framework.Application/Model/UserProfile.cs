@@ -28,7 +28,7 @@ namespace Bzway.Framework.Application
         public DateTime? LockedTime { get; set; }
         public bool IsConfirmed { get; set; }
         public IList<string> Roles { get; set; }
-        public int Language { get; set; }
+        public string Language { get; set; }
         public string Id { get; set; }
     }
 }

@@ -5,21 +5,11 @@ namespace Bzway.Sites.BackOffice.Models
 
     public class MessageResponseModel
     {
-        public int TotalItem { get { return this.List.Count; } }
-        public string LastVersion { get; set; }
-        public List<Operation> List { get; set; }
-        public MessageResponseModel()
-        {
-            this.List = new List<Operation>();
-        }
+
+        public string Type { get; set; }
+        public object Data { get; set; }
     }
 
-    public class MessageRequestModel
-    {
-        public string LastVersion { get; set; }
-
-        public string[] Ack { get; set; }
-    }
 
     public class Operation
     {

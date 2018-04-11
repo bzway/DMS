@@ -26,6 +26,30 @@ namespace Bzway.Sites.BackOffice.Models
         [Required]
         public string Signature { get; set; }
     }
+   public class LoginRequestModel
+    {
+        [Required]
+        public string UserName { get; set; }
+        [Required]
+        public string Password { get; set; }
+        public string ValidateCode { get; set; }
+        public string Language { get; set; }
+    }
+
+    public class AuthorizationModel
+    {
+        public string ResponseType { get; set; }
+        public string CallBack { get; set; }
+        public string State { get; set; }
+        public string AppId { get; set; }
+        public string Scope { get; set; }
+    }
+
+    public enum AuthorizationScope
+    {
+        base_info = 0,
+        private_info = 1
+    }
     public class FromOrBodyModelBinder : IModelBinder
     {
         public async Task BindModelAsync(ModelBindingContext bindingContext)

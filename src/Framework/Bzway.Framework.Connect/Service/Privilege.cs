@@ -12,7 +12,7 @@ namespace Bzway.Framework.Connect
     public class Privilege : BaseService<Privilege>, IPrivilege
     {
         #region ctor
-        public Privilege(ILoggerFactory loggerFactory, ITenant tenant, IPrincipal user) : base(loggerFactory, tenant,   user) { }
+        public Privilege(ILoggerFactory loggerFactory, ITenant tenant) : base(loggerFactory, tenant) { }
         #endregion
         public string Description
         {

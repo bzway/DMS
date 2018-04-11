@@ -165,40 +165,38 @@ namespace Bzway.Database.File
             }
         }
 
-        private Func<T, bool> GetFilter<T>(IWhere<T> where)
+        private Func<E, bool> GetFilter<E>(IWhere<E> where)
         {
-            Func<T, bool> filter = null;
-
-
-            if (where is WhereExpression<T>)
+            Func<E, bool> filter = null;
+            if (where is WhereExpression<E>)
             {
-                filter = GetAndFilter((WhereExpression<T>)where);
+                filter = GetAndFilter((WhereExpression<E>)where);
             }
             else
             {
-                filter = GetOrFilter((OrExpression<T>)where);
+                filter = GetOrFilter((OrExpression<E>)where);
             }
 
             if (filter == null)
             {
-                filter = new Func<T, bool>(m => { return true; });
+                filter = new Func<E, bool>(m => { return true; });
             }
             return filter;
         }
-        private Func<T, bool> GetAndFilter<T>(WhereExpression<T> where)
+        private Func<E, bool> GetAndFilter<E>(WhereExpression<E> where)
         {
-            Func<T, bool> filter = null;
+            Func<E, bool> filter = null;
             switch (where.CompareType)
             {
                 case CompareType.Equal:
-                    filter = new Func<T, bool>((target) =>
+                    filter = new Func<E, bool>((target) =>
                     {
                         var result = object.Equals(target.TryGetValue(where.FieldName), where.Value);
                         return result;
                     });
                     break;
                 case CompareType.NotEqual:
-                    filter = new Func<T, bool>((target) =>
+                    filter = new Func<E, bool>((target) =>
                     {
                         var result = !object.Equals(target.TryGetValue(where.FieldName), where.Value);
                         return result;
@@ -207,15 +205,15 @@ namespace Bzway.Database.File
                 case CompareType.Like:
                     if (where.Value != null)
                     {
-                        filter = new Func<T, bool>((target) => { return target.TryGetValue(where.FieldName).ToString().Contains(where.Value.ToString()); });
+                        filter = new Func<E, bool>((target) => { return target.TryGetValue(where.FieldName).ToString().Contains(where.Value.ToString()); });
                     }
                     else
                     {
-                        filter = new Func<T, bool>((target) => { return true; });
+                        filter = new Func<E, bool>((target) => { return true; });
                     }
                     break;
                 case CompareType.GreaterThan:
-                    filter = new Func<T, bool>((target) =>
+                    filter = new Func<E, bool>((target) =>
                     {
                         var result = object.Equals(target.TryGetValue(where.FieldName), where.Value);
                         return false;
@@ -223,14 +221,14 @@ namespace Bzway.Database.File
                     break;
 
                 case CompareType.GreaterThanOrEqual:
-                    filter = new Func<T, bool>((target) =>
+                    filter = new Func<E, bool>((target) =>
                     {
                         var result = object.Equals(target.TryGetValue(where.FieldName), where.Value);
                         return false;
                     });
                     break;
                 case CompareType.LessThan:
-                    filter = new Func<T, bool>((target) =>
+                    filter = new Func<E, bool>((target) =>
                     {
                         var result = object.Equals(target.TryGetValue(where.FieldName), where.Value);
                         return false;
@@ -238,7 +236,7 @@ namespace Bzway.Database.File
                     break;
 
                 case CompareType.LessThanOrEqual:
-                    filter = new Func<T, bool>((target) =>
+                    filter = new Func<E, bool>((target) =>
                     {
                         var result = object.Equals(target.TryGetValue(where.FieldName), where.Value);
                         return false;
@@ -247,31 +245,31 @@ namespace Bzway.Database.File
                 case CompareType.Startwith:
                     if (where.Value != null)
                     {
-                        filter = new Func<T, bool>((target) => { return (target.TryGetValue(where.FieldName).ToString().StartsWith(where.Value.ToString())); });
+                        filter = new Func<E, bool>((target) => { return (target.TryGetValue(where.FieldName).ToString().StartsWith(where.Value.ToString())); });
 
                     }
                     else
                     {
-                        filter = new Func<T, bool>((target) => { return true; });
+                        filter = new Func<E, bool>((target) => { return true; });
                     }
 
                     break;
                 case CompareType.EndWith:
                     if (where.Value != null)
                     {
-                        filter = new Func<T, bool>((target) => { return (target.TryGetValue(where.FieldName).ToString().EndsWith(where.Value.ToString())); });
+                        filter = new Func<E, bool>((target) => { return (target.TryGetValue(where.FieldName).ToString().EndsWith(where.Value.ToString())); });
 
                     }
                     else
                     {
-                        filter = new Func<T, bool>((target) => { return true; });
+                        filter = new Func<E, bool>((target) => { return true; });
                     }
 
                     break;
                 case CompareType.Contains:
                     if (where.Value != null)
                     {
-                        filter = new Func<T, bool>((target) =>
+                        filter = new Func<E, bool>((target) =>
                         {
                             if (target.TryGetValue(where.FieldName) == null)
                             {
@@ -283,58 +281,58 @@ namespace Bzway.Database.File
                     }
                     else
                     {
-                        filter = new Func<T, bool>((target) => { return true; });
+                        filter = new Func<E, bool>((target) => { return true; });
                     }
 
                     break;
                 case CompareType.NoLike:
                     if (where.Value != null)
                     {
-                        filter = new Func<T, bool>((target) => { return !(target.TryGetValue(where.FieldName).ToString().Contains(where.Value.ToString())); });
+                        filter = new Func<E, bool>((target) => { return !(target.TryGetValue(where.FieldName).ToString().Contains(where.Value.ToString())); });
                     }
                     else
                     {
-                        filter = new Func<T, bool>((target) => { return true; });
+                        filter = new Func<E, bool>((target) => { return true; });
                     }
                     break;
                 default:
-                    filter = new Func<T, bool>((target) => { return true; });
+                    filter = new Func<E, bool>((target) => { return true; });
                     break;
             }
             if (where.Next == null)
             {
                 return filter;
             }
-            if (where.Next is OrExpression<T>)
+            if (where.Next is OrExpression<E>)
             {
-                return new Func<T, bool>((target) => { return filter(target) | GetOrFilter((OrExpression<T>)where.Next)(target); });
+                return new Func<E, bool>((target) => { return filter(target) | GetOrFilter((OrExpression<E>)where.Next)(target); });
             }
             else
             {
-                return new Func<T, bool>((target) => { return filter(target) & GetAndFilter((WhereExpression<T>)where.Next)(target); });
+                return new Func<E, bool>((target) => { return filter(target) & GetAndFilter((WhereExpression<E>)where.Next)(target); });
             }
         }
-        private Func<T, bool> GetOrFilter<T>(OrExpression<T> or)
+        private Func<E, bool> GetOrFilter<E>(OrExpression<E> or)
         {
-            Func<T, bool> filterLeft;
-            if (or.Left is WhereExpression<T>)
+            Func<E, bool> filterLeft;
+            if (or.Left is WhereExpression<E>)
             {
-                filterLeft = GetAndFilter((WhereExpression<T>)or.Left);
+                filterLeft = GetAndFilter((WhereExpression<E>)or.Left);
             }
             else
             {
-                filterLeft = GetOrFilter((OrExpression<T>)or.Left);
+                filterLeft = GetOrFilter((OrExpression<E>)or.Left);
             }
-            Func<T, bool> filterRight;
-            if (or.Right is WhereExpression<T>)
+            Func<E, bool> filterRight;
+            if (or.Right is WhereExpression<E>)
             {
-                filterRight = GetAndFilter((WhereExpression<T>)or.Right);
+                filterRight = GetAndFilter((WhereExpression<E>)or.Right);
             }
             else
             {
-                filterRight = GetOrFilter((OrExpression<T>)or.Right);
+                filterRight = GetOrFilter((OrExpression<E>)or.Right);
             }
-            return new Func<T, bool>((target) => { return filterLeft(target) | filterRight(target); });
+            return new Func<E, bool>((target) => { return filterLeft(target) | filterRight(target); });
 
         }
 

@@ -13,6 +13,8 @@ using Microsoft.Net.Http.Headers;
 using Bzway.Common.Utility;
 using Newtonsoft.Json;
 using System.Text;
+using System.Threading;
+using System.Globalization;
 
 namespace Bzway.Framework.Application
 {
@@ -84,7 +86,13 @@ namespace Bzway.Framework.Application
                         }
                     }
                     principal.AddIdentity(identity);
+                    var language = identity.Claims.FirstOrDefault(m => m.Type == "Language");
+                    if (language != null)
+                    {
+                        Thread.CurrentThread.CurrentCulture = new CultureInfo(language.Value);
+                    }
                 }
+
                 return new AuthenticationTicket(principal, this.TokenName);
             });
         }
@@ -198,7 +206,6 @@ namespace Bzway.Framework.Application
             }
             return _readCookieTask;
         }
-
         protected override Task HandleChallengeAsync(AuthenticationProperties properties)
         {
             var redirectUri = properties.RedirectUri;
@@ -209,7 +216,7 @@ namespace Bzway.Framework.Application
             var loginUri = Options.LoginPath + QueryString.Create(Options.ReturnUrlParameter, redirectUri);
             this.Response.Redirect(loginUri);
             return Task.CompletedTask;
-            return base.HandleChallengeAsync(properties);
+            //return base.HandleChallengeAsync(properties);
         }
         protected override Task HandleForbiddenAsync(AuthenticationProperties properties)
         {
@@ -220,9 +227,9 @@ namespace Bzway.Framework.Application
             }
             var accessDeniedUri = Options.AccessDeniedPath + QueryString.Create(Options.ReturnUrlParameter, returnUrl);
             this.Response.Redirect(accessDeniedUri);
-            return base.HandleForbiddenAsync(properties);
+            return Task.CompletedTask;
+            //return base.HandleForbiddenAsync(properties);
         }
-
         public Task SignInAsync(ClaimsPrincipal user, AuthenticationProperties properties)
         {
             return Task.Run(() =>

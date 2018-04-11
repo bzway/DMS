@@ -35,7 +35,7 @@ namespace Bzway.Sites.BackOffice.Controllers
             this.ipAddress = context.HttpContext.Request.Path;
             base.OnActionExecuting(context);
         }
-        private void requestLog(string requestData)
+        private void RequestLog(string requestData)
         {
             this.stopwatch.Stop();
             var message = $"ApiTracking:{this.method}:~/{this.path},from {this.ipAddress} at {this.requestTime} with {requestData}, takes {this.stopwatch.ElapsedMilliseconds} milliseconds";
@@ -43,7 +43,7 @@ namespace Bzway.Sites.BackOffice.Controllers
         }
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            this.requestLog("");
+            this.RequestLog("");
             base.OnActionExecuted(context);
         }
     }

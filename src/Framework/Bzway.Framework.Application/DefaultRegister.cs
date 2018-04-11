@@ -24,6 +24,7 @@ namespace Bzway.Framework.Application
         public void Register(ContainerBuilder builder)
         {
             builder.RegisterType<SiteService>().As<ISiteService>();
+            builder.RegisterType<ResourceManager>().As<IResourceManager>();
         }
     }
 }

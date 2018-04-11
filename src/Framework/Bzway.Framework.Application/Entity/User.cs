@@ -21,6 +21,7 @@ namespace Bzway.Framework.Application.Entity
         public DateTime? LockedTime { get; set; }
         public bool IsConfirmed { get; set; }
         public string Roles { get; set; }
+        public string Language { get; set; }
     }
     public enum GenderType
     {

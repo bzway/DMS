@@ -297,9 +297,10 @@ namespace Bzway.Common.Utility
         #region others
         private static void CreateDsaKeys()
         {
-            CspParameters csp = new CspParameters();
-
-            csp.KeyContainerName = "DSA Test (OK to Delete)";
+            CspParameters csp = new CspParameters
+            {
+                KeyContainerName = "DSA Test (OK to Delete)"
+            };
 
             const int PROV_DSS_DH = 13;
             csp.ProviderType = PROV_DSS_DH;
@@ -309,9 +310,10 @@ namespace Bzway.Common.Utility
             const int AT_SIGNATURE = 2;
             csp.KeyNumber = AT_SIGNATURE;
 
-            DSACryptoServiceProvider dsa =
-                new DSACryptoServiceProvider(1024, csp);
-            dsa.PersistKeyInCsp = false;
+            DSACryptoServiceProvider dsa = new DSACryptoServiceProvider(1024, csp)
+            {
+                PersistKeyInCsp = false
+            };
 
             // Encoded key
             AsnKeyBuilder.AsnMessage key = null;
@@ -357,8 +359,10 @@ namespace Bzway.Common.Utility
             // Initailize the CSP
             //   Supresses creation of a new key
             //
-            CspParameters csp = new CspParameters();
-            csp.KeyContainerName = "DSA Test (OK to Delete)";
+            CspParameters csp = new CspParameters
+            {
+                KeyContainerName = "DSA Test (OK to Delete)"
+            };
 
             // Can't use PROV_DSS_DH for loading. We have lost
             //   parameters such as seed and j.
@@ -374,8 +378,10 @@ namespace Bzway.Common.Utility
             // Initialize the Provider
             //
             DSACryptoServiceProvider dsa =
-              new DSACryptoServiceProvider(csp);
-            dsa.PersistKeyInCsp = false;
+              new DSACryptoServiceProvider(csp)
+              {
+                  PersistKeyInCsp = false
+              };
 
             //
             // The moment of truth...
@@ -415,8 +421,10 @@ namespace Bzway.Common.Utility
             //
             // Initialize the Provider
             //
-            DSACryptoServiceProvider dsa = new DSACryptoServiceProvider(csp);
-            dsa.PersistKeyInCsp = false;
+            DSACryptoServiceProvider dsa = new DSACryptoServiceProvider(csp)
+            {
+                PersistKeyInCsp = false
+            };
 
             //
             // The moment of truth...
@@ -442,8 +450,10 @@ namespace Bzway.Common.Utility
             // Initailize the CSP
             //   Supresses creation of a new key
             //
-            CspParameters csp = new CspParameters();
-            csp.KeyContainerName = "RSA Test (OK to Delete)";
+            CspParameters csp = new CspParameters
+            {
+                KeyContainerName = "RSA Test (OK to Delete)"
+            };
 
             const int PROV_RSA_FULL = 1;
             csp.ProviderType = PROV_RSA_FULL;
@@ -455,9 +465,10 @@ namespace Bzway.Common.Utility
             //
             // Initialize the Provider
             //
-            RSACryptoServiceProvider rsa =
-              new RSACryptoServiceProvider(csp);
-            rsa.PersistKeyInCsp = false;
+            RSACryptoServiceProvider rsa =               new RSACryptoServiceProvider(csp)
+              {
+                  PersistKeyInCsp = false
+              };
 
             //
             // The moment of truth...
@@ -484,8 +495,10 @@ namespace Bzway.Common.Utility
             // Initailize the CSP
             //   Supresses creation of a new key
             //
-            CspParameters csp = new CspParameters();
-            csp.KeyContainerName = "RSA Test (OK to Delete)";
+            CspParameters csp = new CspParameters
+            {
+                KeyContainerName = "RSA Test (OK to Delete)"
+            };
 
             const int PROV_RSA_FULL = 1;
             csp.ProviderType = PROV_RSA_FULL;
@@ -497,9 +510,10 @@ namespace Bzway.Common.Utility
             //
             // Initialize the Provider
             //
-            RSACryptoServiceProvider rsa =
-              new RSACryptoServiceProvider(csp);
-            rsa.PersistKeyInCsp = false;
+            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(csp)
+            {
+                PersistKeyInCsp = false
+            };
 
             //
             // The moment of truth...

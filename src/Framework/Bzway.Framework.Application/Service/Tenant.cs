@@ -23,7 +23,7 @@ namespace Bzway.Framework.Application
     internal class Tenant : ITenant
     {
         #region ctor        
-        public Tenant(IHttpContextAccessor contextAccessor, IPrincipal principal)
+        public Tenant(IHttpContextAccessor contextAccessor)
         {
             this.Context = contextAccessor.HttpContext;
             this.MasterDatabase = SystemDatabase.GetDatabase();

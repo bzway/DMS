@@ -84,6 +84,8 @@ namespace Bzway.Framework.Application
 
                 return Result<UserProfile>.Success(new UserProfile()
                 {
+                    Id = user.Id,
+                    Language = user.Language,
                     Birthday = user.Birthday,
                     City = user.City,
                     Country = user.Country,
@@ -110,6 +112,8 @@ namespace Bzway.Framework.Application
 
                 return Result<UserProfile>.Success(new UserProfile()
                 {
+                    Id = user.Id,
+                    Language = user.Language,
                     Birthday = user.Birthday,
                     City = user.City,
                     Country = user.Country,
@@ -120,7 +124,6 @@ namespace Bzway.Framework.Application
                     IsLunarBirthday = user.IsLunarBirthday,
                     LockedTime = user.LockedTime,
                     Name = user.Name,
-                    Id = user.Id,
                     NickName = user.NickName,
                     Province = user.Province,
                     UserName = user.UserName,
@@ -169,6 +172,8 @@ namespace Bzway.Framework.Application
                 db.Entity<UserEmail>().Insert(userEmail);
                 return Result<UserProfile>.Success(new UserProfile()
                 {
+                    Id = user.Id,
+                    Language = user.Language,
                     Birthday = user.Birthday,
                     City = user.City,
                     Country = user.Country,
@@ -195,6 +200,8 @@ namespace Bzway.Framework.Application
                 var a = Cryptor.EncryptMD5(password);
                 return Result<UserProfile>.Success(new UserProfile()
                 {
+                    Id = user.Id,
+                    Language = user.Language,
                     Birthday = user.Birthday,
                     City = user.City,
                     Country = user.Country,
@@ -205,7 +212,6 @@ namespace Bzway.Framework.Application
                     IsLunarBirthday = user.IsLunarBirthday,
                     LockedTime = user.LockedTime,
                     Name = user.Name,
-                    Id = user.Id,
                     NickName = user.NickName,
                     Province = user.Province,
                     UserName = user.UserName,
@@ -226,6 +232,8 @@ namespace Bzway.Framework.Application
             {
                 return Result<UserProfile>.Success(new UserProfile()
                 {
+                    Id = user.Id,
+                    Language = user.Language,
                     Birthday = user.Birthday,
                     City = user.City,
                     Country = user.Country,
@@ -236,7 +244,6 @@ namespace Bzway.Framework.Application
                     IsLunarBirthday = user.IsLunarBirthday,
                     LockedTime = user.LockedTime,
                     Name = user.Name,
-                    Id = user.Id,
                     NickName = user.NickName,
                     Province = user.Province,
                     UserName = user.UserName,

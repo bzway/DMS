@@ -24,7 +24,7 @@ namespace Bzway.Framework.StaticFile
         #region ctor
         readonly ISiteService siteService;
         readonly IFileProvider fileProvider;
-        public StaticFileService(ISiteService siteService, ILoggerFactory loggerFactory, ITenant tenant, IPrincipal user) : base(loggerFactory, tenant, user)
+        public StaticFileService(ISiteService siteService, ILoggerFactory loggerFactory, ITenant tenant) : base(loggerFactory, tenant)
         {
             this.siteService = siteService;
             var site = this.tenant.Site;

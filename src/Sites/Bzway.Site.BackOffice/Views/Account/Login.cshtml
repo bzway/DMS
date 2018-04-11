@@ -4,7 +4,7 @@
 @{
     this.ViewBag.Title = "Log in".ToLocalized();
 }
-@using (Html.BeginForm("Login", "Connect", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, true, new { @class = "form-signin" }))
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, true, new { @class = "form-signin" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)

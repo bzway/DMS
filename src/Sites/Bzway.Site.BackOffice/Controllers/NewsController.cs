@@ -9,25 +9,23 @@ using Microsoft.Extensions.Logging;
 using Bzway.Module.Wechat.Interface;
 using Bzway.Data.Core;
 using Bzway.Module.Wechat.Entity;
+using Bzway.Framework.Application;
 
 namespace Bzway.Sites.BackOffice.Controllers
 {
 
-    public class NewsController : Controller
+    public class NewsController : BaseController<NewsController>
     {
         #region ctor
 
         private readonly IWechatService wechatService;
-        protected readonly ILogger logger;
+        private readonly IDatabase db;
 
-        public NewsController(ILoggerFactory loggerFactory,
-            IWechatService wechatService)
+        public NewsController(IWechatService wechatService, ILoggerFactory loggerFactory, ITenant tenant) : base(loggerFactory, tenant)
         {
-            this.logger = loggerFactory.CreateLogger<NewsController>();
             this.wechatService = wechatService;
             this.db = OpenDatabase.GetDatabase();
         }
-        private readonly IDatabase db;
 
         #endregion
 

@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  webapplication1:
-    image: webapplication1
+  BackOffice:
+    image: BackOffice
     build:
       context: .
-      dockerfile: WebApplication1/Dockerfile
+      dockerfile: /src/sites/Bzway.Site.BackOffice/Dockerfile
