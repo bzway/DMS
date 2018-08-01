@@ -100,9 +100,9 @@ namespace Bzway.Framework.Application
         {
             return Task.Run(() =>
             {
-                var body = string.Join('\r', principal.Identities.Select(id =>
+                var body = string.Join("\r", principal.Identities.Select(id =>
                 {
-                    return string.Join(';', id.Claims.Select(m =>
+                    return string.Join(";", id.Claims.Select(m =>
                     {
                         string type;
                         switch (m.Type)

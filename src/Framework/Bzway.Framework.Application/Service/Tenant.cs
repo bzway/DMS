@@ -13,7 +13,6 @@ using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Text.Encodings.Web;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Bzway.Framework.Application
 {

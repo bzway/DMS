@@ -17,6 +17,7 @@ namespace Bzway.Common.Share
     public class AssemblyLoader : AssemblyLoadContext
     {
         // Not exactly sure about this
+        
         protected override Assembly Load(AssemblyName assemblyName)
         {
             var assembly = Assembly.Load(new AssemblyName(DependencyContext.Default.CompileLibraries.Where(d => d.Name.Contains(assemblyName.Name)).First().Name));

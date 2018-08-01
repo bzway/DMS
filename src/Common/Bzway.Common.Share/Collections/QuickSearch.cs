@@ -47,7 +47,11 @@ namespace Bzway.Common.Share.Collections
             }
             public T Search(T word)
             {
-                return this.array.GetValueOrDefault(word.GetHashCode());
+                if (this.array.TryGetValue(word.GetHashCode(), out T value))
+                {
+                    return value;
+                }
+                return default(T);
             }
         }
         /// <summary>

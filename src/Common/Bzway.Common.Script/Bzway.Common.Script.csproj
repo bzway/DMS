@@ -1,10 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>Bzway.Common.Script</AssemblyName>
-    <RootNamespace>Bzway.Common.Script</RootNamespace>
-  </PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup> 
 
   <ItemGroup>
     <PackageReference Include="DotLiquid" Version="2.0.254" />
