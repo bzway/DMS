@@ -10,6 +10,7 @@ namespace Bzway.Framework.StaticFile
         public void Register(ContainerBuilder builder)
         {
             builder.RegisterType<StaticFileService>().As<IStaticFileService>();
+            builder.RegisterType<FileBrowser>().As<FileBrowser>();
         }
     }
 }

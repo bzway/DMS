@@ -21,15 +21,14 @@ namespace Bzway.Common.Share.Collections
             return new MyQuickSearch<T>(array);
         }
 
-        public static IQuickSearch<T> BuildQuickSearch<T>(string dataFile)
-        {
-
-            FileStream fileStream = new FileStream(dataFile, FileMode.Open, FileAccess.Read, FileShare.Read);
-            BinaryFormatter b = new BinaryFormatter();
-            var array = b.Deserialize(fileStream) as Dictionary<int, T>;
-            fileStream.Close();
-            return new MyQuickSearch<T>(array);
-        }
+        //public static IQuickSearch<T> BuildQuickSearch<T>(string dataFile)
+        //{
+        //    FileStream fileStream = new FileStream(dataFile, FileMode.Open, FileAccess.Read, FileShare.Read);
+        //    BinaryFormatter b = new BinaryFormatter();
+        //    var array = b.Deserialize(fileStream) as Dictionary<int, T>;
+        //    fileStream.Close();
+        //    return new MyQuickSearch<T>(array);
+        //}
         private class MyQuickSearch<T> : IQuickSearch<T>
         {
             readonly Dictionary<int, T> array;

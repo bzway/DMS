@@ -1,5 +1,5 @@
 @echo off
-dir project.json /b /s >loglist.txt
+dir *.csproj /b /s >loglist.txt
 dotnet restore
 echo rem pack >release.bat
 setlocal enabledelayedexpansion

@@ -8,6 +8,9 @@ using System.Net;
 using Bzway.Framework.Application;
 using Microsoft.Extensions.Logging;
 using Bzway.Sites.BackOffice.Models;
+using Bzway.Framework.StaticFile;
+using Microsoft.AspNetCore.Http;
+using System.Threading;
 
 namespace Bzway.Sites.BackOffice.Controllers
 {
@@ -15,7 +18,13 @@ namespace Bzway.Sites.BackOffice.Controllers
     public class FileController : BaseController<FileController>
     {
         #region ctor
-        public FileController(ITenant tenant, ILoggerFactory loggerFactory) : base(loggerFactory, tenant) { }
+        private readonly FileBrowser fileBrowser;
+        public FileController(
+            FileBrowser fileBrowser,
+            ITenant tenant, ILoggerFactory loggerFactory) : base(loggerFactory, tenant)
+        {
+            this.fileBrowser = fileBrowser;
+        }
         #endregion
 
         [HttpPost]
@@ -68,6 +77,44 @@ namespace Bzway.Sites.BackOffice.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        [HttpGet]
+        public ActionResult List(string path)
+        {
+            var list = this.fileBrowser.Get(path);
+            if (list.Count == 1 && list[0].IsFile)
+            {
+                return File(list[0].Path, "*");
+            }
+            return View(list);
+        }
+        [HttpPost]
+        public ActionResult Post(string path)
+        {
+            if (this.Request.Form.Files != null && this.Request.Form.Files.Count > 0)
+            {
+                var files = this.Request.Form.Files.Select(m => new WebFilePost()
+                {
+                    ContentDisposition = m.ContentDisposition,
+                    ContentType = m.ContentType,
+                    FileName = m.FileName,
+                    Headers = m.Headers,
+                    Length = m.Length,
+                    Name = m.Name,
+                    OpenReadStream = m.OpenReadStream(),
+                }).Cast<IWebFilePost>().ToList();
+                this.fileBrowser.CreateFile(path, files, true);
+                return Json("OK");
+            }
+            this.fileBrowser.Create(path);
+            return Json("OK");
+        }
+        [HttpDelete]
+        public ActionResult Delete(string path)
+        {
+            this.fileBrowser.Delete(path, true);
+            return Json("OK");
         }
     }
 }
