@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2018
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsExplorer", "WindowsExplorer\WindowsExplorer.csproj", "{3C22A531-1F94-4885-8A78-B858F29F9984}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsExplorerTree", "WindowsExplorer.Tree\WindowsExplorerTree.csproj", "{A5A5712B-8B5B-4B1A-A7B4-BA2F66E2BC8E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C22A531-1F94-4885-8A78-B858F29F9984}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C22A531-1F94-4885-8A78-B858F29F9984}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C22A531-1F94-4885-8A78-B858F29F9984}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C22A531-1F94-4885-8A78-B858F29F9984}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5A5712B-8B5B-4B1A-A7B4-BA2F66E2BC8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5A5712B-8B5B-4B1A-A7B4-BA2F66E2BC8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5A5712B-8B5B-4B1A-A7B4-BA2F66E2BC8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5A5712B-8B5B-4B1A-A7B4-BA2F66E2BC8E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {80068C65-4257-4DF0-93B3-D1A95EC9EC13}
+	EndGlobalSection
+EndGlobal

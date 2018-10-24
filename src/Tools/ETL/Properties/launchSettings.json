@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Bzway.Tools.ETL": {
+      "commandName": "Project",
+      "commandLineArgs": "D:\\Work\\DMS\\src\\Tools\\ETL\\Test.json"
+    }
+  }
+}

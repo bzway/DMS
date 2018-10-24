@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Primitives;
+using System.Collections.Generic;
 using System.IO;
 
-namespace Bzway.Framework.StaticFile
+namespace Bzway.Framework.DistributedFileSystemClient
 {
     public class WebFilePost : IWebFilePost
     {
@@ -11,7 +12,7 @@ namespace Bzway.Framework.StaticFile
 
         public string ContentDisposition { get; set; }
 
-        public IHeaderDictionary Headers { get; set; }
+        public Dictionary<string, string> Headers { get; set; }
 
         public long Length { get; set; }
 
@@ -21,6 +22,13 @@ namespace Bzway.Framework.StaticFile
 
         public Stream OpenReadStream { get; set; }
 
-        public void SaveAs(string path) { }
+        public void SaveAs(string path)
+        {
+            using (var io = File.OpenWrite(path))
+            {
+                OpenReadStream.CopyTo(io);
+                OpenReadStream.Close();
+            }
+        }
     }
 }

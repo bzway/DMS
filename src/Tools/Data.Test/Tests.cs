@@ -10,7 +10,16 @@ namespace Tests
     [TestClass]
     public class Tests
     {
-
+        [TestMethod]
+        public void TestHash()
+        {
+            foreach (var item in "BBfAafsdfdsfsdfds".Split("f"))
+            {
+                Console.Write(item);
+                Console.Write(" : ");
+                Console.WriteLine(item.GetHashCode());
+            }
+        }
         [TestMethod]
         public void Test1()
         {

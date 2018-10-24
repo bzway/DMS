@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using Bzway.Common.Share;
 
-namespace Bzway.Framework.StaticFile
+namespace Bzway.Framework.DistributedFileSystemClient
 {
     public class DependencyRegister : IDependencyRegister
     {
@@ -9,8 +9,11 @@ namespace Bzway.Framework.StaticFile
 
         public void Register(ContainerBuilder builder)
         {
-            builder.RegisterType<StaticFileService>().As<IStaticFileService>();
-            builder.RegisterType<FileBrowser>().As<FileBrowser>();
+            MasterConnection master = new MasterConnection("localhost", 9333);
+            master.Start();
+            builder.RegisterInstance(master).SingleInstance();
+            builder.RegisterType<DistributedFileSystemServiceService>().As<IDistributedFileSystemService>();
+            builder.RegisterType<FileMetaData>().As<FileMetaData>();
         }
     }
 }

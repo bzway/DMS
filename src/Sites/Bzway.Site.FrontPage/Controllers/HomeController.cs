@@ -3,7 +3,7 @@ using Bzway.Common.Share;
 using Bzway.Framework.Application;
 using Bzway.Framework.Application.Entity;
 using Bzway.Framework.Content;
-using Bzway.Framework.StaticFile;
+using Bzway.Framework.DistributedFileSystemClient;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Logging;
@@ -19,9 +19,9 @@ namespace Bzway.Sites.FrontPage.Controllers
     {
         #region ctor
         readonly IWebContentService webContentService;
-        readonly IStaticFileService staticFileService;
+        readonly IDistributedFileSystemService staticFileService;
         public HomeController(
-            IStaticFileService staticFileService,
+            IDistributedFileSystemService staticFileService,
             IWebContentService webContentService,
             ILoggerFactory loggerFactory,
             ITenant tenant) : base(loggerFactory, tenant)
@@ -64,32 +64,25 @@ namespace Bzway.Sites.FrontPage.Controllers
 
         IActionResult StaticFile(Site site, string PageUrl)
         {
+            var path = PageUrl;
             if (!string.IsNullOrEmpty(site.StaticFilePrefix) && PageUrl.StartsWith(site.StaticFilePrefix, System.StringComparison.CurrentCultureIgnoreCase))
             {
-                var fileInfo = this.staticFileService.GetFileInfo(PageUrl.Remove(0, site.StaticFilePrefix.Length));
-                if (!fileInfo.Exists)
-                {
-                    return NotFound();
-                }
-                if (!this.ContentTypeProvider.TryGetContentType(fileInfo.PhysicalPath, out string contentType))
+                path = PageUrl.Remove(0, site.StaticFilePrefix.Length);
+            }
+            var fileInfo = this.staticFileService.GetFileStream(path);
+            if (fileInfo == null)
+            {
+                return NotFound();
+            }
+            var contentType = fileInfo.Info.ContentType;
+            if (string.IsNullOrEmpty(contentType))
+            {
+                if (!this.ContentTypeProvider.TryGetContentType(path, out contentType))
                 {
                     contentType = "application/octet-stream";
                 }
-                return File(fileInfo.CreateReadStream(), contentType);
             }
-            else
-            {
-                var fileInfo = this.staticFileService.GetFileInfo(PageUrl);
-                if (fileInfo.Exists)
-                {
-                    if (!this.ContentTypeProvider.TryGetContentType(fileInfo.PhysicalPath, out string contentType))
-                    {
-                        contentType = "application/octet-stream";
-                    }
-                    return File(fileInfo.CreateReadStream(), contentType);
-                }
-            }
-            return null;
+            return File(fileInfo.Stream.OutputStream, contentType);
         }
         IActionResult ProxyPage(Site site, string PageUrl)
         {
@@ -149,7 +142,7 @@ namespace Bzway.Sites.FrontPage.Controllers
 
         private object GetData(Site site, string data, string where, string pageIndex, string pageSize)
         {
-            return new { age = 12,  site };
+            return new { age = 12, site };
         }
 
         IActionResult ReflectedPage(Site site, string PageUrl)
@@ -179,7 +172,7 @@ namespace Bzway.Sites.FrontPage.Controllers
     public class DevelopmentController : HomeController
     {
         public DevelopmentController(
-            IStaticFileService staticFileService,
+            IDistributedFileSystemService staticFileService,
             IWebContentService webContentService,
             ILoggerFactory loggerFactory,
             ITenant tenant) : base(staticFileService, webContentService, loggerFactory, tenant)
@@ -188,7 +181,7 @@ namespace Bzway.Sites.FrontPage.Controllers
     public class StagingController : HomeController
     {
         public StagingController(
-            IStaticFileService staticFileService,
+            IDistributedFileSystemService staticFileService,
             IWebContentService webContentService,
             ILoggerFactory loggerFactory,
             ITenant tenant) : base(staticFileService, webContentService, loggerFactory, tenant)

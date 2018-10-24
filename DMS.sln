@@ -51,7 +51,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bzway.Server.Core", "src\Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bzway.Server.Wechat", "src\Server\Bzway.Server.Wechat\Bzway.Server.Wechat.csproj", "{86556232-FDA7-4CE1-B15B-B9973A563266}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bzway.Framework.StaticFile", "src\Framework\Bzway.Framework.StaticFile\Bzway.Framework.StaticFile.csproj", "{E64F7676-BE23-44BF-9D64-A9F07C439BEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bzway.Framework.DistributedFileSystemClient", "src\Framework\Bzway.Framework.StaticFile\Bzway.Framework.DistributedFileSystemClient.csproj", "{E64F7676-BE23-44BF-9D64-A9F07C439BEC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Tests", "src\Tools\Common.Tests\Common.Tests.csproj", "{352E725D-AFC2-494A-950D-9F550D8D55C9}"
 EndProject

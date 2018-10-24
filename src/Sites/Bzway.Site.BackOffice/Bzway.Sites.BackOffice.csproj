@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
+    <TypeScriptToolsVersion>2.8</TypeScriptToolsVersion>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Bzway.Common.Script\Bzway.Common.Script.csproj" />
@@ -17,7 +18,7 @@
     <ProjectReference Include="..\..\Framework\Bzway.Framework.Application\Bzway.Framework.Application.csproj" />
     <ProjectReference Include="..\..\Framework\Bzway.Framework.Content\Bzway.Framework.Content.csproj" />
     <ProjectReference Include="..\..\Framework\Bzway.Framework.Scheduler\Bzway.Framework.Scheduler.csproj" />
-    <ProjectReference Include="..\..\Framework\Bzway.Framework.StaticFile\Bzway.Framework.StaticFile.csproj" />
+    <ProjectReference Include="..\..\Framework\Bzway.Framework.StaticFile\Bzway.Framework.DistributedFileSystemClient.csproj" />
     <ProjectReference Include="..\..\Modules\Bzway.Module.Wechat\Bzway.Module.Wechat.csproj" />
   </ItemGroup>
 
@@ -36,6 +37,12 @@
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\FileManager\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
 </Project>

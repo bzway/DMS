@@ -1,0 +1,95 @@
+﻿@model Bzway.Framework.StaticFile.FileBrowser
+@{
+    //Layout = "_Layout";
+}
+
+@section header{
+    <link href="~/lib/filemanager/css/jquery.filebrowser.css" rel="stylesheet" />
+    <link href="http://code.jquery.com/ui/1.12.1/themes/dark-hive/jquery-ui.css" rel="stylesheet" />
+}
+
+<div id="currentPath"></div>
+<div id="fileBrowser">
+
+</div>
+
+
+<div id="browser"></div>
+
+
+@section scripts{
+    <script src="http://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+    <script src="~/lib/filemanager/js/jquery.filebrowser.js"></script>
+    <script type="text/javascript">
+
+        var currentData;
+        $(function () {
+            var browse = $('#browser').browse({
+                root: '/',
+                separator: '/',
+                dir: function (path, callback) {
+
+                    $.ajax({
+                        url: "/file/list",
+                        type: "GET",
+                        dataType: "json",
+                        data: { "path": path },
+                        success: function (data) {
+                            var files = [];
+                            var dirs = []
+                            for (var i = 0; i < data.length; i++) {
+                                var item = data[i];
+                                if (item.isFile) {
+                                    files.push(item.name);
+                                } else {
+                                    dirs.push(item.name);
+                                }
+                            }
+                            callback({ dirs: dirs, files: files });
+                        },
+                        error: function (data) {
+                            alert(data.message);
+                        }
+                    });
+                },
+                open: function (filename) {
+                    location = "/file/list?path=" + filename;
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+        function back() {
+            var path = $("#currentPath").text();
+            var seg = path.split('\\');
+            path = "";
+            for (var i = 0; i < seg.length - 1; i++) {
+                path += seg[i] + "\\";
+            }
+            load(path);
+        }
+        function load(path) {
+            if (path == "") {
+                $("#currentPath").text("/");
+            }
+            else {
+                $("#currentPath").text(path);
+            }
+            $.ajax({
+                url: "/file/list",
+                type: "GET",
+                dataType: "html",
+                data: { "path": path },
+                success: function (data) {
+                    $("#fileBrowser").html(data);
+                },
+                error: function (data) {
+                    alert("加载粉丝列表失败，请重试");
+                }
+            });
+
+        }
+    </script>
+}

@@ -8,24 +8,32 @@ using System.Net;
 using Bzway.Framework.Application;
 using Microsoft.Extensions.Logging;
 using Bzway.Sites.BackOffice.Models;
-using Bzway.Framework.StaticFile;
+using Bzway.Framework.DistributedFileSystemClient;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
+using System.Net.Http.Headers;
+using Bzway.Framework.DistributedFileSystemClient;
 
 namespace Bzway.Sites.BackOffice.Controllers
 {
-    [Route("File")]
+    [Route("[controller]/[action]")]
     public class FileController : BaseController<FileController>
     {
         #region ctor
-        private readonly FileBrowser fileBrowser;
-        public FileController(
-            FileBrowser fileBrowser,
-            ITenant tenant, ILoggerFactory loggerFactory) : base(loggerFactory, tenant)
+        private readonly FileMetaData fileBrowser;
+        private readonly IDistributedFileSystemService staticFileService;
+        public FileController(FileMetaData fileBrowser, IDistributedFileSystemService staticFileService, ITenant tenant, ILoggerFactory loggerFactory) : base(loggerFactory, tenant)
         {
+            this.staticFileService = staticFileService;
             this.fileBrowser = fileBrowser;
         }
         #endregion
+
+
+        public IActionResult Index()
+        {
+            return View();
+        }
 
         [HttpPost]
         [Route("Upload")]
@@ -73,24 +81,19 @@ namespace Bzway.Sites.BackOffice.Controllers
             return NotFound();
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
 
         [HttpGet]
-        public ActionResult List(string path)
+        public IActionResult List(string path)
         {
             var list = this.fileBrowser.Get(path);
             if (list.Count == 1 && list[0].IsFile)
             {
-                return File(list[0].Path, "*");
+                return File(list[0].Path, "image/jpg");
             }
-            return View(list);
+            return Json(list);
         }
         [HttpPost]
-        public ActionResult Post(string path)
+        public IActionResult Post(string path)
         {
             if (this.Request.Form.Files != null && this.Request.Form.Files.Count > 0)
             {
@@ -99,7 +102,7 @@ namespace Bzway.Sites.BackOffice.Controllers
                     ContentDisposition = m.ContentDisposition,
                     ContentType = m.ContentType,
                     FileName = m.FileName,
-                    Headers = m.Headers,
+                    //Headers = m.Headers,
                     Length = m.Length,
                     Name = m.Name,
                     OpenReadStream = m.OpenReadStream(),
@@ -111,7 +114,7 @@ namespace Bzway.Sites.BackOffice.Controllers
             return Json("OK");
         }
         [HttpDelete]
-        public ActionResult Delete(string path)
+        public IActionResult Delete(string path)
         {
             this.fileBrowser.Delete(path, true);
             return Json("OK");

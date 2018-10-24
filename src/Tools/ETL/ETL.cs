@@ -269,4 +269,38 @@ namespace Bzway.Tools.ETL
             }
         }
     }
+    public class SqlOutputProvider : IOutputProvider
+    {
+        public string Name => "sql";
+
+        public string Process(JObject setting, List<object> list)
+        {
+            try
+            {
+                var connection = setting["connection"].Value<string>();
+                var database = setting["database"].Value<string>();
+                var table = setting["table"].Value<string>();
+                var mongoClient = new MongoClient(connection);
+                var db = mongoClient.GetDatabase(database);
+                var collection = db.GetCollection<BsonDocument>(table);
+                foreach (var item in list)
+                {
+                   
+                    if (item.GetType() == typeof(DynamicEntity))
+                    {
+                        collection.InsertOne(((DynamicEntity)item).ToBsonDocument());
+                    }
+                    else
+                    {
+                        collection.InsertOne(item.ToBsonDocument());
+                    }
+                }
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+    }
 }

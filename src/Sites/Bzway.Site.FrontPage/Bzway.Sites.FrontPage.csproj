@@ -16,7 +16,7 @@
     <ProjectReference Include="..\..\Data\Bzway.Data.Sql\Bzway.Data.Sql.csproj" />
     <ProjectReference Include="..\..\Framework\Bzway.Framework.Application\Bzway.Framework.Application.csproj" />
     <ProjectReference Include="..\..\Framework\Bzway.Framework.Content\Bzway.Framework.Content.csproj" />
-    <ProjectReference Include="..\..\Framework\Bzway.Framework.StaticFile\Bzway.Framework.StaticFile.csproj" />
+    <ProjectReference Include="..\..\Framework\Bzway.Framework.StaticFile\Bzway.Framework.DistributedFileSystemClient.csproj" />
     <ProjectReference Include="..\..\Modules\Bzway.Module.Wechat\Bzway.Module.Wechat.csproj" />
   </ItemGroup>
 

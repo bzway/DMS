@@ -1,0 +1,35 @@
+﻿@section header{
+    <link href="~/lib/filemanager/css/jquery.filebrowser.css" rel="stylesheet" />
+    <link href="http://code.jquery.com/ui/1.12.1/themes/dark-hive/jquery-ui.css" rel="stylesheet" />
+}
+
+<div id="browser"></div>
+
+  
+@section scripts{
+    <script src="http://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+    <script src="~/lib/filemanager/js/jquery.filebrowser.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var browse = $('#browser').browse({
+                root: '/',
+                separator: '/',
+                dir: function (path, callback) {
+                    alert(path);
+                    if (path == '/') {
+                        callback({ dirs: ['foo', 'bar'], files: [] });
+                    } else if (path == '/foo') {
+                        callback({ dirs: [], files: ['baz', 'quux'] });
+                    } else if (path == '/bar/') {
+                        callback({ dirs: [], files: ['lorem', 'ipsum'] });
+                    } else {
+                        callback(null);
+                    }
+                },
+                open: function (filename) {
+                    alert('opening ' + filename);
+                }
+            });
+        });
+    </script>
+}

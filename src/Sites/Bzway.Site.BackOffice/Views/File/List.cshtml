@@ -1,0 +1,21 @@
+﻿@model System.Collections.Generic.List<Bzway.Framework.StaticFile.FileBrowser>
+@{
+    this.Layout = null;
+}
+<table class="table table-bordered table-striped table-hover table-condensed">
+    <tr>
+        <td>Name</td>
+        <td>CreateTime</td>
+        <td>LastTime</td>
+        <td>Type</td>
+    </tr>
+    @foreach (var item in this.Model)
+    {
+        <tr onclick="load('@item.Path')">
+            <td title="@item.Path">@item.Name</td>
+            <td>@item.CreationTime</td>
+            <td>@item.LastWriteTime</td>
+            <td title="@item.Attributes">@(item.IsFile ? "File" : "Folder")</td>
+        </tr>
+    }
+</table>
