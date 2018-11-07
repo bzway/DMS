@@ -21,7 +21,7 @@ namespace WindowsExplorer
             InitializeComponent();
         }
         public List<ContextMenuItem> ContextMenuItems = new List<ContextMenuItem>();
-        private void Form2_Load(object sender, EventArgs e)
+        private void Form2_Load(object sender,EventArgs e)
         {
             this.treeView1.ImageList = this.listView1.SmallImageList = this.imageList1;
             this.treeView1.ShowLines = this.treeView1.ShowPlusMinus = this.treeView1.ShowRootLines = false;
@@ -68,7 +68,7 @@ namespace WindowsExplorer
             Dirtory,
             Multiple,
         }
-        private void ContextMenu_Popup(object sender, EventArgs e)
+        private void ContextMenu_Popup(object sender,EventArgs e)
         {
             this.listView1.ContextMenu.MenuItems.Clear();
 
@@ -77,7 +77,7 @@ namespace WindowsExplorer
                 var path = this.treeView1.SelectedNode.Tag.ToString();
                 foreach (var item in this.ContextMenuItems.Where(m => m.Type.HasFlag(ContextMenuItemType.Dirtory)))
                 {
-                    var menu = new MenuItem(item.Name, this.ContextMenuClick, item.ShortCut);
+                    var menu = new MenuItem(item.Name,this.ContextMenuClick,item.ShortCut);
 
                     ProcessStartInfo startInfo = new ProcessStartInfo(item.Command);
                     startInfo.WorkingDirectory = path;
@@ -94,7 +94,7 @@ namespace WindowsExplorer
                 {
                     foreach (var item in this.ContextMenuItems.Where(m => m.Type.HasFlag(ContextMenuItemType.File)))
                     {
-                        var menu = new MenuItem(item.Name, this.ContextMenuClick, item.ShortCut);
+                        var menu = new MenuItem(item.Name,this.ContextMenuClick,item.ShortCut);
                         ProcessStartInfo startInfo = new ProcessStartInfo(item.Command);
                         startInfo.WorkingDirectory = new FileInfo(path).Directory.FullName;
                         startInfo.Arguments = path;
@@ -107,7 +107,7 @@ namespace WindowsExplorer
                 {
                     foreach (var item in this.ContextMenuItems.Where(m => m.Type.HasFlag(ContextMenuItemType.Dirtory)))
                     {
-                        var menu = new MenuItem(item.Name, this.ContextMenuClick, item.ShortCut);
+                        var menu = new MenuItem(item.Name,this.ContextMenuClick,item.ShortCut);
 
                         ProcessStartInfo startInfo = new ProcessStartInfo(item.Command);
                         startInfo.WorkingDirectory = path;
@@ -129,12 +129,12 @@ namespace WindowsExplorer
                         args.Add(pathString);
                     }
                 }
-                var arguments = string.Join(" ", args);
+                var arguments = string.Join(" ",args);
                 var path = this.treeView1.SelectedNode.Tag.ToString();
 
                 foreach (var item in this.ContextMenuItems.Where(m => m.Type.HasFlag(ContextMenuItemType.Multiple)))
                 {
-                    var menu = new MenuItem(item.Name, this.ContextMenuClick, item.ShortCut);
+                    var menu = new MenuItem(item.Name,this.ContextMenuClick,item.ShortCut);
                     ProcessStartInfo startInfo = new ProcessStartInfo(item.Command);
                     startInfo.Arguments = arguments;
                     startInfo.WorkingDirectory = path;
@@ -145,7 +145,7 @@ namespace WindowsExplorer
             }
         }
 
-        private void ContextMenuClick(object sender, EventArgs e)
+        private void ContextMenuClick(object sender,EventArgs e)
         {
             var menu = (MenuItem)sender;
             if (menu == null)
@@ -166,11 +166,11 @@ namespace WindowsExplorer
             {
                 if (item.IsReady)
                 {
-                    var node = new TreeNode(string.Format("{0} ({1})", item.VolumeLabel == string.Empty ? "Local Disk" : item.VolumeLabel, item.Name.Substring(0, 2)));
+                    var node = new TreeNode(string.Format("{0} ({1})",item.VolumeLabel == string.Empty ? "Local Disk" : item.VolumeLabel,item.Name.Substring(0,2)));
                     var key = "Direve:" + item.Name[0];
                     if (!imageList1.Images.ContainsKey(key))
                     {
-                        this.imageList1.Images.Add(key, SystemIcon.GetDriverIcon(item.Name[0], true));
+                        this.imageList1.Images.Add(key,SystemIcon.GetDriverIcon(item.Name[0],true));
                     }
 
                     node.ImageKey = key;
@@ -190,7 +190,7 @@ namespace WindowsExplorer
             //    treeView1.Nodes.Add(rootNode);
             //}
         }
-        void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        void treeView1_NodeMouseClick(object sender,TreeNodeMouseClickEventArgs e)
         {
             TreeNode newSelected = e.Node;
             var dirPath = newSelected.Tag.ToString();
@@ -205,7 +205,7 @@ namespace WindowsExplorer
             }
             try
             {
-                LoadTreeDir(newSelected, dir);
+                LoadTreeDir(newSelected,dir);
                 loadListDir(dir);
 
                 foreach (FileInfo file in dir.GetFiles())
@@ -217,22 +217,22 @@ namespace WindowsExplorer
                     }
                     if (!imageList1.Images.ContainsKey(key))
                     {
-                        this.imageList1.Images.Add(key, SystemIcon.GetFileIcon(file.FullName, true));
+                        this.imageList1.Images.Add(key,SystemIcon.GetFileIcon(file.FullName,true));
                     }
-                    var item = new ListViewItem(file.Name, key);
+                    var item = new ListViewItem(file.Name,key);
                     item.Tag = file.FullName;
-                    item.SubItems.Add(new ListViewItem.ListViewSubItem(item, "File"));
-                    item.SubItems.Add(new ListViewItem.ListViewSubItem(item, file.LastAccessTime.ToShortDateString()));
+                    item.SubItems.Add(new ListViewItem.ListViewSubItem(item,"File"));
+                    item.SubItems.Add(new ListViewItem.ListViewSubItem(item,file.LastAccessTime.ToShortDateString()));
                     listView1.Items.Add(item);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message,"Error:",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
-        void LoadTreeDir(TreeNode newSelected, DirectoryInfo dir)
+        void LoadTreeDir(TreeNode newSelected,DirectoryInfo dir)
         {
             var key = "folder";
             if (newSelected.Nodes.Count == 0)
@@ -243,7 +243,7 @@ namespace WindowsExplorer
 
                     if (!imageList1.Images.ContainsKey(key))
                     {
-                        this.imageList1.Images.Add(key, SystemIcon.GetFolderIcon(true));
+                        this.imageList1.Images.Add(key,SystemIcon.GetFolderIcon(true));
                     }
                     node.ImageKey = key;
                     node.SelectedImageKey = key;
@@ -260,10 +260,10 @@ namespace WindowsExplorer
             foreach (var subDir in dir.GetDirectories().Where(m => !m.Attributes.HasFlag(FileAttributes.Hidden)))
             {
 
-                var item = new ListViewItem(subDir.Name, key);
+                var item = new ListViewItem(subDir.Name,key);
                 item.Tag = subDir.FullName;
-                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, "Directory"));
-                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, subDir.LastAccessTime.ToShortDateString()));
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item,"Directory"));
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item,subDir.LastAccessTime.ToShortDateString()));
                 listView1.Items.Add(item);
             }
         }

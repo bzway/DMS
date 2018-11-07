@@ -139,6 +139,16 @@ namespace Bzway.Common.Utility
                 return Convert.ToBase64String(sha1.ComputeHash(bytes));
             }
         }
+        public static string EncryptSHA1(byte[] input)
+        {
+            using (var sha1 = SHA1.Create())
+            {
+                byte[] bytes = input;
+
+                var hash = Encoding.ASCII.GetString(sha1.ComputeHash(bytes));
+                return hash;
+            }
+        }
         #endregion
 
         #region RSA
@@ -465,10 +475,10 @@ namespace Bzway.Common.Utility
             //
             // Initialize the Provider
             //
-            RSACryptoServiceProvider rsa =               new RSACryptoServiceProvider(csp)
-              {
-                  PersistKeyInCsp = false
-              };
+            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(csp)
+            {
+                PersistKeyInCsp = false
+            };
 
             //
             // The moment of truth...

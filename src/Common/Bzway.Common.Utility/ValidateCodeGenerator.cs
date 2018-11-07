@@ -13,6 +13,8 @@ namespace Bzway.Common.Utility
 {
     public class ValidateCodeGenerator
     {
+        private static Random random = new Random();
+        private static string[] allCharArray = "0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,J,K,L,M,N,P,Q,R,S,T,U,W,X,Y,Z".Split(',');
         public static MemoryStream CreateImage(string checkCode)
         {
             int iwidth = (int)((checkCode.Length + 2) * 10);
@@ -34,54 +36,24 @@ namespace Bzway.Common.Utility
             }
         }
 
-        public static string CreateRandomCode(int codeCount)
+        public static string CreateRandomCode(int codeCount, bool IsDigital)
         {
-            string allChar = "1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,J,K,L,M,N,P,Q,R,S,T,U,W,X,Y,Z";
-            string[] allCharArray = allChar.Split(',');
-            string randomCode = "";
-            int temp = -1;
-
-            Random rand = new Random();
+            var maxIndex = IsDigital ? 9 : allCharArray.Length - 1;
+            StringBuilder builder = new StringBuilder(codeCount);
             for (int i = 0; i < codeCount; i++)
             {
-                if (temp != -1)
-                {
-                    rand = new Random(i * temp * ((int)DateTime.Now.Ticks));
-                }
-                int t = rand.Next(allCharArray.Length - 1);
-                if (temp == t)
-                {
-                    return CreateRandomCode(codeCount);
-                }
-                temp = t;
-                randomCode += allCharArray[t];
+
+                int t = random.Next(maxIndex);
+                builder.Append(allCharArray[t]);
             }
-            return randomCode;
+            return builder.ToString();
         }
 
-        public static string CreateRandomDigital(int codeCount)
+        public static byte[] NextBytes(int length)
         {
-            string allChar = "1,2,3,4,5,6,7,8,9,0";
-            string[] allCharArray = allChar.Split(',');
-            string randomCode = "";
-            int temp = -1;
-
-            Random rand = new Random();
-            for (int i = 0; i < codeCount; i++)
-            {
-                if (temp != -1)
-                {
-                    rand = new Random(i * temp * ((int)DateTime.Now.Ticks));
-                }
-                int t = rand.Next(allCharArray.Length - 1);
-                if (temp == t)
-                {
-                    return CreateRandomCode(codeCount);
-                }
-                temp = t;
-                randomCode += allCharArray[t];
-            }
-            return randomCode;
+            byte[] buffer = new byte[length];
+            random.NextBytes(buffer);
+            return buffer;
         }
     }
 }

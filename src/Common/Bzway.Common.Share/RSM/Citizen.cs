@@ -49,7 +49,7 @@ namespace Bzway.Common.Share.RSM
         /// <summary>
         /// 当前本地的选举号
         /// </summary>
-        public int VotedNo { get; set; }
+        public int VotedElectionNo { get; set; }
         public string Address { get; set; }
         public int Port { get; set; }
 
@@ -88,13 +88,13 @@ namespace Bzway.Common.Share.RSM
                 //save data to local
                 return true;
             }
-            if (DateTime.Now - lastActiveTime >= TimeSpan.FromSeconds(30))
-            {
-                if (StartElection())
-                {
-                    return this.Write(index, bucket);
-                }
-            }
+            //if (DateTime.Now - lastActiveTime >= TimeSpan.FromSeconds(30))
+            //{
+            //    if (StartElection())
+            //    {
+            //        return this.Write(index, bucket);
+            //    }
+            //}
             this.Type = CitizenType.Citizen;
             return false;
         }
@@ -162,16 +162,17 @@ namespace Bzway.Common.Share.RSM
         {
             // get bucket from local disk;
             var bucket = new Bucket();
-            if (this.ElectionNo == bucket.LeaderNo)
+            if (this.VotedElectionNo == bucket.LeaderNo)
             {
+                // only indicate it is recoveried
                 return true;
             }
             if (SendMessage("Read", index))
             {
                 // get max leader no from majority
-                var max_ver = 0;
-                bucket.LeaderNo = max_ver;
-                bucket.LeaderNo = this.ElectionNo;
+                var max_leader_no = 0;
+                this.VotedElectionNo = max_leader_no;
+                bucket.LeaderNo = max_leader_no;
                 bucket.VersionNo = 0;
                 //save bucket to local disk
                 return true;
@@ -181,9 +182,9 @@ namespace Bzway.Common.Share.RSM
 
         public bool DoVote(int election_no, Citizen citizen)
         {
-            if (election_no >= this.VotedNo)
+            if (election_no > this.VotedElectionNo)
             {
-                this.VotedNo = election_no;
+                this.VotedElectionNo = election_no;
                 this.Type = CitizenType.Citizen;
                 this.Leader = citizen;
                 return true;
@@ -192,32 +193,33 @@ namespace Bzway.Common.Share.RSM
         }
         public bool DoWrite(Bucket bucket, Citizen citizen)
         {
-            if (bucket.LeaderNo < this.VotedNo)
+            if (bucket.LeaderNo < this.VotedElectionNo)
             {
                 return false;
             }
-            else
+            if (bucket.LeaderNo > this.VotedElectionNo)
             {
-                this.VotedNo = bucket.LeaderNo;
+                this.VotedElectionNo = bucket.LeaderNo;
                 this.Type = CitizenType.Citizen;
                 this.Leader = citizen;
-                //save bucket to local disk
-                return true;
             }
+            //save bucket to local disk
+            return true;
         }
-        public bool DoRead(int index, int election_no, Citizen citizen)
+        public Tuple<bool, Bucket> DoRead(int index, int versionNo, Citizen citizen)
         {
             //get bucket from local
+            var bucket = this.buckets[index];
 
-            if (election_no == this.VotedNo)
+            if (versionNo < bucket.LeaderNo)
             {
-
-                return false;
+                return new Tuple<bool, Bucket>(false, bucket);
             }
-            this.VotedNo = election_no;
-            this.Type = CitizenType.Citizen;
-            this.Leader = citizen;
-            return true;
+            if (versionNo == bucket.LeaderNo)
+            {
+                return new Tuple<bool, Bucket>(true, null);
+            }
+            return new Tuple<bool, Bucket>(false, null);
         }
     }
     public class Bucket
@@ -237,5 +239,4 @@ namespace Bzway.Common.Share.RSM
 
         public string Data { get; set; }
     }
-
 }
